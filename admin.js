@@ -560,6 +560,33 @@ function buildMailtoHref(to, subject, body) {
   return `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+function buildWebmailHref(provider, to, subject, body) {
+  const encodedTo = encodeURIComponent(to);
+  const encodedSubject = encodeURIComponent(subject);
+  const encodedBody = encodeURIComponent(body);
+  if (provider === "gmail") {
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodedTo}&su=${encodedSubject}&body=${encodedBody}`;
+  }
+  if (provider === "outlook") {
+    return `https://outlook.office.com/mail/deeplink/compose?to=${encodedTo}&subject=${encodedSubject}&body=${encodedBody}`;
+  }
+  return buildMailtoHref(to, subject, body);
+}
+
+function getReplyPayload() {
+  const to = replyToInput?.value.trim();
+  const subject = replySubjectInput?.value.trim();
+  const message = replyMessageInput?.value.trim();
+  if (!to || !subject || !message) return null;
+  return { to, subject, message };
+}
+
+function logReplyDraft() {
+  const type = replyForm?.dataset.replyType || "lead";
+  const id = replyForm?.dataset.replyId || "";
+  logActivity("Reponse client", `${type === "contact" ? "Contact" : "Demande"} ${id} : brouillon ouvert`);
+}
+
 function openReplyComposer(type, id) {
   const item = type === "contact"
     ? readContacts().find((contact) => contact.id === id)
@@ -1314,14 +1341,20 @@ contactsBody?.addEventListener("click", (event) => {
 
 replyForm?.addEventListener("submit", (event) => {
   event.preventDefault();
-  const to = replyToInput?.value.trim();
-  const subject = replySubjectInput?.value.trim();
-  const message = replyMessageInput?.value.trim();
-  if (!to || !subject || !message) return;
-  const type = replyForm.dataset.replyType || "lead";
-  const id = replyForm.dataset.replyId || "";
-  logActivity("Reponse client", `${type === "contact" ? "Contact" : "Demande"} ${id} : brouillon ouvert`);
-  window.location.href = buildMailtoHref(to, subject, message);
+  const payload = getReplyPayload();
+  if (!payload) return;
+  logReplyDraft();
+  window.location.href = buildMailtoHref(payload.to, payload.subject, payload.message);
+  closeReplyComposer();
+});
+
+replyForm?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-mail-provider]");
+  if (!button) return;
+  const payload = getReplyPayload();
+  if (!payload) return;
+  logReplyDraft();
+  window.open(buildWebmailHref(button.dataset.mailProvider, payload.to, payload.subject, payload.message), "_blank", "noopener");
   closeReplyComposer();
 });
 
