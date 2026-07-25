@@ -1791,6 +1791,68 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-detail-card__full {
   grid-column: 1 / -1;
 }
+.admin-reply-box {
+  display: grid;
+  gap: 14px;
+  width: min(760px, 100%);
+}
+.admin-reply-box label {
+  display: grid;
+  gap: 7px;
+  color: var(--blue);
+  font-size: .86rem;
+  font-weight: 900;
+}
+.admin-reply-box input,
+.admin-reply-box textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  color: var(--blue);
+  font: inherit;
+  font-weight: 800;
+  background: #fff;
+}
+.admin-reply-box input[readonly] {
+  background: #f7f9ff;
+  color: var(--muted);
+}
+.admin-reply-box textarea {
+  resize: vertical;
+  min-height: 210px;
+  line-height: 1.55;
+}
+.reply-client-card {
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px;
+  border: 1px solid rgba(7, 32, 86, .08);
+  border-radius: 13px;
+  background: linear-gradient(180deg, #fbfcff 0%, #fff 100%);
+  color: var(--blue);
+}
+.reply-client-card strong {
+  font-size: 1.05rem;
+}
+.reply-client-card span,
+.reply-client-card small {
+  color: var(--muted);
+  font-weight: 800;
+}
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.reply-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: .84rem;
+  font-weight: 800;
+  text-align: right;
+}
 .empty-state { padding: 30px; text-align: center; color: var(--muted); font-weight: 800; }
 .admin-pagination {
   display: none;

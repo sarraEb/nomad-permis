@@ -68,6 +68,12 @@ const historyActionFilter = document.querySelector("#history-action-filter");
 const clearHistoryButton = document.querySelector("#clear-history");
 const leadDetailModal = document.querySelector("#lead-detail-modal");
 const leadDetailContent = document.querySelector("#lead-detail-content");
+const replyModal = document.querySelector("#reply-modal");
+const replyForm = document.querySelector("#reply-form");
+const replyClientCard = document.querySelector("#reply-client-card");
+const replyToInput = document.querySelector("#reply-to");
+const replySubjectInput = document.querySelector("#reply-subject");
+const replyMessageInput = document.querySelector("#reply-message");
 const adminNavLinks = document.querySelectorAll(".admin-nav a[data-admin-link]");
 const adminPages = document.querySelectorAll("[data-admin-page]");
 const pageSize = 6;
@@ -550,6 +556,62 @@ function buildReplyMailto(item, subject) {
   return `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+function buildMailtoHref(to, subject, body) {
+  return `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function openReplyComposer(type, id) {
+  const item = type === "contact"
+    ? readContacts().find((contact) => contact.id === id)
+    : readLeads().find((lead) => lead.id === id);
+  if (!item || !replyModal || !replyForm || !replyToInput || !replySubjectInput || !replyMessageInput) return;
+
+  const isContact = type === "contact";
+  const subject = isContact
+    ? "Votre message NOMAD"
+    : `Votre demande NOMAD - ${item.plan || "Formule"}`;
+  const context = isContact
+    ? `Message initial : ${item.message || "-"}`
+    : `Formule : ${item.plan || "-"}\nPrix : ${formatPrice(item.price)}\nMessage initial : ${item.message || "-"}`;
+  const body = [
+    `Bonjour ${item.name || ""},`,
+    "",
+    "Nous revenons vers vous suite a votre demande NOMAD.",
+    "",
+    context,
+    "",
+    "Cordialement,",
+    "L'equipe NOMAD",
+  ].join("\n");
+
+  replyForm.dataset.replyType = type;
+  replyForm.dataset.replyId = id;
+  replyToInput.value = item.email || "";
+  replySubjectInput.value = subject;
+  replyMessageInput.value = body;
+  if (replyClientCard) {
+    replyClientCard.innerHTML = `
+      <strong>${escapeHtml(item.name || "Client")}</strong>
+      <span>${escapeHtml(item.phone || "Telephone non precise")} - ${escapeHtml(item.city || "Ville non precisee")}</span>
+      <small>${escapeHtml(isContact ? "Contact" : (item.plan || "Demande"))}</small>
+    `;
+  }
+  replyModal.classList.add("is-open");
+  replyModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  replyMessageInput.focus();
+}
+
+function closeReplyComposer() {
+  if (!replyModal || !replyForm) return;
+  replyModal.classList.remove("is-open");
+  replyModal.setAttribute("aria-hidden", "true");
+  replyForm.reset();
+  replyForm.dataset.replyType = "";
+  replyForm.dataset.replyId = "";
+  document.body.style.overflow = "";
+}
+
 function statusClass(status) {
   if (status === "Traite") return "done";
   if (status === "En cours") return "progress";
@@ -801,7 +863,7 @@ function renderLeads() {
           <button type="button" data-action="progress" data-id="${lead.id}">En cours</button>
           <button type="button" data-action="done" data-id="${lead.id}">Traite</button>
           <button type="button" data-action="details" data-id="${lead.id}">D&eacute;tails</button>
-          <a href="${buildReplyMailto(lead, `Votre demande NOMAD - ${lead.plan || "Formule"}`)}">R&eacute;pondre</a>
+          <button type="button" data-action="reply" data-id="${lead.id}">R&eacute;pondre</button>
           <button type="button" data-action="delete" data-id="${lead.id}">Supprimer</button>
         </div>
       </td>
@@ -828,7 +890,7 @@ function renderContacts() {
         <div class="table-actions">
           <button type="button" data-contact-action="progress" data-id="${contact.id}">En cours</button>
           <button type="button" data-contact-action="done" data-id="${contact.id}">Traite</button>
-          <a href="${buildReplyMailto(contact, "Votre message NOMAD")}">R&eacute;pondre</a>
+          <button type="button" data-contact-action="reply" data-id="${contact.id}">R&eacute;pondre</button>
           <button type="button" data-contact-action="delete" data-id="${contact.id}">Supprimer</button>
         </div>
       </td>
@@ -1228,6 +1290,10 @@ leadsBody?.addEventListener("click", (event) => {
     openLeadDetails(id);
     return;
   }
+  if (action === "reply") {
+    openReplyComposer("lead", id);
+    return;
+  }
   if (action === "progress") updateLeadStatus(id, "En cours");
   if (action === "done") updateLeadStatus(id, "Traite");
   if (action === "delete") deleteLead(id);
@@ -1237,9 +1303,26 @@ contactsBody?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-contact-action]");
   if (!button) return;
   const { contactAction, id } = button.dataset;
+  if (contactAction === "reply") {
+    openReplyComposer("contact", id);
+    return;
+  }
   if (contactAction === "progress") updateContactStatus(id, "En cours");
   if (contactAction === "done") updateContactStatus(id, "Traite");
   if (contactAction === "delete") deleteContact(id);
+});
+
+replyForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const to = replyToInput?.value.trim();
+  const subject = replySubjectInput?.value.trim();
+  const message = replyMessageInput?.value.trim();
+  if (!to || !subject || !message) return;
+  const type = replyForm.dataset.replyType || "lead";
+  const id = replyForm.dataset.replyId || "";
+  logActivity("Reponse client", `${type === "contact" ? "Contact" : "Demande"} ${id} : brouillon ouvert`);
+  window.location.href = buildMailtoHref(to, subject, message);
+  closeReplyComposer();
 });
 
 googleSettingsForm?.addEventListener("submit", (event) => {
@@ -1535,9 +1618,15 @@ adminNavLinks.forEach((link) => {
 document.querySelectorAll("[data-lead-detail-close]").forEach((button) => {
   button.addEventListener("click", closeLeadDetails);
 });
+document.querySelectorAll("[data-reply-close]").forEach((button) => {
+  button.addEventListener("click", closeReplyComposer);
+});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && leadDetailModal?.classList.contains("is-open")) {
     closeLeadDetails();
+  }
+  if (event.key === "Escape" && replyModal?.classList.contains("is-open")) {
+    closeReplyComposer();
   }
 });
 applyAdminPage();

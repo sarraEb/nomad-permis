@@ -482,6 +482,35 @@
     </div>
   </div>
 
+  <div class="admin-detail-modal" id="reply-modal" aria-hidden="true">
+    <div class="admin-detail-modal__overlay" data-reply-close></div>
+    <form class="admin-detail-modal__panel admin-reply-box" id="reply-form" role="dialog" aria-modal="true" aria-labelledby="reply-title">
+      <button class="admin-detail-modal__close" type="button" data-reply-close aria-label="Fermer la reponse">&times;</button>
+      <div class="admin-detail-modal__header">
+        <span>Reponse client</span>
+        <h2 id="reply-title">Boite de messagerie</h2>
+      </div>
+      <div class="reply-client-card" id="reply-client-card"></div>
+      <label>
+        Destinataire
+        <input id="reply-to" name="to" type="email" readonly>
+      </label>
+      <label>
+        Sujet
+        <input id="reply-subject" name="subject" type="text" required>
+      </label>
+      <label>
+        Message
+        <textarea id="reply-message" name="message" rows="9" required></textarea>
+      </label>
+      <div class="reply-actions">
+        <button class="btn btn--outline" type="button" data-reply-close>Annuler</button>
+        <button class="btn btn--primary" type="submit">Ouvrir ma messagerie</button>
+      </div>
+      <p class="reply-note">Le message sera ouvert dans votre application mail pour validation et envoi.</p>
+    </form>
+  </div>
+
   <script src="admin.js"></script>
 </body>
 </html>
