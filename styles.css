@@ -1452,6 +1452,21 @@ p { color: var(--muted); line-height: 1.65; }
   line-height: 1.45;
   color: #16305f;
 }
+#admin-demandes .message-more {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--orange);
+  font-weight: 900;
+  font-size: .82rem;
+  cursor: pointer;
+  padding: 0;
+}
+#admin-demandes .message-more:hover {
+  text-decoration: underline;
+}
 #admin-demandes .status-cell {
   vertical-align: middle;
 }

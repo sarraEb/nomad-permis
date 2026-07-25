@@ -785,7 +785,10 @@ function renderLeads() {
         <strong>${escapeHtml(lead.plan)}</strong>
         <small>${formatPrice(lead.price)}</small>
       </td>
-      <td class="message-cell"><span>${escapeHtml(lead.message || "-")}</span></td>
+      <td class="message-cell">
+        <span>${escapeHtml(lead.message || "-")}</span>
+        <button type="button" class="message-more" data-action="details" data-id="${lead.id}">Voir plus</button>
+      </td>
       <td class="status-cell"><span class="status-pill ${statusClass(lead.status)}">${escapeHtml(lead.status)}</span></td>
       <td>
         <div class="table-actions">
