@@ -530,6 +530,12 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function previewText(value, maxLength = 95) {
+  const text = String(value || "-").replace(/\s+/g, " ").trim();
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+}
+
 function buildReplyMailto(item, subject) {
   const email = String(item.email || "").trim();
   if (!email) return "#";
@@ -786,8 +792,8 @@ function renderLeads() {
         <small>${formatPrice(lead.price)}</small>
       </td>
       <td class="message-cell">
-        <span>${escapeHtml(lead.message || "-")}</span>
-        <button type="button" class="message-more" data-action="details" data-id="${lead.id}">Voir plus</button>
+        <span>${escapeHtml(previewText(lead.message))}</span>
+        ${String(lead.message || "").trim().length > 95 ? `<button type="button" class="message-more" data-action="details" data-id="${lead.id}">Voir plus</button>` : ""}
       </td>
       <td class="status-cell"><span class="status-pill ${statusClass(lead.status)}">${escapeHtml(lead.status)}</span></td>
       <td>
