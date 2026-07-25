@@ -39,6 +39,7 @@ const videosEmptyState = document.querySelector("#videos-empty-state");
 const videosPagination = document.querySelector("#videos-pagination");
 const videoSearchInput = document.querySelector("#video-search");
 const videoLinkFilter = document.querySelector("#video-link-filter");
+const videoUploadMeta = document.querySelector("#video-upload-meta");
 const formulasForm = document.querySelector("#formulas-form");
 const formulasStatus = document.querySelector("#formulas-status");
 const addFormulaButton = document.querySelector("#add-formula");
@@ -345,6 +346,97 @@ function writeVideos(videos) {
   localStorage.setItem(videosStorageKey, JSON.stringify(videos));
 }
 
+function openVideoDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("nomad_media", 1);
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore("videos");
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveVideoBlob(id, file) {
+  const db = await openVideoDb();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction("videos", "readwrite");
+    transaction.objectStore("videos").put(file, id);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+  });
+}
+
+async function deleteVideoBlob(id) {
+  if (!id) return;
+  const db = await openVideoDb();
+  return new Promise((resolve) => {
+    const transaction = db.transaction("videos", "readwrite");
+    transaction.objectStore("videos").delete(id);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => {
+      db.close();
+      resolve();
+    };
+  });
+}
+
+function formatVideoDuration(seconds) {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "Duree non disponible";
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.round(seconds % 60).toString().padStart(2, "0");
+  return `${minutes} min ${remainingSeconds}`;
+}
+
+function loadVideoMetadata(file) {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    const url = URL.createObjectURL(file);
+    video.preload = "metadata";
+    video.muted = true;
+    video.playsInline = true;
+
+    const cleanup = () => URL.revokeObjectURL(url);
+
+    video.addEventListener("loadedmetadata", () => {
+      const duration = formatVideoDuration(video.duration);
+      const seekTo = Math.min(0.8, Math.max(0.1, (video.duration || 1) * 0.08));
+      video.currentTime = seekTo;
+
+      video.addEventListener("seeked", () => {
+        let poster = "assets/hero-driving.png";
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth || 1280;
+          canvas.height = video.videoHeight || 720;
+          canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+          poster = canvas.toDataURL("image/jpeg", 0.78);
+        } catch {
+          poster = "assets/hero-driving.png";
+        }
+        cleanup();
+        resolve({ duration, poster });
+      }, { once: true });
+    }, { once: true });
+
+    video.addEventListener("error", () => {
+      cleanup();
+      reject(new Error("Video illisible"));
+    }, { once: true });
+
+    video.src = url;
+  });
+}
+
 function readFaqs() {
   try {
     if (localStorage.getItem(faqsVersionKey) !== faqsVersion) {
@@ -492,13 +584,14 @@ function getFilteredVideos() {
   const linkFilter = videoLinkFilter?.value || "all";
 
   return readVideos().filter((video) => {
-    const hasLink = Boolean(String(video.url || "").trim());
+    const hasLink = Boolean(String(video.url || "").trim() || String(video.videoBlobId || "").trim());
     const matchesLink = linkFilter === "all" || (linkFilter === "with-link" && hasLink) || (linkFilter === "without-link" && !hasLink);
     const haystack = [
       video.firstName,
       video.title,
       video.journey,
       video.duration,
+      video.fileName,
       video.subtitles,
     ].join(" ").toLowerCase();
     return matchesLink && (!query || haystack.includes(query));
@@ -671,8 +764,8 @@ function renderVideos() {
     <tr>
       <td><strong>${escapeHtml(video.firstName)}</strong><br><small>${escapeHtml(video.title)}</small></td>
       <td>${escapeHtml(video.journey)}</td>
-      <td>${escapeHtml(video.duration)}</td>
-      <td>${video.url ? `<a href="${escapeHtml(video.url)}" target="_blank" rel="noopener">Voir</a>` : "-"}</td>
+      <td>${escapeHtml(video.duration)}<br><small>${escapeHtml(video.fileName || "")}</small></td>
+      <td>${video.url ? `<a href="${escapeHtml(video.url)}" target="_blank" rel="noopener">Voir</a>` : (video.videoBlobId ? "Uploadee" : "-")}</td>
       <td>
         <div class="table-actions">
           <button type="button" data-video-action="delete" data-id="${video.id}">Supprimer</button>
@@ -1077,32 +1170,78 @@ googleSettingsForm?.addEventListener("submit", (event) => {
   if (googleSettingsStatus) googleSettingsStatus.textContent = "Configuration Google enregistrée.";
 });
 
-videoForm?.addEventListener("submit", (event) => {
+videoForm?.querySelector("input[name='videoFile']")?.addEventListener("change", (event) => {
+  const file = event.currentTarget.files?.[0];
+  if (!videoUploadMeta) return;
+  if (!file) {
+    videoUploadMeta.textContent = "Aucune video selectionnee.";
+    return;
+  }
+  const sizeMb = (file.size / 1024 / 1024).toFixed(1);
+  videoUploadMeta.textContent = `${file.name} - ${sizeMb} Mo. La duree et l'apercu seront calcules automatiquement.`;
+});
+
+videoForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(videoForm);
+  const file = formData.get("videoFile");
+  if (!(file instanceof File) || !file.size) {
+    if (videoUploadMeta) videoUploadMeta.textContent = "Veuillez choisir une video a uploader.";
+    return;
+  }
+
+  const submitButton = videoForm.querySelector("button[type='submit']");
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Ajout en cours...";
+  }
+
+  let media;
+  try {
+    media = await loadVideoMetadata(file);
+  } catch {
+    if (videoUploadMeta) videoUploadMeta.textContent = "Impossible de lire cette video. Essayez un fichier MP4/WebM valide.";
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = "Ajouter la video";
+    }
+    return;
+  }
+
+  const videoBlobId = `VIDEO-FILE-${Date.now()}`;
+  await saveVideoBlob(videoBlobId, file);
   const videos = readVideos();
   videos.unshift({
     id: `VIDEO-${Date.now()}`,
     firstName: formData.get("firstName"),
     journey: formData.get("journey"),
     title: formData.get("title"),
-    duration: formData.get("duration"),
-    poster: formData.get("poster") || "assets/hero-driving.png",
-    url: formData.get("url"),
-    subtitles: formData.get("subtitles"),
+    duration: media.duration,
+    poster: media.poster,
+    url: "",
+    videoBlobId,
+    fileName: file.name,
+    subtitles: `Temoignage video ${formData.get("journey")}.`,
     createdAt: new Date().toISOString(),
   });
   writeVideos(videos);
   logActivity("Ajout video", `${formData.get("firstName")} - ${formData.get("title")}`);
   videoForm.reset();
+  if (videoUploadMeta) videoUploadMeta.textContent = "Aucune video selectionnee.";
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.textContent = "Ajouter la video";
+  }
   renderVideos();
 });
 
-videosBody?.addEventListener("click", (event) => {
+videosBody?.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-video-action]");
   if (!button) return;
+  const removed = readVideos().find((video) => video.id === button.dataset.id);
   const videos = readVideos().filter((video) => video.id !== button.dataset.id);
   writeVideos(videos);
+  await deleteVideoBlob(removed?.videoBlobId);
   logActivity("Suppression video", `Video ${button.dataset.id} supprimee`);
   renderVideos();
 });

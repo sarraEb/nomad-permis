@@ -198,12 +198,19 @@
         </div>
         <form class="admin-form admin-form--videos" id="video-form">
           <input name="firstName" type="text" placeholder="Prénom" required>
-          <input name="journey" type="text" placeholder="Type de parcours" required>
           <input name="title" type="text" placeholder="Titre" required>
-          <input name="duration" type="text" placeholder="Durée, ex: 2 min 12" required>
-          <input name="poster" type="text" placeholder="Image d'aperçu, ex: assets/video-laura.jpg">
-          <input name="url" type="url" placeholder="URL vidéo">
-          <textarea name="subtitles" rows="3" placeholder="Sous-titre / phrase de contexte" required></textarea>
+          <select name="journey" required>
+            <option value="">Choisir le parcours</option>
+            <option value="Permis accéléré en province">Permis accéléré en province</option>
+            <option value="Stage intensif avec accompagnement">Stage intensif avec accompagnement</option>
+            <option value="Nouvelle chance après un premier échec">Nouvelle chance après un premier échec</option>
+            <option value="Séjour organisé selon la formule">Séjour organisé selon la formule</option>
+          </select>
+          <label class="admin-file-field">
+            <span>Uploader la vidéo</span>
+            <input name="videoFile" type="file" accept="video/*" required>
+          </label>
+          <p class="video-upload-meta" id="video-upload-meta">Aucune vidéo sélectionnée.</p>
           <button class="btn btn--primary" type="submit">Ajouter la vidéo</button>
         </form>
         <div class="admin-toolbar admin-filterbar">

@@ -1423,9 +1423,33 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-form textarea { resize: vertical; }
 .admin-form__full { grid-column: 1 / -2; }
 .admin-form--videos {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 224px;
 }
-.admin-form--videos textarea { grid-column: 1 / 4; }
+.admin-file-field {
+  display: grid;
+  gap: 8px;
+  border: 1px dashed rgba(255, 122, 0, .48);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fffaf5;
+  color: var(--blue);
+  font-weight: 900;
+}
+.admin-file-field input {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+.video-upload-meta {
+  grid-column: 1 / -2;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: .88rem;
+}
 .admin-form--users {
   grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
 }
@@ -1882,7 +1906,8 @@ p { color: var(--muted); line-height: 1.65; }
   .admin-form--users,
   .admin-form--formulas { grid-template-columns: 1fr; }
   .admin-form__full,
-  .admin-form--videos textarea { grid-column: auto; }
+  .admin-form--videos textarea,
+  .video-upload-meta { grid-column: auto; }
 }
 
 @media (max-width: 520px) {

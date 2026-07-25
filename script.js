@@ -207,6 +207,41 @@ function readStoredVideos() {
   }
 }
 
+function openVideoDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("nomad_media", 1);
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore("videos");
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function readVideoBlob(id) {
+  if (!id) return null;
+  const db = await openVideoDb();
+  return new Promise((resolve) => {
+    const transaction = db.transaction("videos", "readonly");
+    const request = transaction.objectStore("videos").get(id);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => resolve(null);
+    transaction.oncomplete = () => db.close();
+    transaction.onerror = () => db.close();
+  });
+}
+
+async function hydrateStoredVideos(storedVideos) {
+  return Promise.all(storedVideos.map(async (video) => {
+    if (!video.videoBlobId) return video;
+    const blob = await readVideoBlob(video.videoBlobId);
+    return {
+      ...video,
+      url: blob ? URL.createObjectURL(blob) : video.url,
+    };
+  }));
+}
+
 const defaultVideos = [
   {
     firstName: "Laura",
@@ -236,7 +271,7 @@ const defaultVideos = [
     url: "",
   },
 ];
-const videos = readStoredVideos().length ? readStoredVideos() : defaultVideos;
+let videos = readStoredVideos().length ? readStoredVideos() : defaultVideos;
 
 let activeVideo = 1;
 const track = document.querySelector(".video-track");
@@ -288,6 +323,14 @@ dots?.addEventListener("click", (event) => {
 });
 
 renderCarousel();
+
+if (readStoredVideos().length) {
+  hydrateStoredVideos(readStoredVideos()).then((hydratedVideos) => {
+    videos = hydratedVideos;
+    activeVideo = Math.min(activeVideo, Math.max(0, videos.length - 1));
+    renderCarousel();
+  });
+}
 
 track?.addEventListener("click", (event) => {
   const button = event.target.closest(".video-play");
