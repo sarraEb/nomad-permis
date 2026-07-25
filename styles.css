@@ -1383,11 +1383,69 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-filterbar input {
   min-width: min(100%, 320px);
 }
-.admin-table-wrap { overflow-x: auto; }
+.admin-table-wrap {
+  overflow-x: auto;
+  scrollbar-color: rgba(7, 32, 86, .26) transparent;
+  scrollbar-width: thin;
+}
+.admin-table-wrap::-webkit-scrollbar { height: 8px; }
+.admin-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(7, 32, 86, .24);
+  border-radius: 999px;
+}
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   min-width: 860px;
+}
+#admin-demandes .admin-table {
+  min-width: 1120px;
+  table-layout: fixed;
+}
+#admin-demandes .admin-table th:nth-child(1) { width: 112px; }
+#admin-demandes .admin-table th:nth-child(2) { width: 150px; }
+#admin-demandes .admin-table th:nth-child(3) { width: 170px; }
+#admin-demandes .admin-table th:nth-child(4) { width: 130px; }
+#admin-demandes .admin-table th:nth-child(6) { width: 110px; }
+#admin-demandes .admin-table th:nth-child(7) { width: 170px; }
+#admin-demandes .admin-table td {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+#admin-demandes .client-cell,
+#admin-demandes .contact-cell,
+#admin-demandes .plan-cell {
+  display: grid;
+  gap: 5px;
+}
+#admin-demandes .client-cell strong,
+#admin-demandes .plan-cell strong {
+  color: var(--blue);
+  font-size: 1rem;
+}
+#admin-demandes .client-cell small,
+#admin-demandes .plan-cell small,
+#admin-demandes .contact-cell a {
+  color: var(--muted);
+  font-weight: 800;
+  text-decoration: none;
+}
+#admin-demandes .contact-cell a:first-child {
+  color: var(--blue);
+  font-size: 1rem;
+}
+#admin-demandes .message-cell span {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-width: 100%;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 1.45;
+  color: #16305f;
+}
+#admin-demandes .status-cell {
+  vertical-align: middle;
 }
 .admin-settings-panel { margin-top: 22px; }
 .admin-settings-panel h2 {
@@ -1514,6 +1572,11 @@ p { color: var(--muted); line-height: 1.65; }
 .status-pill.done { background: #eaf8f0; color: var(--green); }
 .status-pill.progress { background: #eaf0ff; color: var(--blue); }
 .table-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+#admin-demandes .table-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
 .table-actions button,
 .table-actions a {
   display: inline-flex;
@@ -1529,6 +1592,12 @@ p { color: var(--muted); line-height: 1.65; }
   font-size: .82rem;
   text-decoration: none;
   cursor: pointer;
+}
+#admin-demandes .table-actions button,
+#admin-demandes .table-actions a {
+  min-height: 30px;
+  padding: 0 8px;
+  white-space: nowrap;
 }
 .admin-detail-modal {
   position: fixed;

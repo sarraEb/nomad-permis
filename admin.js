@@ -772,12 +772,21 @@ function renderLeads() {
   const pageLeads = paginateItems(leads, "leads", leadsPagination);
   leadsBody.innerHTML = pageLeads.map((lead) => `
     <tr>
-      <td>${formatDate(lead.createdAt)}</td>
-      <td><strong>${escapeHtml(lead.name)}</strong><br><small>${escapeHtml(lead.city || "Ville non precisee")}</small></td>
-      <td>${escapeHtml(lead.phone)}<br><small>${escapeHtml(lead.email)}</small></td>
-      <td><strong>${escapeHtml(lead.plan)}</strong><br><small>${formatPrice(lead.price)}</small></td>
-      <td>${escapeHtml(lead.message || "-")}</td>
-      <td><span class="status-pill ${statusClass(lead.status)}">${escapeHtml(lead.status)}</span></td>
+      <td class="date-cell">${formatDate(lead.createdAt)}</td>
+      <td class="client-cell">
+        <strong>${escapeHtml(lead.name)}</strong>
+        <small>${escapeHtml(lead.city || "Ville non precisee")}</small>
+      </td>
+      <td class="contact-cell">
+        <a href="tel:${escapeHtml(lead.phone)}">${escapeHtml(lead.phone)}</a>
+        <a href="mailto:${escapeHtml(lead.email)}">${escapeHtml(lead.email)}</a>
+      </td>
+      <td class="plan-cell">
+        <strong>${escapeHtml(lead.plan)}</strong>
+        <small>${formatPrice(lead.price)}</small>
+      </td>
+      <td class="message-cell"><span>${escapeHtml(lead.message || "-")}</span></td>
+      <td class="status-cell"><span class="status-pill ${statusClass(lead.status)}">${escapeHtml(lead.status)}</span></td>
       <td>
         <div class="table-actions">
           <button type="button" data-action="progress" data-id="${lead.id}">En cours</button>
