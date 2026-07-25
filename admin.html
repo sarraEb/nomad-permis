@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOMAD - Dashboard admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-shell">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span>Dashboard admin NOMAD</span>
+      <span>Gestion des demandes de formules</span>
+      <span>admin local</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="logo" href="index.html#accueil"><span>NOMAD</span><small>Votre Permis en Province</small></a>
+      <nav class="nav admin-nav" aria-label="Navigation admin">
+        <a href="index.html#accueil">Site public</a>
+        <a class="active" href="admin.html?page=demandes">Demandes</a>
+        <a href="admin.html?page=google">Google</a>
+        <a href="admin.html?page=videos">Videos</a>
+        <a href="admin.html?page=formules">Formules</a>
+        <a href="admin.html?page=coordonnees">Coordonnees</a>
+        <a href="admin.html?page=users">Utilisateurs</a>
+        <a href="admin.html?page=history">Historique</a>
+      </nav>
+      <button class="btn btn--outline header-cta" type="button" id="logout-admin">Deconnexion</button>
+    </div>
+  </header>
+
+  <main class="admin-login" id="admin-login">
+    <section class="login-card">
+      <a class="logo" href="index.html#accueil"><span>NOMAD</span><small>Admin sécurisé</small></a>
+      <h1>Connexion admin</h1>
+      <p>Connectez-vous pour acceder aux demandes clients et gerer les formules.</p>
+      <form id="admin-login-form">
+        <label>Identifiant
+          <input name="username" type="text" autocomplete="username" required>
+        </label>
+        <label>Mot de passe
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn btn--primary" type="submit">Se connecter</button>
+        <p class="form-status login-error" id="login-error" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <main class="admin-main">
+    <aside class="admin-sidebar">
+      <a class="logo admin-sidebar__logo" href="index.html#accueil"><span>NOMAD</span><small>Dashboard admin</small></a>
+      <nav class="admin-side-nav admin-nav" aria-label="Navigation admin">
+        <a href="index.html#accueil">Site public</a>
+        <a class="active" href="admin.html?page=demandes" data-admin-link="demandes">Demandes</a>
+        <a href="admin.html?page=contacts" data-admin-link="contacts">Contacts</a>
+        <a href="admin.html?page=google" data-admin-link="google">Google</a>
+        <a href="admin.html?page=videos" data-admin-link="videos">Videos</a>
+        <a href="admin.html?page=formules" data-admin-link="formules">Formules</a>
+        <a href="admin.html?page=coordonnees" data-admin-link="coordonnees">Coordonnees</a>
+        <a href="admin.html?page=faq" data-admin-link="faq">FAQ</a>
+        <a href="admin.html?page=users" data-admin-link="users">Utilisateurs</a>
+        <a href="admin.html?page=history" data-admin-link="history">Historique</a>
+      </nav>
+      <button class="btn btn--outline admin-sidebar__logout" type="button" id="logout-admin-sidebar">Deconnexion</button>
+    </aside>
+    <div class="admin-content">
+      <div class="container">
+      <div class="admin-page" data-admin-page="demandes">
+      <section class="admin-hero" id="admin-demandes">
+        <div>
+          <h1>Demandes clients</h1>
+          <p>Suivez les inscriptions recues depuis les boutons "Choisir cette formule".</p>
+        </div>
+        <button class="btn btn--outline" type="button" id="export-leads">Exporter CSV</button>
+      </section>
+
+      <section class="admin-stats" aria-label="Statistiques">
+        <article class="admin-stat"><span>Total</span><strong id="stat-total">0</strong></article>
+        <article class="admin-stat"><span>Nouvelles</span><strong id="stat-new">0</strong></article>
+        <article class="admin-stat"><span>En cours</span><strong id="stat-progress">0</strong></article>
+        <article class="admin-stat"><span>Traitees</span><strong id="stat-done">0</strong></article>
+      </section>
+
+      <section class="admin-panel">
+        <div class="admin-toolbar">
+          <input id="lead-search" type="search" placeholder="Rechercher nom, email, telephone, formule...">
+          <select id="status-filter" aria-label="Filtrer par statut">
+            <option value="all">Tous les statuts</option>
+            <option value="Nouveau">Nouveau</option>
+            <option value="En cours">En cours</option>
+            <option value="Traite">Traite</option>
+          </select>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Formule</th>
+                <th>Message</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leads-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="empty-state">Aucune demande pour le moment.</div>
+        <div class="admin-pagination" id="leads-pagination" aria-label="Pagination des demandes"></div>
+      </section>
+      </div>
+
+      <div class="admin-page" data-admin-page="contacts">
+      <section class="admin-hero" id="admin-contacts">
+        <div>
+          <h1>Messages contact</h1>
+          <p>Suivez uniquement les messages envoyes depuis le formulaire de contact.</p>
+        </div>
+        <button class="btn btn--outline" type="button" id="export-contacts">Exporter CSV</button>
+      </section>
+
+      <section class="admin-stats" aria-label="Statistiques contacts">
+        <article class="admin-stat"><span>Total</span><strong id="contact-stat-total">0</strong></article>
+        <article class="admin-stat"><span>Nouveaux</span><strong id="contact-stat-new">0</strong></article>
+        <article class="admin-stat"><span>En cours</span><strong id="contact-stat-progress">0</strong></article>
+        <article class="admin-stat"><span>Traites</span><strong id="contact-stat-done">0</strong></article>
+      </section>
+
+      <section class="admin-panel">
+        <div class="admin-toolbar">
+          <input id="contact-search" type="search" placeholder="Rechercher nom, email, telephone, message...">
+          <select id="contact-status-filter" aria-label="Filtrer les contacts par statut">
+            <option value="all">Tous les statuts</option>
+            <option value="Nouveau">Nouveau</option>
+            <option value="En cours">En cours</option>
+            <option value="Traite">Traite</option>
+          </select>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Message</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="contacts-empty-state">Aucun message contact pour le moment.</div>
+        <div class="admin-pagination" id="contacts-pagination" aria-label="Pagination des contacts"></div>
+      </section>
+      </div>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-google" data-admin-page="google">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Configuration Google</h2>
+            <p>Connectez les vrais avis Google du profil Auto-école de Témis.</p>
+          </div>
+        </div>
+        <form class="admin-form" id="google-settings-form">
+          <label>Clé API Google Places
+            <input name="googleApiKey" type="text" placeholder="AIza...">
+          </label>
+          <label>Place ID Google
+            <input name="googlePlaceId" type="text" placeholder="ChIJ...">
+          </label>
+          <label>Recherche du profil
+            <input name="googlePlaceQuery" type="text" placeholder="Auto-école de Témis">
+          </label>
+          <button class="btn btn--primary" type="submit">Enregistrer Google</button>
+          <p class="form-status" id="google-settings-status"></p>
+        </form>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-videos" data-admin-page="videos">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Témoignages vidéo</h2>
+            <p>Gérez les vidéos fournies par NOMAD : aperçu, durée, parcours et lien de lecture.</p>
+          </div>
+        </div>
+        <form class="admin-form admin-form--videos" id="video-form">
+          <input name="firstName" type="text" placeholder="Prénom" required>
+          <input name="journey" type="text" placeholder="Type de parcours" required>
+          <input name="title" type="text" placeholder="Titre" required>
+          <input name="duration" type="text" placeholder="Durée, ex: 2 min 12" required>
+          <input name="poster" type="text" placeholder="Image d'aperçu, ex: assets/video-laura.jpg">
+          <input name="url" type="url" placeholder="URL vidéo">
+          <textarea name="subtitles" rows="3" placeholder="Sous-titre / phrase de contexte" required></textarea>
+          <button class="btn btn--primary" type="submit">Ajouter la vidéo</button>
+        </form>
+        <div class="admin-toolbar admin-filterbar">
+          <input id="video-search" type="search" placeholder="Rechercher prenom, titre, parcours...">
+          <select id="video-link-filter" aria-label="Filtrer les videos">
+            <option value="all">Toutes les videos</option>
+            <option value="with-link">Avec lien</option>
+            <option value="without-link">Sans lien</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Prénom</th>
+                <th>Parcours</th>
+                <th>Durée</th>
+                <th>Lien</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="videos-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="videos-empty-state">Aucune vidéo configurée.</div>
+        <div class="admin-pagination" id="videos-pagination" aria-label="Pagination des videos"></div>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-formules" data-admin-page="formules">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Formules</h2>
+            <p>Modifiez les titres, descriptions, avantages, prix et la formule recommandée.</p>
+          </div>
+          <button class="btn btn--outline" type="button" id="add-formula">Ajouter une formule</button>
+        </div>
+        <form class="admin-form admin-form--formulas" id="formulas-form">
+          <fieldset>
+            <legend>Essentiel</legend>
+            <label>Titre <input name="essentielTitle" type="text"></label>
+            <label>Description <input name="essentielDescription" type="text"></label>
+            <label>Prix <input name="essentielPrice" type="number" min="0" step="10"></label>
+            <label>Badge <input name="essentielBadge" type="text" placeholder="ex: Nouveau"></label>
+            <label>Note <input name="essentielNote" type="text" placeholder="Texte sous le prix"></label>
+            <label>Texte bouton <input name="essentielCtaLabel" type="text" placeholder="Choisir cette formule"></label>
+            <label class="admin-form__full">Avantages <textarea name="essentielFeatures" rows="4"></textarea></label>
+            <label class="admin-checkbox"><input name="recommended" type="radio" value="essentiel"> Recommandée</label>
+            <label class="admin-checkbox"><input name="essentielActive" type="checkbox"> Afficher sur le site</label>
+          </fieldset>
+          <fieldset>
+            <legend>Accélérée</legend>
+            <label>Titre <input name="accelereeTitle" type="text"></label>
+            <label>Description <input name="accelereeDescription" type="text"></label>
+            <label>Prix <input name="accelereePrice" type="number" min="0" step="10"></label>
+            <label>Badge <input name="accelereeBadge" type="text" placeholder="ex: Recommande"></label>
+            <label>Note <input name="accelereeNote" type="text" placeholder="Texte sous le prix"></label>
+            <label>Texte bouton <input name="accelereeCtaLabel" type="text" placeholder="Choisir cette formule"></label>
+            <label class="admin-form__full">Avantages <textarea name="accelereeFeatures" rows="4"></textarea></label>
+            <label class="admin-checkbox"><input name="recommended" type="radio" value="acceleree"> Recommandée</label>
+            <label class="admin-checkbox"><input name="accelereeActive" type="checkbox"> Afficher sur le site</label>
+          </fieldset>
+          <fieldset>
+            <legend>Premium</legend>
+            <label>Titre <input name="premiumTitle" type="text"></label>
+            <label>Description <input name="premiumDescription" type="text"></label>
+            <label>Prix <input name="premiumPrice" type="number" min="0" step="10"></label>
+            <label>Badge <input name="premiumBadge" type="text" placeholder="ex: Premium"></label>
+            <label>Note <input name="premiumNote" type="text" placeholder="Texte sous le prix"></label>
+            <label>Texte bouton <input name="premiumCtaLabel" type="text" placeholder="Choisir cette formule"></label>
+            <label class="admin-form__full">Avantages <textarea name="premiumFeatures" rows="4"></textarea></label>
+            <label class="admin-checkbox"><input name="recommended" type="radio" value="premium"> Recommandée</label>
+            <label class="admin-checkbox"><input name="premiumActive" type="checkbox"> Afficher sur le site</label>
+          </fieldset>
+          <button class="btn btn--primary" type="submit">Enregistrer les formules</button>
+          <p class="form-status" id="formulas-status"></p>
+        </form>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-coordonnees" data-admin-page="coordonnees">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Coordonnées</h2>
+            <p>Modifiez les informations de contact affichées sur le site public.</p>
+          </div>
+        </div>
+        <form class="admin-form" id="site-settings-form">
+          <label>Téléphone
+            <input name="phone" type="text" placeholder="+33 3 81 81 81 81">
+          </label>
+          <label>Email
+            <input name="email" type="email" placeholder="contact@nomad-votre-permis.fr">
+          </label>
+          <label class="admin-form__full">Adresse
+            <input name="address" type="text" placeholder="Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc">
+          </label>
+          <label>Eyebrow contact
+            <input name="contactEyebrow" type="text" placeholder="Contact">
+          </label>
+          <label>Titre contact
+            <input name="contactTitle" type="text" placeholder="Parlons de votre projet permis">
+          </label>
+          <label>Bouton contact
+            <input name="contactButton" type="text" placeholder="Envoyer ma demande">
+          </label>
+          <label class="admin-form__full">Texte contact
+            <textarea name="contactIntro" rows="3" placeholder="Texte affiche a gauche du formulaire"></textarea>
+          </label>
+          <label class="admin-form__full">Placeholder message
+            <input name="contactMessagePlaceholder" type="text" placeholder="Votre situation, vos disponibilites, vos questions...">
+          </label>
+          <button class="btn btn--primary" type="submit">Enregistrer les réglages</button>
+          <p class="form-status" id="site-settings-status"></p>
+        </form>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-faq" data-admin-page="faq">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Questions frequentes</h2>
+            <p>Gerez les questions/reponses affichees sur la page publique.</p>
+          </div>
+        </div>
+        <form class="admin-form" id="faq-form">
+          <label>Question
+            <input name="question" type="text" placeholder="Question affichee" required>
+          </label>
+          <label class="admin-form__full">Reponse
+            <textarea name="answer" rows="3" placeholder="Reponse affichee dans l'accordeon" required></textarea>
+          </label>
+          <label class="admin-checkbox"><input name="active" type="checkbox" checked> Afficher sur le site</label>
+          <button class="btn btn--primary" type="submit">Ajouter la question</button>
+          <p class="form-status" id="faq-status"></p>
+        </form>
+        <div class="admin-toolbar admin-filterbar">
+          <input id="faq-search" type="search" placeholder="Rechercher question ou reponse...">
+          <select id="faq-status-filter" aria-label="Filtrer les questions FAQ">
+            <option value="all">Toutes les questions</option>
+            <option value="active">Actives</option>
+            <option value="inactive">Desactivees</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Reponse</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="faqs-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="faqs-empty-state">Aucune question configuree.</div>
+        <div class="admin-pagination" id="faqs-pagination" aria-label="Pagination des questions FAQ"></div>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-users" data-admin-page="users">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Utilisateurs</h2>
+            <p>Gerez les comptes autorises a acceder au dashboard admin.</p>
+          </div>
+        </div>
+        <form class="admin-form admin-form--users" id="user-form">
+          <label>Nom
+            <input name="name" type="text" placeholder="Nom complet" required>
+          </label>
+          <label>Identifiant
+            <input name="username" type="text" placeholder="ex: assistant" required>
+          </label>
+          <label>Mot de passe
+            <input name="password" type="password" placeholder="Minimum 6 caracteres" minlength="6" required>
+          </label>
+          <label>Role
+            <select name="role" required>
+              <option value="Administrateur">Administrateur</option>
+              <option value="Gestionnaire">Gestionnaire</option>
+              <option value="Lecture seule">Lecture seule</option>
+            </select>
+          </label>
+          <button class="btn btn--primary" type="submit">Ajouter l'utilisateur</button>
+          <p class="form-status" id="user-status"></p>
+        </form>
+        <div class="admin-toolbar admin-filterbar">
+          <input id="user-search" type="search" placeholder="Rechercher nom, identifiant...">
+          <select id="user-role-filter" aria-label="Filtrer par role">
+            <option value="all">Tous les roles</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Gestionnaire">Gestionnaire</option>
+            <option value="Lecture seule">Lecture seule</option>
+          </select>
+          <select id="user-status-filter" aria-label="Filtrer par statut utilisateur">
+            <option value="all">Tous les statuts</option>
+            <option value="active">Actifs</option>
+            <option value="inactive">Desactives</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Identifiant</th>
+                <th>Role</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="users-empty-state">Aucun utilisateur configure.</div>
+        <div class="admin-pagination" id="users-pagination" aria-label="Pagination des utilisateurs"></div>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-history" data-admin-page="history">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Historique des actions</h2>
+            <p>Suivez les modifications effectuees dans le dashboard.</p>
+          </div>
+          <button class="btn btn--outline" type="button" id="clear-history">Vider l'historique</button>
+        </div>
+        <div class="admin-toolbar admin-filterbar">
+          <input id="history-search" type="search" placeholder="Rechercher utilisateur, action, details...">
+          <select id="history-action-filter" aria-label="Filtrer par type d'action">
+            <option value="all">Toutes les actions</option>
+            <option value="Connexion">Connexions</option>
+            <option value="Formules">Formules</option>
+            <option value="Ajout">Ajouts</option>
+            <option value="Suppression">Suppressions</option>
+            <option value="Configuration Google">Google</option>
+            <option value="Coordonnees">Coordonnees</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Utilisateur</th>
+                <th>Action</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="history-empty-state">Aucune action enregistree.</div>
+        <div class="admin-pagination" id="history-pagination" aria-label="Pagination de l'historique"></div>
+      </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="admin-detail-modal" id="lead-detail-modal" aria-hidden="true">
+    <div class="admin-detail-modal__overlay" data-lead-detail-close></div>
+    <div class="admin-detail-modal__panel" role="dialog" aria-modal="true" aria-labelledby="lead-detail-title">
+      <button class="admin-detail-modal__close" type="button" data-lead-detail-close aria-label="Fermer les details">&times;</button>
+      <div class="admin-detail-modal__header">
+        <span>Demande NOMAD</span>
+        <h2 id="lead-detail-title">Details de la demande</h2>
+      </div>
+      <div class="admin-detail-card" id="lead-detail-content"></div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

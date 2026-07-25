@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOMAD - Votre Permis en Province</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar__inner" aria-label="Coordonnées">
+      <span>📍 <span data-site-address>Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc</span></span>
+      <span>📞 <span data-site-phone>+33 3 81 81 81 81</span></span>
+      <span>✉ <span data-site-email>contact@nomad-votre-permis.fr</span></span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="logo" href="#accueil" aria-label="NOMAD accueil">
+        <span>NOMAD</span>
+        <small>Votre Permis en Province</small>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="active" href="#accueil">Accueil</a>
+        <a href="#method">Comment ça marche</a>
+        <a href="#formules">Formules</a>
+        <a href="#temoignages">Pourquoi NOMAD</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn--primary header-cta js-eligibility" href="#inscription">Vérifier mon éligibilité</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section-decor" id="accueil">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <p class="eyebrow">Permis accéléré en province</p>
+          <h1>Votre permis plus vite, sans tout organiser vous-même.</h1>
+          <p class="hero__lead">Vous attendez depuis des mois une place d'examen ? NOMAD étudie votre situation, votre niveau et vos disponibilités, puis organise avec vous un parcours clair, rapide et encadré en province.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary js-eligibility" href="#inscription">Faire étudier mon dossier <span aria-hidden="true">→</span></a>
+            <a class="btn btn--outline" href="#formules">Comparer les formules</a>
+          </div>
+        </div>
+        <div class="hero__visual" aria-label="Élève conductrice avec son moniteur">
+          <span class="hero-orbit" aria-hidden="true"></span>
+          <span class="hero-roadline" aria-hidden="true"></span>
+          <div class="hero__rings"></div>
+          <button class="hero-video" type="button" data-hero-video-url="" aria-label="Lire la vidéo NOMAD">
+            <img src="assets/hero-driving.png" alt="Élève conductrice souriante accompagnée par un moniteur dans une voiture">
+            <span class="hero-video__play" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
+          </button>
+          <div class="trust-badge">
+            <span>✓</span>
+            <strong>Étude gratuite</strong>
+            <strong>Sans engagement</strong>
+            <strong>Réponse personnalisée</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits" aria-label="Avantages clés">
+      <div class="container">
+        <div class="benefits__strip">
+          <article>
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <rect x="10" y="13" width="28" height="27" rx="2"></rect>
+                <path d="M10 21h28M17 8v9M31 8v9"></path>
+                <path d="M17 27h4M23 27h4M29 27h4M17 33h4M23 33h4M29 33h4"></path>
+              </svg>
+            </span>
+            <strong>Dates d'examen<br>très rapides</strong>
+          </article>
+          <article>
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <path d="M10 32a16 16 0 1 1 28 0"></path>
+                <path d="M24 32l9-12"></path>
+                <path d="M16 30h-4M36 30h-4M18 19l-3-3M30 19l3-3M24 16v-5"></path>
+                <circle cx="24" cy="32" r="3"></circle>
+              </svg>
+            </span>
+            <strong>Formation<br>intensive</strong>
+          </article>
+          <article>
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <circle cx="24" cy="18" r="6"></circle>
+                <circle cx="14" cy="22" r="5"></circle>
+                <circle cx="34" cy="22" r="5"></circle>
+                <path d="M15 39c1-7 5-11 9-11s8 4 9 11"></path>
+                <path d="M5 38c1-6 4-9 9-9M43 38c-1-6-4-9-9-9"></path>
+              </svg>
+            </span>
+            <strong>Accompagnement<br>personnalisé</strong>
+          </article>
+          <article>
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <path d="M24 7l-9 13h6l-8 10h8l-6 8h18l-6-8h8l-8-10h6L24 7z"></path>
+                <path d="M24 38v5"></path>
+              </svg>
+            </span>
+            <strong>Séjour organisé<br>selon la formule</strong>
+          </article>
+          <div class="trust-badge trust-badge--card">
+            <span>&check;</span>
+            <strong>Étude gratuite</strong>
+            <strong>Sans engagement</strong>
+            <strong>Réponse personnalisée</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="comparison section-decor">
+      <div class="container">
+        <h2>Pourquoi passer son permis en province ?</h2>
+        <div class="compare-grid">
+          <article class="compare-card compare-card--city">
+            <h3>Grandes villes</h3>
+            <ul class="check-list check-list--bad">
+              <li>Délais d'attente souvent très longs</li>
+              <li>Plannings saturés</li>
+              <li>Circulation dense et stressante</li>
+              <li>Formation qui peut s'éterniser</li>
+            </ul>
+          </article>
+          <div class="vs" aria-hidden="true">VS</div>
+          <article class="compare-card compare-card--nomad">
+            <h3>Province avec NOMAD</h3>
+            <ul class="check-list check-list--good">
+              <li>Dates d'examen très rapides</li>
+              <li>Organisation fluide et réactive</li>
+              <li>Circulation généralement plus calme</li>
+              <li>Formation intensive et encadrée</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="organization">
+      <div class="container">
+        <h2>Une organisation de A à Z</h2>
+        <div class="card-grid card-grid--four">
+          <article class="feature-card icon-card"><span class="feature-icon"><i class="fa-solid fa-car-side" aria-hidden="true"></i></span><div><h3>Transport</h3><p>Nous organisons votre transport aller-retour.</p></div></article>
+          <article class="feature-card icon-card"><span class="feature-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span><div><h3>Hébergement</h3><p>Logement confortable à proximité de votre école.</p></div></article>
+          <article class="feature-card icon-card"><span class="feature-icon"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span><div><h3>Formation intensive</h3><p>Stages intensifs adaptés à votre rythme.</p></div></article>
+          <article class="feature-card icon-card"><span class="feature-icon"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i></span><div><h3>Passage à l'examen</h3><p>Nous planifions votre passage dans les meilleurs délais.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience section-decor">
+      <div class="container">
+        <h2>NOMAD est-il fait pour vous ?</h2>
+        <div class="audience-grid">
+          <article class="icon-card"><span><i class="fa-solid fa-city" aria-hidden="true"></i></span><div><h3>Candidats des grandes villes</h3><p>Vous attendez depuis trop longtemps une date d'examen.</p></div></article>
+          <article class="icon-card"><span><i class="fa-solid fa-user-tie" aria-hidden="true"></i></span><div><h3>Personnes recherchant un cadre plus serein</h3><p>Vous recherchez une formation intensive dans un environnement plus calme.</p></div></article>
+          <article class="icon-card"><span><i class="fa-solid fa-arrows-rotate orange-icon" aria-hidden="true"></i></span><div><h3>Candidats souhaitant une nouvelle chance</h3><p>Vous souhaitez reprendre confiance et repasser rapidement l'examen.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="method" id="method">
+      <div class="container">
+        <h2>Notre méthode en 3 étapes</h2>
+        <div class="steps">
+          <article><span>1</span><h3>Analyse</h3><p>Nous étudions votre dossier, votre niveau et vos besoins.</p></article>
+          <article><span>2</span><h3>Organisation</h3><p>Nous organisons votre séjour et votre formation de A à Z.</p></article>
+          <article><span>3</span><h3>Formation et examen</h3><p>Vous suivez votre formation intensive, puis passez l'examen dans la continuité.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing section-decor" id="formules">
+      <div class="container">
+        <h2>Nos formules</h2>
+        <div class="pricing-carousel" aria-label="Carrousel des formules">
+          <button class="pricing-nav pricing-nav--prev" type="button" data-pricing-action="prev" aria-label="Formules précédentes">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="pricing-grid" id="pricing-grid">
+          <article class="price-card price-card--day" data-formula-key="journee">
+            <h3>La Journée NOMAD</h3>
+            <p>Une journée pensée pour aller à l'essentiel.</p>
+            <ul class="check-list check-list--plain">
+              <li>Gestion administrative de A à Z</li>
+              <li>Train aller-retour</li>
+              <li>1 heure de conduite incluse</li>
+              <li>Présentation à l'examen</li>
+              <li>Panier régional</li>
+            </ul>
+            <strong class="price">799 €</strong>
+            <a class="btn btn--primary js-plan-select" href="#inscription" data-plan="La Journée NOMAD" data-price="799">Vérifier mon éligibilité</a>
+          </article>
+          <article class="price-card" data-formula-key="access">
+            <h3>NOMAD ACCESS</h3>
+            <p>Le choix malin pour aller vite et bien.</p>
+            <ul class="check-list check-list--plain">
+              <li>Gestion administrative de A à Z</li>
+              <li>Livret de formation personnalisé</li>
+              <li>3 à 8 heures de conduite</li>
+              <li>Présentation à l'examen</li>
+              <li>Train aller-retour</li>
+              <li>Hôtel 3 étoiles : 0 à 1 nuitée</li>
+              <li>Petit déjeuner inclus dans la limite de 10 €</li>
+              <li>Options : dîner 19 €/jour ; coaching permis 150 €</li>
+            </ul>
+            <strong class="price">à partir de 1 099 €</strong>
+            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ACCESS" data-price="1099">Étudier cette formule</a>
+          </article>
+          <article class="price-card price-card--featured" data-formula-key="confort">
+            <div class="recommended">Recommandé</div>
+            <div class="star" aria-hidden="true"><i class="fa-solid fa-star"></i></div>
+            <h3>NOMAD CONFORT</h3>
+            <p>L'expérience NOMAD sans compromis.</p>
+            <ul class="check-list check-list--plain">
+              <li>Gestion administrative de A à Z</li>
+              <li>Livret de formation personnalisé</li>
+              <li>9 à 20 heures de conduite</li>
+              <li>Présentation à l'examen</li>
+              <li>Train aller-retour</li>
+              <li>Hôtel 3 étoiles : 2 à 5 nuitées</li>
+              <li>Petits déjeuners inclus dans la limite de 10 €/jour</li>
+              <li>Panier régional</li>
+              <li>Options : dîner 19 €/jour ; coaching permis 150 €</li>
+            </ul>
+            <strong class="price">à partir de 1 799 €</strong>
+            <a class="btn btn--primary js-plan-select" href="#inscription" data-plan="NOMAD CONFORT" data-price="1799">Étudier cette formule</a>
+          </article>
+          <article class="price-card" data-formula-key="ultimate">
+            <h3>NOMAD ULTIMATE</h3>
+            <p>L'expérience NOMAD dans sa forme la plus exclusive.</p>
+            <ul class="check-list check-list--plain">
+              <li>Gestion administrative de A à Z</li>
+              <li>Évaluation préalable</li>
+              <li>Livret de formation personnalisé</li>
+              <li>21 à 35 heures de conduite</li>
+              <li>Présentation à l'examen</li>
+              <li>Train aller-retour</li>
+              <li>Hôtel 3 étoiles : 5 à 8 nuitées</li>
+              <li>Petits déjeuners inclus dans la limite de 10 €/jour</li>
+              <li>Dîners inclus dans la limite de 25 €/jour</li>
+              <li>2 heures de coaching permis</li>
+              <li>Panier régional</li>
+            </ul>
+            <strong class="price">à partir de 2 499 €</strong>
+            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ULTIMATE" data-price="2499">Étudier cette formule</a>
+          </article>
+          </div>
+          <button class="pricing-nav pricing-nav--next" type="button" data-pricing-action="next" aria-label="Formules suivantes">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="pricing-dots" id="pricing-dots" aria-hidden="true"></div>
+        <p class="pricing-note">Tarifs TTC à partir de, établis selon le volume d'heures, la durée du séjour et les prestations choisies. Évaluation préalable : 50 €, incluse dans la formule NOMAD ULTIMATE. Paiement par virement ou en 4 fois avec Alma.</p>
+      </div>
+    </section>
+
+    <section class="testimonials" id="temoignages">
+      <div class="container">
+        <h2>Une expertise déjà reconnue</h2>
+        <p class="section-intro">NOMAD est porté par le même groupe que l'Auto-école de Témis. Découvrez les avis laissés par les élèves accompagnés par nos équipes.</p>
+        <div
+          class="testimonial-grid"
+          id="reviews-grid"
+          aria-live="polite"
+          data-google-api-key=""
+          data-google-place-id=""
+          data-google-place-query="Auto-école de Témis"
+        ></div>
+      </div>
+    </section>
+
+    <section class="videos">
+      <div class="container">
+        <h2>Témoignages vidéo</h2>
+        <div class="video-carousel" aria-label="Carousel de témoignages vidéo">
+          <button class="carousel-btn" type="button" data-carousel="prev" aria-label="Vidéo précédente">‹</button>
+          <div class="video-track" aria-live="polite"></div>
+          <button class="carousel-btn" type="button" data-carousel="next" aria-label="Vidéo suivante">›</button>
+        </div>
+        <div class="carousel-dots" aria-label="Pagination des vidéos"></div>
+        <div class="video-actions">
+          <a class="btn btn--outline" href="#" aria-label="Voir tous les témoignages vidéo">Voir tous les témoignages</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq section-decor" id="faq">
+      <div class="container">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-list" id="faq-list">
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Puis-je venir de Paris ou d'une autre ville ?<span>+</span></button>
+            <p>Oui. NOMAD accompagne les candidats venant de toute la France et organise leur déplacement selon la formule choisie.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">En combien de temps mon séjour peut-il être organisé ?<span>+</span></button>
+            <p>Après l'étude de votre dossier, notre équipe peut organiser votre séjour très rapidement selon vos disponibilités et le nombre d'heures prévu.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Comment déterminez-vous mon nombre d'heures ?<span>+</span></button>
+            <p>Nous analysons votre expérience, votre dernier CEPC, le temps écoulé depuis votre dernière conduite et, si nécessaire, votre évaluation préalable.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Que comprennent les formules NOMAD ?<span>+</span></button>
+            <p>Toutes nos formules comprennent la gestion administrative, la conduite, la présentation à l'examen et le train aller-retour. L'hébergement, les repas et le coaching varient selon la formule choisie.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Mon code et mon numéro NEPH doivent-ils être valides ?<span>+</span></button>
+            <p>Oui. Votre code de la route et votre numéro NEPH doivent être valides pour permettre votre présentation à l'examen.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Puis-je payer en plusieurs fois ?<span>+</span></button>
+            <p>Oui. Le paiement est possible par virement ou en quatre fois avec Alma.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">Que se passe-t-il après un échec ?<span>+</span></button>
+            <p>Nous analysons votre CEPC et vous proposons une nouvelle organisation adaptée. Avec au moins 24 points sur 31, la Journée NOMAD peut notamment être envisagée.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section section-decor" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-info">
+          <p class="eyebrow" data-contact-eyebrow>Contact</p>
+          <h2 data-contact-title>Prêt à faire avancer votre permis ?</h2>
+          <p>Transmettez-nous quelques informations. Notre équipe étudiera votre situation et vous proposera la formule NOMAD la plus adaptée.</p>
+          <div class="contact-details">
+            <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <span data-site-address>Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc</span></p>
+            <p><i class="fa-solid fa-phone" aria-hidden="true"></i> <span data-site-phone>+33 3 81 81 81 81</span></p>
+            <p><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-site-email>contact@nomad-votre-permis.fr</span></p>
+          </div>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <label>Nom et prénom
+            <input name="name" type="text" placeholder="Votre nom et prénom" required>
+          </label>
+          <label>Téléphone
+            <input name="phone" type="tel" placeholder="+33..." required>
+          </label>
+          <label>Email
+            <input name="email" type="email" placeholder="vous@email.fr" required>
+          </label>
+          <label>Ville
+            <input name="city" type="text" placeholder="Votre ville">
+          </label>
+          <label>Boîte
+            <select name="gearbox" required>
+              <option value="">Choisir</option>
+              <option value="Manuelle">Manuelle</option>
+              <option value="Automatique">Automatique</option>
+            </select>
+          </label>
+          <label>Heures déjà réalisées
+            <input name="hours" type="number" min="0" step="1" placeholder="Ex : 20">
+          </label>
+          <label class="contact-form__full">Dernier examen et résultat
+            <input name="lastExam" type="text" placeholder="Date, résultat, CEPC si disponible">
+          </label>
+          <label class="contact-form__full">Message
+            <textarea name="message" rows="5" placeholder="Votre situation, vos disponibilités, vos questions..." required></textarea>
+          </label>
+          <label class="privacy-check contact-form__full">
+            <input name="privacy" type="checkbox" required>
+            <span>J'accepte la politique de confidentialité.</span>
+          </label>
+          <button class="btn btn--primary" type="submit">Vérifier mon éligibilité <span aria-hidden="true">→</span></button>
+          <small class="contact-note contact-form__full">Étude du dossier gratuite et sans engagement. Un conseiller vous rappellera rapidement.</small>
+          <p class="form-status" id="contact-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer-brand">
+        <a class="logo logo--light" href="#accueil"><span>NOMAD</span><small>Votre Permis en Province</small></a>
+        <p>NOMAD - Votre permis en province</p>
+        <p>Votre permis plus vite, sans tout organiser vous-même.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Nous contacter</h3>
+        <p data-site-address>Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc</p>
+        <p data-site-phone>+33 3 81 81 81 81</p>
+        <p data-site-email>contact@nomad-votre-permis.fr</p>
+      </div>
+      <div class="footer-column">
+        <h3>Liens utiles</h3>
+        <a href="#accueil">Accueil</a>
+        <a href="#method">Comment ça marche</a>
+        <a href="#formules">Formules</a>
+        <a href="#temoignages">Témoignages</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-column">
+        <h3>Informations et documents</h3>
+        <a href="#">Transport</a>
+        <a href="#">Hébergement</a>
+        <a href="#">CGV</a>
+        <a href="#">Mentions légales</a>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Gestion des cookies</a>
+      </div>
+      <div class="footer-cta">
+        <h3>Prêt à faire avancer votre permis ?</h3>
+        <a class="btn btn--primary js-eligibility" href="#inscription">Vérifier mon éligibilité <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <p class="copyright">© 2026 NOMAD — Votre permis en province. Tous droits réservés.</p>
+  </footer>
+
+  <div class="modal" id="inscription" aria-hidden="true">
+    <div class="modal__overlay" data-modal-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="form-title">
+      <button class="modal__close" type="button" data-modal-close aria-label="Fermer le formulaire">×</button>
+      <div class="modal__intro">
+        <span>Étude NOMAD</span>
+        <h2 id="form-title">Votre demande d'éligibilité</h2>
+        <p>La formule choisie est pré-remplie. Complétez vos informations pour recevoir une réponse personnalisée.</p>
+      </div>
+      <form class="lead-form" id="lead-form">
+        <div class="form-grid">
+          <label>Formule choisie
+            <select name="plan" id="selected-plan" required>
+              <option value="La Journée NOMAD" data-price="799">La Journée NOMAD - 799 EUR</option>
+              <option value="NOMAD ACCESS" data-price="1099">NOMAD ACCESS - à partir de 1 099 EUR</option>
+              <option value="NOMAD CONFORT" data-price="1799">NOMAD CONFORT - à partir de 1 799 EUR</option>
+              <option value="NOMAD ULTIMATE" data-price="2499">NOMAD ULTIMATE - à partir de 2 499 EUR</option>
+            </select>
+          </label>
+          <label>Prix
+            <input name="price" id="selected-price" type="text" readonly>
+          </label>
+          <label>Nom et prénom
+            <input name="name" type="text" placeholder="Votre nom et prénom" required>
+          </label>
+          <label>Téléphone
+            <input name="phone" type="tel" placeholder="+33 ..." required>
+          </label>
+          <label>Email
+            <input name="email" type="email" placeholder="vous@email.fr" required>
+          </label>
+          <label>Ville de depart
+            <input name="city" type="text" placeholder="Paris, Lyon, Marseille...">
+          </label>
+          <label>Boîte
+            <select name="gearbox" required>
+              <option value="">Choisir</option>
+              <option value="Manuelle">Manuelle</option>
+              <option value="Automatique">Automatique</option>
+            </select>
+          </label>
+          <label>Heures déjà réalisées
+            <input name="hours" type="number" min="0" step="1" placeholder="Ex : 20">
+          </label>
+          <label class="form-grid__full">Dernier examen et résultat
+            <input name="lastExam" type="text" placeholder="Date, résultat, CEPC si disponible">
+          </label>
+          <label class="form-grid__full">Message
+            <textarea name="message" rows="4" placeholder="Vos disponibilites, votre situation, vos questions..."></textarea>
+          </label>
+          <label class="privacy-check form-grid__full">
+            <input name="privacy" type="checkbox" required>
+            <span>J'accepte la politique de confidentialité.</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--outline" type="button" data-modal-close>Annuler</button>
+          <button class="btn btn--primary" type="submit">Vérifier mon éligibilité</button>
+        </div>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
