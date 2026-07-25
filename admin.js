@@ -793,7 +793,7 @@ function renderLeads() {
       </td>
       <td class="message-cell">
         <span>${escapeHtml(previewText(lead.message))}</span>
-        ${String(lead.message || "").trim().length > 95 ? `<button type="button" class="message-more" data-action="details" data-id="${lead.id}">Voir plus</button>` : ""}
+        ${String(lead.message || "").trim().length > 95 ? `<button type="button" class="message-more" data-action="details" data-id="${lead.id}">Lire le message <span aria-hidden="true">&rarr;</span></button>` : ""}
       </td>
       <td class="status-cell"><span class="status-pill ${statusClass(lead.status)}">${escapeHtml(lead.status)}</span></td>
       <td>

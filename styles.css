@@ -1483,20 +1483,30 @@ p { color: var(--muted); line-height: 1.65; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
-  min-height: 28px;
-  padding: 0 11px;
-  border: 1px solid rgba(255, 122, 0, .35);
-  border-radius: 999px;
-  background: #fff7ef;
-  color: #c96200;
+  gap: 6px;
+  margin-top: 10px;
+  min-height: 31px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 122, 0, .5);
+  border-radius: 9px;
+  background: linear-gradient(180deg, #fff9f2 0%, #fff0df 100%);
+  color: #e66f00;
+  box-shadow: 0 8px 18px rgba(255, 122, 0, .12);
   font-weight: 900;
-  font-size: .78rem;
+  font-size: .8rem;
   cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
 #admin-demandes .message-more:hover {
-  background: #fff0df;
+  background: linear-gradient(180deg, #ff8d1f 0%, #e76f00 100%);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(255, 122, 0, .22);
+  transform: translateY(-1px);
   text-decoration: none;
+}
+#admin-demandes .message-more span {
+  font-size: .95rem;
+  line-height: 1;
 }
 #admin-demandes .status-cell {
   vertical-align: middle;
