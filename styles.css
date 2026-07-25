@@ -1401,17 +1401,33 @@ p { color: var(--muted); line-height: 1.65; }
 #admin-demandes .admin-table {
   min-width: 0;
   table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 12px;
 }
-#admin-demandes .admin-table th:nth-child(1) { width: 9%; }
-#admin-demandes .admin-table th:nth-child(2) { width: 11%; }
-#admin-demandes .admin-table th:nth-child(3) { width: 12%; }
-#admin-demandes .admin-table th:nth-child(4) { width: 10%; }
-#admin-demandes .admin-table th:nth-child(5) { width: 34%; }
-#admin-demandes .admin-table th:nth-child(6) { width: 9%; }
-#admin-demandes .admin-table th:nth-child(7) { width: 15%; }
+#admin-demandes .admin-table th:nth-child(1) { width: 11%; }
+#admin-demandes .admin-table th:nth-child(2) { width: 12%; }
+#admin-demandes .admin-table th:nth-child(3) { width: 13%; }
+#admin-demandes .admin-table th:nth-child(4) { width: 11%; }
+#admin-demandes .admin-table th:nth-child(5) { width: 29%; }
+#admin-demandes .admin-table th:nth-child(6) { width: 8%; }
+#admin-demandes .admin-table th:nth-child(7) { width: 16%; }
 #admin-demandes .admin-table td {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 18px 12px;
+  background: #fff;
+  border-top: 1px solid rgba(7, 32, 86, .08);
+  border-bottom: 1px solid rgba(7, 32, 86, .08);
+  vertical-align: middle;
+}
+#admin-demandes .admin-table tbody tr {
+  filter: drop-shadow(0 12px 22px rgba(6, 27, 58, .06));
+}
+#admin-demandes .admin-table tbody td:first-child {
+  border-left: 1px solid rgba(7, 32, 86, .08);
+  border-radius: 14px 0 0 14px;
+}
+#admin-demandes .admin-table tbody td:last-child {
+  border-right: 1px solid rgba(7, 32, 86, .08);
+  border-radius: 0 14px 14px 0;
 }
 #admin-demandes .client-cell,
 #admin-demandes .contact-cell,
@@ -1437,14 +1453,25 @@ p { color: var(--muted); line-height: 1.65; }
 }
 #admin-demandes .admin-table-wrap {
   overflow-x: hidden;
+  padding-bottom: 2px;
 }
 #admin-demandes .admin-table th,
 #admin-demandes .admin-table td {
   overflow: hidden;
 }
+#admin-demandes .admin-table th {
+  border-bottom: 0;
+  padding-bottom: 6px;
+}
+#admin-demandes .date-cell {
+  color: var(--blue);
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: normal;
+}
 #admin-demandes .message-cell span {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   max-width: 100%;
   overflow: hidden;
@@ -1455,17 +1482,21 @@ p { color: var(--muted); line-height: 1.65; }
 #admin-demandes .message-more {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   margin-top: 8px;
-  border: 0;
-  background: transparent;
-  color: var(--orange);
+  min-height: 28px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 122, 0, .35);
+  border-radius: 999px;
+  background: #fff7ef;
+  color: #c96200;
   font-weight: 900;
-  font-size: .82rem;
+  font-size: .78rem;
   cursor: pointer;
-  padding: 0;
 }
 #admin-demandes .message-more:hover {
-  text-decoration: underline;
+  background: #fff0df;
+  text-decoration: none;
 }
 #admin-demandes .status-cell {
   vertical-align: middle;
@@ -1596,9 +1627,11 @@ p { color: var(--muted); line-height: 1.65; }
 .status-pill.progress { background: #eaf0ff; color: var(--blue); }
 .table-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 #admin-demandes .table-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 .table-actions button,
 .table-actions a {
@@ -1618,12 +1651,22 @@ p { color: var(--muted); line-height: 1.65; }
 }
 #admin-demandes .table-actions button,
 #admin-demandes .table-actions a {
-  min-height: 30px;
-  padding: 0 8px;
+  min-height: 29px;
+  padding: 0 9px;
   min-width: 0;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border-radius: 999px;
+  font-size: .74rem;
+}
+#admin-demandes .table-actions [data-action="progress"],
+#admin-demandes .table-actions [data-action="done"] {
+  background: #f4f7ff;
+  border-color: #d9e3ff;
+}
+#admin-demandes .table-actions [data-action="delete"] {
+  color: #b12b1b;
+  background: #fff7f5;
+  border-color: rgba(177, 43, 27, .22);
 }
 .admin-detail-modal {
   position: fixed;
