@@ -1340,6 +1340,17 @@ p { color: var(--muted); line-height: 1.65; }
   margin-bottom: 22px;
 }
 .admin-hero h1 { margin-bottom: 8px; }
+.admin-export-btn {
+  min-width: 154px;
+  min-height: 46px;
+  border: 0;
+  border-radius: 10px;
+  font-size: .9rem;
+  box-shadow: 0 14px 28px rgba(245, 130, 0, .24);
+}
+.admin-export-btn:hover {
+  box-shadow: 0 16px 32px rgba(245, 130, 0, .3);
+}
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1398,78 +1409,78 @@ p { color: var(--muted); line-height: 1.65; }
   border-collapse: collapse;
   min-width: 860px;
 }
-#admin-demandes .admin-table {
+.admin-page[data-admin-page="demandes"] .admin-table {
   min-width: 0;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0 12px;
 }
-#admin-demandes .admin-table th:nth-child(1) { width: 11%; }
-#admin-demandes .admin-table th:nth-child(2) { width: 12%; }
-#admin-demandes .admin-table th:nth-child(3) { width: 13%; }
-#admin-demandes .admin-table th:nth-child(4) { width: 11%; }
-#admin-demandes .admin-table th:nth-child(5) { width: 29%; }
-#admin-demandes .admin-table th:nth-child(6) { width: 8%; }
-#admin-demandes .admin-table th:nth-child(7) { width: 16%; }
-#admin-demandes .admin-table td {
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(1) { width: 11%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(2) { width: 12%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(3) { width: 13%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(4) { width: 11%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(5) { width: 29%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(6) { width: 8%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(7) { width: 16%; }
+.admin-page[data-admin-page="demandes"] .admin-table td {
   padding: 18px 12px;
   background: #fff;
   border-top: 1px solid rgba(7, 32, 86, .08);
   border-bottom: 1px solid rgba(7, 32, 86, .08);
   vertical-align: middle;
 }
-#admin-demandes .admin-table tbody tr {
+.admin-page[data-admin-page="demandes"] .admin-table tbody tr {
   filter: drop-shadow(0 12px 22px rgba(6, 27, 58, .06));
 }
-#admin-demandes .admin-table tbody td:first-child {
+.admin-page[data-admin-page="demandes"] .admin-table tbody td:first-child {
   border-left: 1px solid rgba(7, 32, 86, .08);
   border-radius: 14px 0 0 14px;
 }
-#admin-demandes .admin-table tbody td:last-child {
+.admin-page[data-admin-page="demandes"] .admin-table tbody td:last-child {
   border-right: 1px solid rgba(7, 32, 86, .08);
   border-radius: 0 14px 14px 0;
 }
-#admin-demandes .client-cell,
-#admin-demandes .contact-cell,
-#admin-demandes .plan-cell {
+.admin-page[data-admin-page="demandes"] .client-cell,
+.admin-page[data-admin-page="demandes"] .contact-cell,
+.admin-page[data-admin-page="demandes"] .plan-cell {
   display: grid;
   gap: 5px;
 }
-#admin-demandes .client-cell strong,
-#admin-demandes .plan-cell strong {
+.admin-page[data-admin-page="demandes"] .client-cell strong,
+.admin-page[data-admin-page="demandes"] .plan-cell strong {
   color: var(--blue);
   font-size: 1rem;
 }
-#admin-demandes .client-cell small,
-#admin-demandes .plan-cell small,
-#admin-demandes .contact-cell a {
+.admin-page[data-admin-page="demandes"] .client-cell small,
+.admin-page[data-admin-page="demandes"] .plan-cell small,
+.admin-page[data-admin-page="demandes"] .contact-cell a {
   color: var(--muted);
   font-weight: 800;
   text-decoration: none;
 }
-#admin-demandes .contact-cell a:first-child {
+.admin-page[data-admin-page="demandes"] .contact-cell a:first-child {
   color: var(--blue);
   font-size: 1rem;
 }
-#admin-demandes .admin-table-wrap {
+.admin-page[data-admin-page="demandes"] .admin-table-wrap {
   overflow-x: hidden;
   padding-bottom: 2px;
 }
-#admin-demandes .admin-table th,
-#admin-demandes .admin-table td {
+.admin-page[data-admin-page="demandes"] .admin-table th,
+.admin-page[data-admin-page="demandes"] .admin-table td {
   overflow: hidden;
 }
-#admin-demandes .admin-table th {
+.admin-page[data-admin-page="demandes"] .admin-table th {
   border-bottom: 0;
   padding-bottom: 6px;
 }
-#admin-demandes .date-cell {
+.admin-page[data-admin-page="demandes"] .date-cell {
   color: var(--blue);
   font-weight: 800;
   line-height: 1.35;
   white-space: normal;
 }
-#admin-demandes .message-cell span {
+.admin-page[data-admin-page="demandes"] .message-cell span {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1479,7 +1490,7 @@ p { color: var(--muted); line-height: 1.65; }
   line-height: 1.45;
   color: #16305f;
 }
-#admin-demandes .message-more {
+.admin-page[data-admin-page="demandes"] .message-more {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1497,18 +1508,18 @@ p { color: var(--muted); line-height: 1.65; }
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
-#admin-demandes .message-more:hover {
+.admin-page[data-admin-page="demandes"] .message-more:hover {
   background: linear-gradient(180deg, #ff8d1f 0%, #e76f00 100%);
   color: #fff;
   box-shadow: 0 10px 22px rgba(255, 122, 0, .22);
   transform: translateY(-1px);
   text-decoration: none;
 }
-#admin-demandes .message-more span {
+.admin-page[data-admin-page="demandes"] .message-more span {
   font-size: .95rem;
   line-height: 1;
 }
-#admin-demandes .status-cell {
+.admin-page[data-admin-page="demandes"] .status-cell {
   vertical-align: middle;
 }
 .admin-settings-panel { margin-top: 22px; }
@@ -1636,7 +1647,7 @@ p { color: var(--muted); line-height: 1.65; }
 .status-pill.done { background: #eaf8f0; color: var(--green); }
 .status-pill.progress { background: #eaf0ff; color: var(--blue); }
 .table-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-#admin-demandes .table-actions {
+.admin-page[data-admin-page="demandes"] .table-actions {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1659,8 +1670,8 @@ p { color: var(--muted); line-height: 1.65; }
   text-decoration: none;
   cursor: pointer;
 }
-#admin-demandes .table-actions button,
-#admin-demandes .table-actions a {
+.admin-page[data-admin-page="demandes"] .table-actions button,
+.admin-page[data-admin-page="demandes"] .table-actions a {
   min-height: 29px;
   padding: 0 9px;
   min-width: 0;
@@ -1668,12 +1679,12 @@ p { color: var(--muted); line-height: 1.65; }
   border-radius: 999px;
   font-size: .74rem;
 }
-#admin-demandes .table-actions [data-action="progress"],
-#admin-demandes .table-actions [data-action="done"] {
+.admin-page[data-admin-page="demandes"] .table-actions [data-action="progress"],
+.admin-page[data-admin-page="demandes"] .table-actions [data-action="done"] {
   background: #f4f7ff;
   border-color: #d9e3ff;
 }
-#admin-demandes .table-actions [data-action="delete"] {
+.admin-page[data-admin-page="demandes"] .table-actions [data-action="delete"] {
   color: #b12b1b;
   background: #fff7f5;
   border-color: rgba(177, 43, 27, .22);
