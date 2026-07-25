@@ -1433,17 +1433,18 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-page[data-admin-page="demandes"] .client-cell,
 .admin-page[data-admin-page="demandes"] .contact-cell,
 .admin-page[data-admin-page="demandes"] .plan-cell {
-  display: grid;
-  gap: 5px;
+  line-height: 1.35;
 }
 .admin-page[data-admin-page="demandes"] .client-cell strong,
 .admin-page[data-admin-page="demandes"] .plan-cell strong {
+  display: block;
   color: var(--blue);
   font-size: 1rem;
 }
 .admin-page[data-admin-page="demandes"] .client-cell small,
 .admin-page[data-admin-page="demandes"] .plan-cell small,
 .admin-page[data-admin-page="demandes"] .contact-cell a {
+  display: block;
   color: var(--muted);
   font-weight: 800;
   text-decoration: none;
