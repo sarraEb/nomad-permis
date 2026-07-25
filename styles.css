@@ -417,6 +417,12 @@ p { color: var(--muted); line-height: 1.65; }
   font-size: 44px;
   line-height: 1;
 }
+.organization .icon-card img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+}
 .icon-card i.orange-icon { color: #F28C00; }
 
 .audience { padding-top: 10px; padding-bottom: 16px; }
@@ -463,6 +469,12 @@ p { color: var(--muted); line-height: 1.65; }
   color: var(--blue);
 }
 .audience-grid .icon-card i { font-size: 48px; width: 70px; min-width: 70px; }
+.audience-grid .icon-card img {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+  display: block;
+}
 .audience-grid h3 { margin-bottom: 6px; font-size: .98rem; line-height: 1.25; }
 .audience-grid p { margin-bottom: 0; font-size: .93rem; font-weight: 700; line-height: 1.45; }
 
@@ -1680,6 +1692,7 @@ p { color: var(--muted); line-height: 1.65; }
   .feature-card { padding: 20px; gap: 14px; }
   .feature-icon { width: 58px; min-width: 58px; }
   .icon-card i { width: 52px; min-width: 52px; font-size: 40px; }
+  .organization .icon-card img { width: 56px; height: 56px; }
   .steps { gap: 64px; padding: 22px 42px; }
   .steps article:not(:last-child)::after { right: -52px; width: 44px; }
   .steps article:not(:last-child)::before { right: -58px; }
@@ -1749,6 +1762,7 @@ p { color: var(--muted); line-height: 1.65; }
   }
   .audience-grid span { width: 52px; min-width: 52px; height: 52px; }
   .audience-grid .icon-card i { width: 46px; min-width: 46px; font-size: 40px; }
+  .audience-grid .icon-card img { width: 52px; height: 52px; }
   .steps { gap: 18px; padding: 18px; margin-top: 16px; }
   .steps article { grid-template-columns: 48px 1fr; }
   .steps span { width: 44px; }
@@ -1873,10 +1887,12 @@ p { color: var(--muted); line-height: 1.65; }
   .feature-card { padding: 20px; }
   .feature-icon { width: 50px; min-width: 50px; }
   .icon-card i { width: 44px; min-width: 44px; font-size: 36px; }
+  .organization .icon-card img { width: 50px; height: 50px; }
   .steps article { grid-template-columns: 42px 1fr; }
   .audience-grid article { padding: 16px; }
   .audience-grid span { width: 42px; min-width: 42px; height: 42px; }
   .audience-grid .icon-card i { width: 38px; min-width: 38px; font-size: 34px; }
+  .audience-grid .icon-card img { width: 42px; height: 42px; }
   .modal { padding: 12px; align-items: end; }
   .modal__panel { width: 100%; max-height: 92vh; border-radius: 18px 18px 0 0; }
   .modal__intro { padding: 24px 18px 16px; padding-right: 64px; }
