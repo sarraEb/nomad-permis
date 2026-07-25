@@ -1399,15 +1399,16 @@ p { color: var(--muted); line-height: 1.65; }
   min-width: 860px;
 }
 #admin-demandes .admin-table {
-  min-width: 1120px;
+  min-width: 0;
   table-layout: fixed;
 }
-#admin-demandes .admin-table th:nth-child(1) { width: 112px; }
-#admin-demandes .admin-table th:nth-child(2) { width: 150px; }
-#admin-demandes .admin-table th:nth-child(3) { width: 170px; }
-#admin-demandes .admin-table th:nth-child(4) { width: 130px; }
-#admin-demandes .admin-table th:nth-child(6) { width: 110px; }
-#admin-demandes .admin-table th:nth-child(7) { width: 170px; }
+#admin-demandes .admin-table th:nth-child(1) { width: 9%; }
+#admin-demandes .admin-table th:nth-child(2) { width: 11%; }
+#admin-demandes .admin-table th:nth-child(3) { width: 12%; }
+#admin-demandes .admin-table th:nth-child(4) { width: 10%; }
+#admin-demandes .admin-table th:nth-child(5) { width: 34%; }
+#admin-demandes .admin-table th:nth-child(6) { width: 9%; }
+#admin-demandes .admin-table th:nth-child(7) { width: 15%; }
 #admin-demandes .admin-table td {
   padding-top: 16px;
   padding-bottom: 16px;
@@ -1433,6 +1434,13 @@ p { color: var(--muted); line-height: 1.65; }
 #admin-demandes .contact-cell a:first-child {
   color: var(--blue);
   font-size: 1rem;
+}
+#admin-demandes .admin-table-wrap {
+  overflow-x: hidden;
+}
+#admin-demandes .admin-table th,
+#admin-demandes .admin-table td {
+  overflow: hidden;
 }
 #admin-demandes .message-cell span {
   display: -webkit-box;
@@ -1597,7 +1605,10 @@ p { color: var(--muted); line-height: 1.65; }
 #admin-demandes .table-actions a {
   min-height: 30px;
   padding: 0 8px;
+  min-width: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .admin-detail-modal {
   position: fixed;
