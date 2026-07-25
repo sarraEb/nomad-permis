@@ -1319,9 +1319,18 @@ p { color: var(--muted); line-height: 1.65; }
   box-shadow: inset 4px 0 0 var(--orange);
 }
 .admin-sidebar__logout {
-  margin-top: auto;
+  margin-top: 18px;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(255, 122, 0, .72);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ff9418 0%, #e87300 100%);
   color: #fff;
-  border-color: rgba(255,255,255,.35);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, .18);
+}
+.admin-sidebar__logout:hover {
+  border-color: rgba(255, 255, 255, .35);
+  box-shadow: 0 16px 30px rgba(255, 122, 0, .2);
 }
 .admin-content {
   min-width: 0;
