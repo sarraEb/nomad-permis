@@ -207,6 +207,10 @@ function readStoredVideos() {
   }
 }
 
+function readPublishedVideos() {
+  return readStoredVideos().filter((video) => video.status === "Publiee");
+}
+
 function openVideoDb() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("nomad_media", 1);
@@ -271,7 +275,8 @@ const defaultVideos = [
     url: "",
   },
 ];
-let videos = readStoredVideos().length ? readStoredVideos() : defaultVideos;
+let publishedVideos = readPublishedVideos();
+let videos = publishedVideos.length ? publishedVideos : defaultVideos;
 
 let activeVideo = 1;
 const track = document.querySelector(".video-track");
@@ -324,8 +329,8 @@ dots?.addEventListener("click", (event) => {
 
 renderCarousel();
 
-if (readStoredVideos().length) {
-  hydrateStoredVideos(readStoredVideos()).then((hydratedVideos) => {
+if (publishedVideos.length) {
+  hydrateStoredVideos(publishedVideos).then((hydratedVideos) => {
     videos = hydratedVideos;
     activeVideo = Math.min(activeVideo, Math.max(0, videos.length - 1));
     renderCarousel();

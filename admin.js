@@ -373,6 +373,19 @@ async function saveVideoBlob(id, file) {
   });
 }
 
+async function readVideoBlob(id) {
+  if (!id) return null;
+  const db = await openVideoDb();
+  return new Promise((resolve) => {
+    const transaction = db.transaction("videos", "readonly");
+    const request = transaction.objectStore("videos").get(id);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => resolve(null);
+    transaction.oncomplete = () => db.close();
+    transaction.onerror = () => db.close();
+  });
+}
+
 async function deleteVideoBlob(id) {
   if (!id) return;
   const db = await openVideoDb();
@@ -534,7 +547,13 @@ function buildReplyMailto(item, subject) {
 function statusClass(status) {
   if (status === "Traite") return "done";
   if (status === "En cours") return "progress";
+  if (status === "Publiee") return "done";
+  if (status === "Masquee") return "progress";
   return "";
+}
+
+function videoStatus(video) {
+  return video.status || "En attente";
 }
 
 function getFilteredLeads() {
@@ -581,11 +600,15 @@ function getFilteredContacts() {
 
 function getFilteredVideos() {
   const query = (videoSearchInput?.value || "").trim().toLowerCase();
-  const linkFilter = videoLinkFilter?.value || "all";
+  const statusFilter = videoLinkFilter?.value || "all";
 
   return readVideos().filter((video) => {
-    const hasLink = Boolean(String(video.url || "").trim() || String(video.videoBlobId || "").trim());
-    const matchesLink = linkFilter === "all" || (linkFilter === "with-link" && hasLink) || (linkFilter === "without-link" && !hasLink);
+    const status = videoStatus(video);
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "pending" && status === "En attente") ||
+      (statusFilter === "published" && status === "Publiee") ||
+      (statusFilter === "hidden" && status === "Masquee");
     const haystack = [
       video.firstName,
       video.title,
@@ -594,7 +617,7 @@ function getFilteredVideos() {
       video.fileName,
       video.subtitles,
     ].join(" ").toLowerCase();
-    return matchesLink && (!query || haystack.includes(query));
+    return matchesStatus && (!query || haystack.includes(query));
   });
 }
 
@@ -668,6 +691,8 @@ function renderLeadDetails(lead) {
 function openLeadDetails(id) {
   const lead = readLeads().find((item) => item.id === id);
   if (!lead || !leadDetailModal || !leadDetailContent) return;
+  leadDetailModal.querySelector("#lead-detail-title").textContent = "Details de la demande";
+  leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = "Demande NOMAD";
   leadDetailContent.innerHTML = renderLeadDetails(lead);
   leadDetailModal.classList.add("is-open");
   leadDetailModal.setAttribute("aria-hidden", "false");
@@ -678,7 +703,45 @@ function closeLeadDetails() {
   if (!leadDetailModal) return;
   leadDetailModal.classList.remove("is-open");
   leadDetailModal.setAttribute("aria-hidden", "true");
+  if (leadDetailContent) {
+    leadDetailContent.classList.remove("is-video-preview");
+    leadDetailContent.innerHTML = "";
+  }
   document.body.style.overflow = "";
+}
+
+async function openVideoPreview(id) {
+  const video = readVideos().find((item) => item.id === id);
+  if (!video || !leadDetailModal || !leadDetailContent) return;
+  const blob = await readVideoBlob(video.videoBlobId);
+  const previewUrl = blob ? URL.createObjectURL(blob) : video.url;
+  leadDetailContent.classList.add("is-video-preview");
+  if (!previewUrl) {
+    leadDetailContent.innerHTML = `<p>Video indisponible dans ce navigateur.</p>`;
+  } else {
+    leadDetailContent.innerHTML = `
+      <div class="admin-video-preview">
+        <video controls playsinline poster="${escapeHtml(video.poster || "")}" src="${escapeHtml(previewUrl)}"></video>
+        <div>
+          <strong>${escapeHtml(video.firstName)} - ${escapeHtml(video.title)}</strong>
+          <span>${escapeHtml(video.journey)}</span>
+          <small>${escapeHtml(video.duration)} ${video.fileName ? `- ${escapeHtml(video.fileName)}` : ""}</small>
+        </div>
+      </div>
+    `;
+  }
+  leadDetailModal.querySelector("#lead-detail-title").textContent = "Apercu de la video";
+  leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = "Temoignage video";
+  leadDetailModal.classList.add("is-open");
+  leadDetailModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function updateVideoStatus(id, status) {
+  const videos = readVideos().map((video) => video.id === id ? { ...video, status } : video);
+  writeVideos(videos);
+  logActivity("Statut video", `Video ${id} : ${status}`);
+  renderVideos();
 }
 
 function paginateItems(items, key, paginationElement) {
@@ -766,8 +829,12 @@ function renderVideos() {
       <td>${escapeHtml(video.journey)}</td>
       <td>${escapeHtml(video.duration)}<br><small>${escapeHtml(video.fileName || "")}</small></td>
       <td>${video.url ? `<a href="${escapeHtml(video.url)}" target="_blank" rel="noopener">Voir</a>` : (video.videoBlobId ? "Uploadee" : "-")}</td>
+      <td><span class="status-pill ${statusClass(videoStatus(video))}">${escapeHtml(videoStatus(video))}</span></td>
       <td>
         <div class="table-actions">
+          <button type="button" data-video-action="view" data-id="${video.id}">Voir</button>
+          <button type="button" data-video-action="publish" data-id="${video.id}">Valider</button>
+          <button type="button" data-video-action="hide" data-id="${video.id}">Masquer</button>
           <button type="button" data-video-action="delete" data-id="${video.id}">Supprimer</button>
         </div>
       </td>
@@ -1221,6 +1288,7 @@ videoForm?.addEventListener("submit", async (event) => {
     url: "",
     videoBlobId,
     fileName: file.name,
+    status: "En attente",
     subtitles: `Temoignage video ${formData.get("journey")}.`,
     createdAt: new Date().toISOString(),
   });
@@ -1238,6 +1306,18 @@ videoForm?.addEventListener("submit", async (event) => {
 videosBody?.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-video-action]");
   if (!button) return;
+  if (button.dataset.videoAction === "view") {
+    openVideoPreview(button.dataset.id);
+    return;
+  }
+  if (button.dataset.videoAction === "publish") {
+    updateVideoStatus(button.dataset.id, "Publiee");
+    return;
+  }
+  if (button.dataset.videoAction === "hide") {
+    updateVideoStatus(button.dataset.id, "Masquee");
+    return;
+  }
   const removed = readVideos().find((video) => video.id === button.dataset.id);
   const videos = readVideos().filter((video) => video.id !== button.dataset.id);
   writeVideos(videos);
