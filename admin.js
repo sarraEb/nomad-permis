@@ -573,6 +573,15 @@ function buildWebmailHref(provider, to, subject, body) {
   return buildMailtoHref(to, subject, body);
 }
 
+function openLocalMailClient(to, subject, body) {
+  const link = document.createElement("a");
+  link.href = buildMailtoHref(to, subject, body);
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
 function getReplyPayload() {
   const to = replyToInput?.value.trim();
   const subject = replySubjectInput?.value.trim();
@@ -1344,7 +1353,7 @@ replyForm?.addEventListener("submit", (event) => {
   const payload = getReplyPayload();
   if (!payload) return;
   logReplyDraft();
-  window.location.href = buildMailtoHref(payload.to, payload.subject, payload.message);
+  openLocalMailClient(payload.to, payload.subject, payload.message);
   closeReplyComposer();
 });
 
@@ -1354,7 +1363,11 @@ replyForm?.addEventListener("click", (event) => {
   const payload = getReplyPayload();
   if (!payload) return;
   logReplyDraft();
-  window.open(buildWebmailHref(button.dataset.mailProvider, payload.to, payload.subject, payload.message), "_blank", "noopener");
+  if (button.dataset.mailProvider === "local") {
+    openLocalMailClient(payload.to, payload.subject, payload.message);
+  } else {
+    window.open(buildWebmailHref(button.dataset.mailProvider, payload.to, payload.subject, payload.message), "_blank", "noopener");
+  }
   closeReplyComposer();
 });
 
