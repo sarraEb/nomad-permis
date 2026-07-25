@@ -1412,33 +1412,23 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-page[data-admin-page="demandes"] .admin-table {
   min-width: 0;
   table-layout: fixed;
-  border-collapse: separate;
-  border-spacing: 0 12px;
+  border-collapse: collapse;
 }
-.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(1) { width: 11%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(1) { width: 10%; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(2) { width: 12%; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(3) { width: 13%; }
-.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(4) { width: 11%; }
-.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(5) { width: 29%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(4) { width: 12%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(5) { width: 30%; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(6) { width: 8%; }
-.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(7) { width: 16%; }
+.admin-page[data-admin-page="demandes"] .admin-table th:nth-child(7) { width: 15%; }
 .admin-page[data-admin-page="demandes"] .admin-table td {
-  padding: 18px 12px;
+  padding: 16px 12px;
   background: #fff;
-  border-top: 1px solid rgba(7, 32, 86, .08);
-  border-bottom: 1px solid rgba(7, 32, 86, .08);
-  vertical-align: middle;
+  border-bottom: 1px solid rgba(7, 32, 86, .1);
+  vertical-align: top;
 }
-.admin-page[data-admin-page="demandes"] .admin-table tbody tr {
-  filter: drop-shadow(0 12px 22px rgba(6, 27, 58, .06));
-}
-.admin-page[data-admin-page="demandes"] .admin-table tbody td:first-child {
-  border-left: 1px solid rgba(7, 32, 86, .08);
-  border-radius: 14px 0 0 14px;
-}
-.admin-page[data-admin-page="demandes"] .admin-table tbody td:last-child {
-  border-right: 1px solid rgba(7, 32, 86, .08);
-  border-radius: 0 14px 14px 0;
+.admin-page[data-admin-page="demandes"] .admin-table tbody tr:hover td {
+  background: #fbfcff;
 }
 .admin-page[data-admin-page="demandes"] .client-cell,
 .admin-page[data-admin-page="demandes"] .contact-cell,
@@ -1471,8 +1461,8 @@ p { color: var(--muted); line-height: 1.65; }
   overflow: hidden;
 }
 .admin-page[data-admin-page="demandes"] .admin-table th {
-  border-bottom: 0;
-  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
 }
 .admin-page[data-admin-page="demandes"] .date-cell {
   color: var(--blue);
@@ -1648,11 +1638,11 @@ p { color: var(--muted); line-height: 1.65; }
 .status-pill.progress { background: #eaf0ff; color: var(--blue); }
 .table-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .admin-page[data-admin-page="demandes"] .table-actions {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  align-items: start;
   justify-content: flex-start;
   gap: 6px;
-  flex-wrap: wrap;
 }
 .table-actions button,
 .table-actions a {
@@ -1672,8 +1662,8 @@ p { color: var(--muted); line-height: 1.65; }
 }
 .admin-page[data-admin-page="demandes"] .table-actions button,
 .admin-page[data-admin-page="demandes"] .table-actions a {
-  min-height: 29px;
-  padding: 0 9px;
+  min-height: 30px;
+  padding: 0 10px;
   min-width: 0;
   white-space: nowrap;
   border-radius: 999px;
