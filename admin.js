@@ -1179,9 +1179,21 @@ function renderFormulaEditors() {
   const submitButton = formulasForm.querySelector("button[type='submit']");
   readFormulas().forEach((formula) => {
     submitButton?.insertAdjacentHTML("beforebegin", `
-      <fieldset data-formula-key="${escapeHtml(formula.key)}">
+      <fieldset class="formula-editor-card" data-formula-key="${escapeHtml(formula.key)}">
         <legend>${escapeHtml(formula.title || "Nouvelle formule")}</legend>
-        <button type="button" class="admin-delete-link" data-formula-delete="${escapeHtml(formula.key)}">Supprimer</button>
+        <div class="formula-card-summary">
+          <div>
+            <span class="formula-card-kicker">${formula.recommended ? "Recommandee" : formula.active === false ? "Masquee" : "Active"}</span>
+            <h3>${escapeHtml(formula.title || "Nouvelle formule")}</h3>
+            <p>${escapeHtml(formula.description || "")}</p>
+          </div>
+          <div class="formula-card-side">
+            <strong>${escapeHtml(formula.note || "a partir de")} ${escapeHtml(formula.price || "0")} EUR</strong>
+            <button type="button" class="btn btn--outline btn--small" data-formula-toggle="${escapeHtml(formula.key)}">Modifier</button>
+            <button type="button" class="admin-delete-link" data-formula-delete="${escapeHtml(formula.key)}">Supprimer</button>
+          </div>
+        </div>
+        <div class="formula-fields">
         <label>Titre <input name="${escapeHtml(formula.key)}Title" type="text"></label>
         <label>Description <input name="${escapeHtml(formula.key)}Description" type="text"></label>
         <label>Prix <input name="${escapeHtml(formula.key)}Price" type="number" min="0" step="10"></label>
@@ -1191,6 +1203,7 @@ function renderFormulaEditors() {
         <label class="admin-form__full">Avantages <textarea name="${escapeHtml(formula.key)}Features" rows="4"></textarea></label>
         <label class="admin-checkbox"><input name="recommended" type="radio" value="${escapeHtml(formula.key)}"> Recommandee</label>
         <label class="admin-checkbox"><input name="${escapeHtml(formula.key)}Active" type="checkbox"> Afficher sur le site</label>
+        </div>
       </fieldset>
     `);
   });
@@ -1867,6 +1880,21 @@ formulasForm?.addEventListener("submit", (event) => {
 
 addFormulaButton?.addEventListener("click", addFormula);
 formulasForm?.addEventListener("click", (event) => {
+  const toggleButton = event.target.closest("button[data-formula-toggle]");
+  if (toggleButton) {
+    const card = toggleButton.closest(".formula-editor-card");
+    const shouldOpen = !card?.classList.contains("is-editing");
+    formulasForm.querySelectorAll(".formula-editor-card").forEach((item) => {
+      item.classList.remove("is-editing");
+      const button = item.querySelector("button[data-formula-toggle]");
+      if (button) button.textContent = "Modifier";
+    });
+    if (card && shouldOpen) {
+      card.classList.add("is-editing");
+      toggleButton.textContent = "Fermer";
+    }
+    return;
+  }
   const button = event.target.closest("button[data-formula-delete]");
   if (!button) return;
   deleteFormula(button.dataset.formulaDelete);

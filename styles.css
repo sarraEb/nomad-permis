@@ -1660,7 +1660,7 @@ p { color: var(--muted); line-height: 1.65; }
   accent-color: var(--orange);
 }
 .admin-form--formulas {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   align-items: stretch;
 }
 .admin-form--formulas fieldset {
@@ -1670,6 +1670,66 @@ p { color: var(--muted); line-height: 1.65; }
   padding: 16px;
   display: grid;
   gap: 12px;
+}
+.admin-form--formulas .formula-editor-card {
+  position: relative;
+  padding: 18px;
+  border-radius: 18px;
+  background: #fff;
+}
+.formula-card-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding-right: 112px;
+}
+.formula-card-kicker {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #fff4e8;
+  color: #d96500;
+  font-size: .78rem;
+  font-weight: 900;
+}
+.formula-card-summary h3 {
+  margin: 0 0 6px;
+  color: var(--blue);
+  font-size: 1.15rem;
+}
+.formula-card-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+.formula-card-side {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  min-width: 190px;
+}
+.formula-card-side strong {
+  color: var(--blue);
+  font-size: 1.25rem;
+}
+.btn--small {
+  min-height: 34px;
+  padding: 8px 16px;
+  font-size: .86rem;
+}
+.formula-fields {
+  display: none;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.formula-editor-card.is-editing .formula-fields {
+  display: grid;
 }
 .admin-form--formulas legend {
   padding: 0 8px;
@@ -1698,6 +1758,7 @@ p { color: var(--muted); line-height: 1.65; }
 }
 .admin-checkbox input { width: auto; }
 .admin-form .btn { min-height: 44px; align-self: end; }
+.admin-form .btn.btn--small { min-height: 34px; }
 .admin-table th,
 .admin-table td {
   padding: 13px 12px;
@@ -2237,6 +2298,12 @@ p { color: var(--muted); line-height: 1.65; }
   .admin-form--users,
   .admin-form--roles,
   .admin-form--formulas { grid-template-columns: 1fr; }
+  .formula-card-summary,
+  .formula-fields {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+  }
+  .formula-card-side { justify-items: start; }
   .admin-form__full,
   .admin-form--videos textarea,
   .video-upload-meta { grid-column: auto; }
