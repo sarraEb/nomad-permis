@@ -1418,7 +1418,8 @@ p { color: var(--muted); line-height: 1.65; }
   border-collapse: collapse;
   min-width: 860px;
 }
-.admin-page[data-admin-page="demandes"] .admin-table {
+.admin-page[data-admin-page="demandes"] .admin-table,
+.admin-page[data-admin-page="contacts"] .admin-table {
   min-width: 0;
   table-layout: fixed;
   border-collapse: collapse;
@@ -1430,67 +1431,90 @@ p { color: var(--muted); line-height: 1.65; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(5) { width: 30%; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(6) { width: 8%; }
 .admin-page[data-admin-page="demandes"] .admin-table th:nth-child(7) { width: 15%; }
-.admin-page[data-admin-page="demandes"] .admin-table td {
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(1) { width: 10%; }
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(2) { width: 14%; }
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(3) { width: 15%; }
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(4) { width: 37%; }
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(5) { width: 9%; }
+.admin-page[data-admin-page="contacts"] .admin-table th:nth-child(6) { width: 15%; }
+.admin-page[data-admin-page="demandes"] .admin-table td,
+.admin-page[data-admin-page="contacts"] .admin-table td {
   padding: 16px 12px;
   background: #fff;
   border-bottom: 1px solid rgba(7, 32, 86, .1);
   vertical-align: top;
 }
-.admin-page[data-admin-page="demandes"] .admin-table tbody tr:hover td {
+.admin-page[data-admin-page="demandes"] .admin-table tbody tr:hover td,
+.admin-page[data-admin-page="contacts"] .admin-table tbody tr:hover td {
   background: #fbfcff;
 }
 .admin-page[data-admin-page="demandes"] .client-cell,
 .admin-page[data-admin-page="demandes"] .contact-cell,
-.admin-page[data-admin-page="demandes"] .plan-cell {
+.admin-page[data-admin-page="demandes"] .plan-cell,
+.admin-page[data-admin-page="contacts"] .client-cell,
+.admin-page[data-admin-page="contacts"] .contact-cell {
   line-height: 1.35;
 }
 .admin-page[data-admin-page="demandes"] .client-cell strong,
-.admin-page[data-admin-page="demandes"] .plan-cell strong {
+.admin-page[data-admin-page="demandes"] .plan-cell strong,
+.admin-page[data-admin-page="contacts"] .client-cell strong {
   display: block;
   color: var(--blue);
   font-size: 1rem;
 }
 .admin-page[data-admin-page="demandes"] .client-cell small,
 .admin-page[data-admin-page="demandes"] .plan-cell small,
-.admin-page[data-admin-page="demandes"] .contact-cell a {
+.admin-page[data-admin-page="demandes"] .contact-cell a,
+.admin-page[data-admin-page="contacts"] .client-cell small,
+.admin-page[data-admin-page="contacts"] .contact-cell a {
   display: block;
   color: var(--muted);
   font-weight: 800;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
-.admin-page[data-admin-page="demandes"] .contact-cell a:first-child {
+.admin-page[data-admin-page="demandes"] .contact-cell a:first-child,
+.admin-page[data-admin-page="contacts"] .contact-cell a:first-child {
   color: var(--blue);
   font-size: 1rem;
 }
-.admin-page[data-admin-page="demandes"] .admin-table-wrap {
+.admin-page[data-admin-page="demandes"] .admin-table-wrap,
+.admin-page[data-admin-page="contacts"] .admin-table-wrap {
   overflow-x: hidden;
   padding-bottom: 2px;
 }
 .admin-page[data-admin-page="demandes"] .admin-table th,
-.admin-page[data-admin-page="demandes"] .admin-table td {
+.admin-page[data-admin-page="demandes"] .admin-table td,
+.admin-page[data-admin-page="contacts"] .admin-table th,
+.admin-page[data-admin-page="contacts"] .admin-table td {
   overflow: hidden;
 }
-.admin-page[data-admin-page="demandes"] .admin-table th {
+.admin-page[data-admin-page="demandes"] .admin-table th,
+.admin-page[data-admin-page="contacts"] .admin-table th {
   border-bottom: 1px solid var(--line);
   padding-bottom: 12px;
 }
-.admin-page[data-admin-page="demandes"] .date-cell {
+.admin-page[data-admin-page="demandes"] .date-cell,
+.admin-page[data-admin-page="contacts"] .date-cell {
   color: var(--blue);
   font-weight: 800;
   line-height: 1.35;
   white-space: normal;
 }
-.admin-page[data-admin-page="demandes"] .message-cell span {
+.admin-page[data-admin-page="demandes"] .message-cell span,
+.admin-page[data-admin-page="contacts"] .message-cell span {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   max-width: 100%;
   overflow: hidden;
+  overflow-wrap: anywhere;
   word-break: break-word;
   line-height: 1.45;
   color: #16305f;
 }
-.admin-page[data-admin-page="demandes"] .message-more {
+.admin-page[data-admin-page="demandes"] .message-more,
+.admin-page[data-admin-page="contacts"] .message-more {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1508,18 +1532,21 @@ p { color: var(--muted); line-height: 1.65; }
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
-.admin-page[data-admin-page="demandes"] .message-more:hover {
+.admin-page[data-admin-page="demandes"] .message-more:hover,
+.admin-page[data-admin-page="contacts"] .message-more:hover {
   background: linear-gradient(180deg, #ff8d1f 0%, #e76f00 100%);
   color: #fff;
   box-shadow: 0 10px 22px rgba(255, 122, 0, .22);
   transform: translateY(-1px);
   text-decoration: none;
 }
-.admin-page[data-admin-page="demandes"] .message-more span {
+.admin-page[data-admin-page="demandes"] .message-more span,
+.admin-page[data-admin-page="contacts"] .message-more span {
   font-size: .95rem;
   line-height: 1;
 }
-.admin-page[data-admin-page="demandes"] .status-cell {
+.admin-page[data-admin-page="demandes"] .status-cell,
+.admin-page[data-admin-page="contacts"] .status-cell {
   vertical-align: middle;
 }
 .admin-settings-panel { margin-top: 22px; }
@@ -1693,7 +1720,8 @@ p { color: var(--muted); line-height: 1.65; }
 .status-pill.done { background: #eaf8f0; color: var(--green); }
 .status-pill.progress { background: #eaf0ff; color: var(--blue); }
 .table-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.admin-page[data-admin-page="demandes"] .table-actions {
+.admin-page[data-admin-page="demandes"] .table-actions,
+.admin-page[data-admin-page="contacts"] .table-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, max-content));
   align-items: start;
@@ -1717,7 +1745,9 @@ p { color: var(--muted); line-height: 1.65; }
   cursor: pointer;
 }
 .admin-page[data-admin-page="demandes"] .table-actions button,
-.admin-page[data-admin-page="demandes"] .table-actions a {
+.admin-page[data-admin-page="demandes"] .table-actions a,
+.admin-page[data-admin-page="contacts"] .table-actions button,
+.admin-page[data-admin-page="contacts"] .table-actions a {
   min-height: 30px;
   padding: 0 10px;
   min-width: 0;
@@ -1726,11 +1756,14 @@ p { color: var(--muted); line-height: 1.65; }
   font-size: .74rem;
 }
 .admin-page[data-admin-page="demandes"] .table-actions [data-action="progress"],
-.admin-page[data-admin-page="demandes"] .table-actions [data-action="done"] {
+.admin-page[data-admin-page="demandes"] .table-actions [data-action="done"],
+.admin-page[data-admin-page="contacts"] .table-actions [data-contact-action="progress"],
+.admin-page[data-admin-page="contacts"] .table-actions [data-contact-action="done"] {
   background: #f4f7ff;
   border-color: #d9e3ff;
 }
-.admin-page[data-admin-page="demandes"] .table-actions [data-action="delete"] {
+.admin-page[data-admin-page="demandes"] .table-actions [data-action="delete"],
+.admin-page[data-admin-page="contacts"] .table-actions [data-contact-action="delete"] {
   color: #b12b1b;
   background: #fff7f5;
   border-color: rgba(177, 43, 27, .22);

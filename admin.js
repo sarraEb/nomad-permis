@@ -839,12 +839,36 @@ function renderLeadDetails(lead) {
   `;
 }
 
+function renderContactDetails(contact) {
+  return `
+    <div><span>ID contact</span><strong>${escapeHtml(contact.id)}</strong></div>
+    <div><span>Date complete</span><strong>${formatDate(contact.createdAt)}</strong></div>
+    <div><span>Statut</span><strong>${escapeHtml(contact.status)}</strong></div>
+    <div><span>Nom complet</span><strong>${escapeHtml(contact.name)}</strong></div>
+    <div><span>Ville</span><strong>${escapeHtml(contact.city || "Non precisee")}</strong></div>
+    <div><span>Telephone</span><strong>${escapeHtml(contact.phone || "Non precise")}</strong></div>
+    <div><span>Email</span><strong>${escapeHtml(contact.email || "Non precise")}</strong></div>
+    <div class="admin-detail-card__full"><span>Message complet</span><p>${escapeHtml(contact.message || "-")}</p></div>
+  `;
+}
+
 function openLeadDetails(id) {
   const lead = readLeads().find((item) => item.id === id);
   if (!lead || !leadDetailModal || !leadDetailContent) return;
   leadDetailModal.querySelector("#lead-detail-title").textContent = "Details de la demande";
   leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = "Demande NOMAD";
   leadDetailContent.innerHTML = renderLeadDetails(lead);
+  leadDetailModal.classList.add("is-open");
+  leadDetailModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function openContactDetails(id) {
+  const contact = readContacts().find((item) => item.id === id);
+  if (!contact || !leadDetailModal || !leadDetailContent) return;
+  leadDetailModal.querySelector("#lead-detail-title").textContent = "Message complet";
+  leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = "Contact NOMAD";
+  leadDetailContent.innerHTML = renderContactDetails(contact);
   leadDetailModal.classList.add("is-open");
   leadDetailModal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
@@ -964,15 +988,22 @@ function renderContacts() {
   const pageContacts = paginateItems(contacts, "contacts", contactsPagination);
   contactsBody.innerHTML = pageContacts.map((contact) => `
     <tr>
-      <td>${formatDate(contact.createdAt)}</td>
-      <td><strong>${escapeHtml(contact.name)}</strong><br><small>${escapeHtml(contact.city || "Ville non precisee")}</small></td>
-      <td>${escapeHtml(contact.phone)}<br><small>${escapeHtml(contact.email)}</small></td>
-      <td>${escapeHtml(contact.message || "-")}</td>
-      <td><span class="status-pill ${statusClass(contact.status)}">${escapeHtml(contact.status)}</span></td>
+      <td class="date-cell">${formatDate(contact.createdAt)}</td>
+      <td class="client-cell"><strong>${escapeHtml(contact.name)}</strong><small>${escapeHtml(contact.city || "Ville non precisee")}</small></td>
+      <td class="contact-cell">
+        <a href="tel:${escapeHtml(contact.phone || "")}">${escapeHtml(contact.phone || "Telephone non precise")}</a>
+        <a href="mailto:${escapeHtml(contact.email || "")}">${escapeHtml(contact.email || "Email non precise")}</a>
+      </td>
+      <td class="message-cell">
+        <span>${escapeHtml(previewText(contact.message, 110))}</span>
+        ${String(contact.message || "").trim().length > 110 ? `<button type="button" class="message-more" data-contact-action="details" data-id="${contact.id}">Lire le message <span aria-hidden="true">&rarr;</span></button>` : ""}
+      </td>
+      <td class="status-cell"><span class="status-pill ${statusClass(contact.status)}">${escapeHtml(contact.status)}</span></td>
       <td>
         <div class="table-actions">
           <button type="button" data-contact-action="progress" data-id="${contact.id}">En cours</button>
           <button type="button" data-contact-action="done" data-id="${contact.id}">Traite</button>
+          <button type="button" data-contact-action="details" data-id="${contact.id}">D&eacute;tails</button>
           <button type="button" data-contact-action="reply" data-id="${contact.id}">R&eacute;pondre</button>
           <button type="button" data-contact-action="delete" data-id="${contact.id}">Supprimer</button>
         </div>
@@ -1612,6 +1643,10 @@ contactsBody?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-contact-action]");
   if (!button) return;
   const { contactAction, id } = button.dataset;
+  if (contactAction === "details") {
+    openContactDetails(id);
+    return;
+  }
   if (contactAction === "reply") {
     openReplyComposer("contact", id);
     return;
