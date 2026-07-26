@@ -35,3 +35,16 @@ Configuration par defaut WAMP :
 - database : `nomad_permis`
 - user : `root`
 - password : vide
+
+Tables principales :
+
+- `leads` : demandes de formules
+- `contacts` : messages du formulaire de contact
+- `formulas` et `formula_features` : formules et avantages
+- `videos` : temoignages video
+- `faqs` : questions frequentes
+- `users` : comptes admin
+- `roles` et `role_permissions` : roles et permissions
+- `activity_logs` : historique des actions
+- `site_settings` : coordonnees, Google et textes du site
+- `app_storage` : sauvegarde technique JSON compatible avec l'interface actuelle
