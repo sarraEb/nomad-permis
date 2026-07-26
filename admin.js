@@ -1499,7 +1499,7 @@ function deleteFormula(key) {
 function addFaq(formData) {
   const faqs = readFaqs();
   const question = String(formData.get("question") || "").trim();
-  const editingId = String(formData.get("editingId") || "").trim();
+  const editingId = String(formData.get("editingId") || faqForm?.dataset.editingId || "").trim();
   if (editingId) {
     const existing = faqs.find((faq) => faq.id === editingId);
     writeFaqs(faqs.map((faq) => faq.id === editingId ? {
@@ -1533,21 +1533,32 @@ function addFaq(formData) {
 function startFaqEdit(id) {
   const faq = readFaqs().find((item) => item.id === id);
   if (!faq || !faqForm) return;
-  faqForm.elements.editingId.value = faq.id;
-  faqForm.elements.question.value = faq.question || "";
-  faqForm.elements.answer.value = faq.answer || "";
-  faqForm.elements.active.checked = faq.active !== false;
+  const questionField = faqForm.querySelector('[name="question"]');
+  const answerField = faqForm.querySelector('[name="answer"]');
+  const activeField = faqForm.querySelector('[name="active"]');
+  const editingField = faqForm.querySelector('[name="editingId"]');
+  faqForm.dataset.editingId = faq.id;
+  if (editingField) editingField.value = faq.id;
+  if (questionField) questionField.value = faq.question || "";
+  if (answerField) answerField.value = faq.answer || "";
+  if (activeField) activeField.checked = faq.active !== false;
+  faqForm.classList.add("is-editing");
   if (faqSubmitButton) faqSubmitButton.textContent = "Enregistrer la question";
   if (cancelFaqEditButton) cancelFaqEditButton.hidden = false;
   if (faqStatus) faqStatus.textContent = "Modification de la question.";
+  questionField?.focus();
   faqForm.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function resetFaqEditor() {
   if (!faqForm) return;
   faqForm.reset();
-  faqForm.elements.editingId.value = "";
-  faqForm.elements.active.checked = true;
+  const editingField = faqForm.querySelector('[name="editingId"]');
+  const activeField = faqForm.querySelector('[name="active"]');
+  delete faqForm.dataset.editingId;
+  if (editingField) editingField.value = "";
+  if (activeField) activeField.checked = true;
+  faqForm.classList.remove("is-editing");
   if (faqSubmitButton) faqSubmitButton.textContent = "Ajouter la question";
   if (cancelFaqEditButton) cancelFaqEditButton.hidden = true;
 }
