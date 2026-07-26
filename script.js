@@ -33,7 +33,7 @@ document.addEventListener("click", (event) => {
 
 const siteSettingsKey = "nomad_site_settings";
 const siteSettingsVersionKey = "nomad_site_settings_version";
-const siteSettingsVersion = "2026-07-20-client-copy";
+const siteSettingsVersion = "2026-07-26-contact-separated";
 const formulasStorageKey = "nomad_formulas";
 const formulasVersionKey = "nomad_formulas_version";
 const formulasVersion = "2026-07-20-client-validated";
@@ -101,9 +101,9 @@ const defaultSiteSettings = {
   address: "Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc",
   contactEyebrow: "Contact",
   contactTitle: "Prêt à faire avancer votre permis ?",
-  contactIntro: "Transmettez-nous quelques informations. Notre équipe étudiera votre situation et vous proposera la formule NOMAD la plus adaptée.",
-  contactButton: "Vérifier mon éligibilité",
-  contactMessagePlaceholder: "Votre situation, vos disponibilites, vos questions...",
+  contactIntro: "Une question sur NOMAD, votre dossier ou l'organisation de votre sejour ? Envoyez-nous un message, l'equipe vous repond rapidement.",
+  contactButton: "Envoyer mon message",
+  contactMessagePlaceholder: "Votre message, votre question ou vos disponibilites...",
 };
 
 const defaultFaqs = [
@@ -896,9 +896,6 @@ contactForm?.addEventListener("submit", async (event) => {
     phone: formData.get("phone"),
     email: formData.get("email"),
     city: formData.get("city"),
-    gearbox: formData.get("gearbox"),
-    hours: formData.get("hours"),
-    lastExam: formData.get("lastExam"),
     message: formData.get("message"),
   };
   saveContact(contact);

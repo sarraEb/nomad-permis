@@ -49,12 +49,12 @@ $lines = [
     'Telephone : ' . $phone,
     'Email : ' . $email,
     'Ville : ' . ($city ?: 'Non precisee'),
-    'Boite : ' . ($gearbox ?: 'Non precisee'),
-    'Heures deja realisees : ' . ($hours !== '' ? $hours : 'Non precisees'),
-    'Dernier examen et resultat : ' . ($lastExam ?: 'Non precise'),
 ];
 
 if ($isFormula) {
+    $lines[] = 'Boite : ' . ($gearbox ?: 'Non precisee');
+    $lines[] = 'Heures deja realisees : ' . ($hours !== '' ? $hours : 'Non precisees');
+    $lines[] = 'Dernier examen et resultat : ' . ($lastExam ?: 'Non precise');
     $lines[] = 'Formule choisie : ' . ($plan ?: 'Non precisee');
     $lines[] = 'Prix : ' . ($price ?: 'Non precise');
 }

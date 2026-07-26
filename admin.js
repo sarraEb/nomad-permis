@@ -2,7 +2,7 @@ const storageKey = "nomad_leads";
 const contactsStorageKey = "nomad_contacts";
 const siteSettingsKey = "nomad_site_settings";
 const siteSettingsVersionKey = "nomad_site_settings_version";
-const siteSettingsVersion = "2026-07-20-client-copy";
+const siteSettingsVersion = "2026-07-26-contact-separated";
 const formulasStorageKey = "nomad_formulas";
 const formulasVersionKey = "nomad_formulas_version";
 const formulasVersion = "2026-07-20-client-validated";
@@ -190,9 +190,9 @@ const defaultSiteSettings = {
   address: "Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc",
   contactEyebrow: "Contact",
   contactTitle: "Prêt à faire avancer votre permis ?",
-  contactIntro: "Transmettez-nous quelques informations. Notre équipe étudiera votre situation et vous proposera la formule NOMAD la plus adaptée.",
-  contactButton: "Vérifier mon éligibilité",
-  contactMessagePlaceholder: "Votre situation, vos disponibilites, vos questions...",
+  contactIntro: "Une question sur NOMAD, votre dossier ou l'organisation de votre sejour ? Envoyez-nous un message, l'equipe vous repond rapidement.",
+  contactButton: "Envoyer mon message",
+  contactMessagePlaceholder: "Votre message, votre question ou vos disponibilites...",
 };
 
 const defaultFaqs = [
@@ -743,9 +743,6 @@ function getFilteredContacts() {
       contact.email,
       contact.phone,
       contact.city,
-      contact.gearbox,
-      contact.hours,
-      contact.lastExam,
       contact.message,
     ].join(" ").toLowerCase();
     return matchesStatus && (!query || haystack.includes(query));
@@ -1225,16 +1222,13 @@ function exportCsv() {
 
 function exportContactsCsv() {
   const contacts = readContacts();
-  const header = ["Date", "Nom", "Telephone", "Email", "Ville", "Boite", "Heures", "Dernier examen", "Statut", "Message"];
+  const header = ["Date", "Nom", "Telephone", "Email", "Ville", "Statut", "Message"];
   const rows = contacts.map((contact) => [
     formatDate(contact.createdAt),
     contact.name,
     contact.phone,
     contact.email,
     contact.city,
-    contact.gearbox,
-    contact.hours,
-    contact.lastExam,
     contact.status,
     contact.message,
   ]);
