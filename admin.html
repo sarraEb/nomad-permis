@@ -343,7 +343,9 @@
             <textarea name="answer" rows="3" placeholder="Reponse affichee dans l'accordeon" required></textarea>
           </label>
           <label class="admin-checkbox"><input name="active" type="checkbox" checked> Afficher sur le site</label>
-          <button class="btn btn--primary" type="submit">Ajouter la question</button>
+          <input name="editingId" type="hidden">
+          <button class="btn btn--primary" type="submit" id="faq-submit-button">Ajouter la question</button>
+          <button class="btn btn--outline admin-edit-cancel" type="button" id="cancel-faq-edit" hidden>Annuler la modification</button>
           <p class="form-status" id="faq-status"></p>
         </form>
         <div class="admin-toolbar admin-filterbar">
@@ -430,6 +432,52 @@
         </div>
         <div class="empty-state" id="users-empty-state">Aucun utilisateur configure.</div>
         <div class="admin-pagination" id="users-pagination" aria-label="Pagination des utilisateurs"></div>
+      </section>
+
+      <section class="admin-panel admin-settings-panel admin-page" id="admin-roles" data-admin-page="users">
+        <div class="admin-toolbar">
+          <div>
+            <h2>Roles et permissions</h2>
+            <p>Ajoutez, modifiez ou supprimez les roles, puis choisissez les actions autorisees.</p>
+          </div>
+        </div>
+        <form class="admin-form admin-form--roles" id="role-form">
+          <label>Nom du role
+            <input name="name" type="text" placeholder="Ex: Commercial" required>
+          </label>
+          <fieldset class="permissions-field">
+            <legend>Actions autorisees</legend>
+            <div class="permissions-grid" id="permissions-grid">
+              <label><input type="checkbox" name="permissions" value="demandes.view"> Voir les demandes</label>
+              <label><input type="checkbox" name="permissions" value="demandes.manage"> Modifier les demandes</label>
+              <label><input type="checkbox" name="permissions" value="contacts.manage"> Gerer les contacts</label>
+              <label><input type="checkbox" name="permissions" value="google.manage"> Configurer Google</label>
+              <label><input type="checkbox" name="permissions" value="videos.manage"> Gerer les videos</label>
+              <label><input type="checkbox" name="permissions" value="formules.manage"> Gerer les formules</label>
+              <label><input type="checkbox" name="permissions" value="site.manage"> Gerer les coordonnees</label>
+              <label><input type="checkbox" name="permissions" value="faq.manage"> Gerer la FAQ</label>
+              <label><input type="checkbox" name="permissions" value="users.manage"> Gerer les utilisateurs</label>
+              <label><input type="checkbox" name="permissions" value="history.view"> Voir l'historique</label>
+            </div>
+          </fieldset>
+          <input name="editingId" type="hidden">
+          <button class="btn btn--primary" type="submit" id="role-submit-button">Ajouter le role</button>
+          <button class="btn btn--outline admin-edit-cancel" type="button" id="cancel-role-edit" hidden>Annuler la modification</button>
+          <p class="form-status" id="role-status"></p>
+        </form>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Permissions</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="roles-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="roles-empty-state">Aucun role configure.</div>
       </section>
 
       <section class="admin-panel admin-settings-panel admin-page" id="admin-history" data-admin-page="history">

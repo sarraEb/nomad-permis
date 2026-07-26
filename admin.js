@@ -11,6 +11,7 @@ const faqsStorageKey = "nomad_faqs";
 const faqsVersionKey = "nomad_faqs_version";
 const faqsVersion = "2026-07-20-client-validated";
 const usersStorageKey = "nomad_users";
+const rolesStorageKey = "nomad_roles";
 const activityStorageKey = "nomad_activity_log";
 const authKey = "nomad_admin_auth";
 const currentUserKey = "nomad_admin_user";
@@ -47,6 +48,8 @@ const siteSettingsForm = document.querySelector("#site-settings-form");
 const siteSettingsStatus = document.querySelector("#site-settings-status");
 const faqForm = document.querySelector("#faq-form");
 const faqStatus = document.querySelector("#faq-status");
+const faqSubmitButton = document.querySelector("#faq-submit-button");
+const cancelFaqEditButton = document.querySelector("#cancel-faq-edit");
 const faqsBody = document.querySelector("#faqs-body");
 const faqsEmptyState = document.querySelector("#faqs-empty-state");
 const faqsPagination = document.querySelector("#faqs-pagination");
@@ -62,6 +65,12 @@ const usersPagination = document.querySelector("#users-pagination");
 const userSearchInput = document.querySelector("#user-search");
 const userRoleFilter = document.querySelector("#user-role-filter");
 const userStatusFilter = document.querySelector("#user-status-filter");
+const roleForm = document.querySelector("#role-form");
+const roleStatus = document.querySelector("#role-status");
+const rolesBody = document.querySelector("#roles-body");
+const rolesEmptyState = document.querySelector("#roles-empty-state");
+const cancelRoleEditButton = document.querySelector("#cancel-role-edit");
+const roleSubmitButton = document.querySelector("#role-submit-button");
 const historyBody = document.querySelector("#history-body");
 const historyEmptyState = document.querySelector("#history-empty-state");
 const historyPagination = document.querySelector("#history-pagination");
@@ -98,6 +107,27 @@ const defaultUsers = [
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
+];
+
+const permissionOptions = [
+  { key: "demandes.view", label: "Voir les demandes" },
+  { key: "demandes.manage", label: "Modifier les demandes" },
+  { key: "contacts.manage", label: "Gerer les contacts" },
+  { key: "google.manage", label: "Configurer Google" },
+  { key: "videos.manage", label: "Gerer les videos" },
+  { key: "formules.manage", label: "Gerer les formules" },
+  { key: "site.manage", label: "Gerer les coordonnees" },
+  { key: "faq.manage", label: "Gerer la FAQ" },
+  { key: "users.manage", label: "Gerer les utilisateurs" },
+  { key: "history.view", label: "Voir l'historique" },
+];
+
+const allPermissionKeys = permissionOptions.map((permission) => permission.key);
+
+const defaultRoles = [
+  { id: "ROLE-ADMIN", name: "Administrateur", permissions: [...allPermissionKeys], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
+  { id: "ROLE-MANAGER", name: "Gestionnaire", permissions: ["demandes.view", "demandes.manage", "contacts.manage", "videos.manage", "formules.manage", "faq.manage"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
+  { id: "ROLE-READONLY", name: "Lecture seule", permissions: ["demandes.view", "history.view"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
 ];
 
 const defaultFormulas = [
@@ -253,6 +283,7 @@ function setAuthenticated(value) {
     renderVideos();
     renderFaqs();
     renderUsers();
+    renderRoles();
     renderActivityLog();
     populateSettingsForms();
     applyAdminPage();
@@ -487,6 +518,23 @@ function readUsers() {
 
 function writeUsers(users) {
   localStorage.setItem(usersStorageKey, JSON.stringify(users));
+}
+
+function readRoles() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(rolesStorageKey)) || [];
+    if (!stored.length) return defaultRoles.map((role) => ({ ...role, permissions: [...role.permissions] }));
+    return stored.map((role) => ({
+      ...role,
+      permissions: Array.isArray(role.permissions) ? role.permissions : [],
+    }));
+  } catch {
+    return defaultRoles.map((role) => ({ ...role, permissions: [...role.permissions] }));
+  }
+}
+
+function writeRoles(roles) {
+  localStorage.setItem(rolesStorageKey, JSON.stringify(roles));
 }
 
 function readActivityLog() {
@@ -972,6 +1020,7 @@ function renderFaqs() {
       <td><span class="status-pill ${faq.active ? "done" : ""}">${faq.active ? "Active" : "Desactivee"}</span></td>
       <td>
         <div class="table-actions">
+          <button type="button" data-faq-action="edit" data-id="${faq.id}">Modifier</button>
           <button type="button" data-faq-action="toggle" data-id="${faq.id}">${faq.active ? "Desactiver" : "Activer"}</button>
           <button type="button" data-faq-action="delete" data-id="${faq.id}">Supprimer</button>
         </div>
@@ -1000,6 +1049,44 @@ function renderUsers() {
       </td>
     </tr>
   `).join("");
+}
+
+function renderRoleOptions() {
+  const roles = readRoles();
+  if (userForm?.role) {
+    const current = userForm.role.value;
+    userForm.role.innerHTML = roles.map((role) => `<option value="${escapeHtml(role.name)}">${escapeHtml(role.name)}</option>`).join("");
+    if (roles.some((role) => role.name === current)) userForm.role.value = current;
+  }
+  if (userRoleFilter) {
+    const current = userRoleFilter.value;
+    userRoleFilter.innerHTML = `<option value="all">Tous les roles</option>${roles.map((role) => `<option value="${escapeHtml(role.name)}">${escapeHtml(role.name)}</option>`).join("")}`;
+    userRoleFilter.value = roles.some((role) => role.name === current) ? current : "all";
+  }
+}
+
+function renderRoles() {
+  const roles = readRoles();
+  if (!rolesBody || !rolesEmptyState) return;
+  rolesEmptyState.style.display = roles.length ? "none" : "block";
+  rolesBody.innerHTML = roles.map((role) => {
+    const labels = role.permissions
+      .map((key) => permissionOptions.find((permission) => permission.key === key)?.label || key)
+      .join(", ");
+    return `
+      <tr>
+        <td><strong>${escapeHtml(role.name)}</strong>${role.protected ? "<br><small>Role systeme</small>" : ""}</td>
+        <td>${escapeHtml(labels || "Aucune permission")}</td>
+        <td>
+          <div class="table-actions">
+            <button type="button" data-role-action="edit" data-id="${role.id}">Modifier</button>
+            <button type="button" data-role-action="delete" data-id="${role.id}">Supprimer</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+  renderRoleOptions();
 }
 
 function renderActivityLog() {
@@ -1073,6 +1160,8 @@ function populateSettingsForms() {
       }
     });
   }
+  renderRoleOptions();
+  renderRoles();
 }
 
 function updateLeadStatus(id, status) {
@@ -1232,6 +1321,98 @@ function resetUserEditor() {
   if (cancelUserEditButton) cancelUserEditButton.hidden = true;
 }
 
+function getSelectedRolePermissions() {
+  if (!roleForm) return [];
+  return Array.from(roleForm.querySelectorAll('input[name="permissions"]:checked')).map((input) => input.value);
+}
+
+function resetRoleEditor() {
+  if (!roleForm) return;
+  roleForm.reset();
+  roleForm.elements.editingId.value = "";
+  if (roleSubmitButton) roleSubmitButton.textContent = "Ajouter le role";
+  if (cancelRoleEditButton) cancelRoleEditButton.hidden = true;
+}
+
+function addRole(formData) {
+  const roles = readRoles();
+  const name = String(formData.get("name") || "").trim();
+  const editingId = String(formData.get("editingId") || "").trim();
+  const permissions = getSelectedRolePermissions();
+  if (!permissions.length) {
+    if (roleStatus) roleStatus.textContent = "Choisissez au moins une action autorisee.";
+    return;
+  }
+  if (roles.some((role) => role.id !== editingId && role.name.toLowerCase() === name.toLowerCase())) {
+    if (roleStatus) roleStatus.textContent = "Ce role existe deja.";
+    return;
+  }
+  if (editingId) {
+    const existing = roles.find((role) => role.id === editingId);
+    if (!existing) return;
+    const updatedRoles = roles.map((role) => role.id === editingId ? {
+      ...role,
+      name,
+      permissions,
+      updatedAt: new Date().toISOString(),
+    } : role);
+    writeRoles(updatedRoles);
+    if (existing.name !== name) {
+      writeUsers(readUsers().map((user) => user.role === existing.name ? { ...user, role: name } : user));
+    }
+    logActivity("Modification role", `Role ${existing.name} modifie`);
+    if (roleStatus) roleStatus.textContent = "Role modifie.";
+    resetRoleEditor();
+    renderRoles();
+    renderUsers();
+    return;
+  }
+  roles.unshift({
+    id: `ROLE-${Date.now()}`,
+    name,
+    permissions,
+    protected: false,
+    createdAt: new Date().toISOString(),
+  });
+  writeRoles(roles);
+  logActivity("Ajout role", `Role ${name} ajoute`);
+  if (roleStatus) roleStatus.textContent = "Role ajoute.";
+  resetRoleEditor();
+  renderRoles();
+}
+
+function startRoleEdit(id) {
+  const role = readRoles().find((item) => item.id === id);
+  if (!role || !roleForm) return;
+  roleForm.elements.editingId.value = role.id;
+  roleForm.elements.name.value = role.name || "";
+  roleForm.querySelectorAll('input[name="permissions"]').forEach((input) => {
+    input.checked = role.permissions.includes(input.value);
+  });
+  if (roleSubmitButton) roleSubmitButton.textContent = "Enregistrer le role";
+  if (cancelRoleEditButton) cancelRoleEditButton.hidden = false;
+  if (roleStatus) roleStatus.textContent = `Modification du role ${role.name}`;
+  roleForm.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function deleteRole(id) {
+  const roles = readRoles();
+  const role = roles.find((item) => item.id === id);
+  if (!role) return;
+  if (role.protected) {
+    if (roleStatus) roleStatus.textContent = "Impossible de supprimer un role systeme.";
+    return;
+  }
+  if (readUsers().some((user) => user.role === role.name)) {
+    if (roleStatus) roleStatus.textContent = "Impossible de supprimer un role utilise par un utilisateur.";
+    return;
+  }
+  writeRoles(roles.filter((item) => item.id !== id));
+  logActivity("Suppression role", `Role ${role.name} supprime`);
+  if (roleStatus) roleStatus.textContent = "Role supprime.";
+  renderRoles();
+}
+
 function toggleUser(id) {
   const users = readUsers();
   const user = users.find((item) => item.id === id);
@@ -1318,6 +1499,22 @@ function deleteFormula(key) {
 function addFaq(formData) {
   const faqs = readFaqs();
   const question = String(formData.get("question") || "").trim();
+  const editingId = String(formData.get("editingId") || "").trim();
+  if (editingId) {
+    const existing = faqs.find((faq) => faq.id === editingId);
+    writeFaqs(faqs.map((faq) => faq.id === editingId ? {
+      ...faq,
+      question,
+      answer: String(formData.get("answer") || "").trim(),
+      active: formData.has("active"),
+      updatedAt: new Date().toISOString(),
+    } : faq));
+    logActivity("Modification FAQ", existing?.question || question);
+    if (faqStatus) faqStatus.textContent = "Question modifiee.";
+    resetFaqEditor();
+    renderFaqs();
+    return;
+  }
   faqs.unshift({
     id: `FAQ-${Date.now()}`,
     question,
@@ -1329,8 +1526,30 @@ function addFaq(formData) {
   paginationState.faqs = 1;
   logActivity("Ajout FAQ", question);
   if (faqStatus) faqStatus.textContent = "Question ajoutee.";
-  faqForm?.reset();
+  resetFaqEditor();
   renderFaqs();
+}
+
+function startFaqEdit(id) {
+  const faq = readFaqs().find((item) => item.id === id);
+  if (!faq || !faqForm) return;
+  faqForm.editingId.value = faq.id;
+  faqForm.question.value = faq.question || "";
+  faqForm.answer.value = faq.answer || "";
+  faqForm.active.checked = faq.active !== false;
+  if (faqSubmitButton) faqSubmitButton.textContent = "Enregistrer la question";
+  if (cancelFaqEditButton) cancelFaqEditButton.hidden = false;
+  if (faqStatus) faqStatus.textContent = "Modification de la question.";
+  faqForm.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function resetFaqEditor() {
+  if (!faqForm) return;
+  faqForm.reset();
+  faqForm.editingId.value = "";
+  faqForm.active.checked = true;
+  if (faqSubmitButton) faqSubmitButton.textContent = "Ajouter la question";
+  if (cancelFaqEditButton) cancelFaqEditButton.hidden = true;
 }
 
 function toggleFaq(id) {
@@ -1680,8 +1899,13 @@ faqForm?.addEventListener("submit", (event) => {
 faqsBody?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-faq-action]");
   if (!button) return;
+  if (button.dataset.faqAction === "edit") startFaqEdit(button.dataset.id);
   if (button.dataset.faqAction === "toggle") toggleFaq(button.dataset.id);
   if (button.dataset.faqAction === "delete") deleteFaq(button.dataset.id);
+});
+cancelFaqEditButton?.addEventListener("click", () => {
+  resetFaqEditor();
+  if (faqStatus) faqStatus.textContent = "Modification annulee.";
 });
 userForm?.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -1697,6 +1921,20 @@ usersBody?.addEventListener("click", (event) => {
 cancelUserEditButton?.addEventListener("click", () => {
   resetUserEditor();
   if (userStatus) userStatus.textContent = "Modification annulee.";
+});
+roleForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  addRole(new FormData(roleForm));
+});
+rolesBody?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-role-action]");
+  if (!button) return;
+  if (button.dataset.roleAction === "edit") startRoleEdit(button.dataset.id);
+  if (button.dataset.roleAction === "delete") deleteRole(button.dataset.id);
+});
+cancelRoleEditButton?.addEventListener("click", () => {
+  resetRoleEditor();
+  if (roleStatus) roleStatus.textContent = "Modification annulee.";
 });
 clearHistoryButton?.addEventListener("click", () => {
   const currentUser = getCurrentUser()?.username || "system";
