@@ -26,9 +26,6 @@ $name = clean_text($_POST['name'] ?? '');
 $phone = clean_text($_POST['phone'] ?? '');
 $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
 $city = clean_text($_POST['city'] ?? '');
-$gearbox = clean_text($_POST['gearbox'] ?? '');
-$hours = clean_text($_POST['hours'] ?? '');
-$lastExam = clean_text($_POST['lastExam'] ?? '');
 $message = clean_message($_POST['message'] ?? '');
 $plan = clean_text($_POST['plan'] ?? '');
 $price = clean_text($_POST['price'] ?? '');
@@ -52,9 +49,6 @@ $lines = [
 ];
 
 if ($isFormula) {
-    $lines[] = 'Boite : ' . ($gearbox ?: 'Non precisee');
-    $lines[] = 'Heures deja realisees : ' . ($hours !== '' ? $hours : 'Non precisees');
-    $lines[] = 'Dernier examen et resultat : ' . ($lastExam ?: 'Non precise');
     $lines[] = 'Formule choisie : ' . ($plan ?: 'Non precisee');
     $lines[] = 'Prix : ' . ($price ?: 'Non precise');
 }

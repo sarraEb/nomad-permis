@@ -860,9 +860,6 @@ leadForm?.addEventListener("submit", async (event) => {
     phone: formData.get("phone"),
     email: formData.get("email"),
     city: formData.get("city"),
-    gearbox: formData.get("gearbox"),
-    hours: formData.get("hours"),
-    lastExam: formData.get("lastExam"),
     message: formData.get("message"),
   };
   saveLead(lead);
