@@ -1533,10 +1533,10 @@ function addFaq(formData) {
 function startFaqEdit(id) {
   const faq = readFaqs().find((item) => item.id === id);
   if (!faq || !faqForm) return;
-  faqForm.editingId.value = faq.id;
-  faqForm.question.value = faq.question || "";
-  faqForm.answer.value = faq.answer || "";
-  faqForm.active.checked = faq.active !== false;
+  faqForm.elements.editingId.value = faq.id;
+  faqForm.elements.question.value = faq.question || "";
+  faqForm.elements.answer.value = faq.answer || "";
+  faqForm.elements.active.checked = faq.active !== false;
   if (faqSubmitButton) faqSubmitButton.textContent = "Enregistrer la question";
   if (cancelFaqEditButton) cancelFaqEditButton.hidden = false;
   if (faqStatus) faqStatus.textContent = "Modification de la question.";
@@ -1546,8 +1546,8 @@ function startFaqEdit(id) {
 function resetFaqEditor() {
   if (!faqForm) return;
   faqForm.reset();
-  faqForm.editingId.value = "";
-  faqForm.active.checked = true;
+  faqForm.elements.editingId.value = "";
+  faqForm.elements.active.checked = true;
   if (faqSubmitButton) faqSubmitButton.textContent = "Ajouter la question";
   if (cancelFaqEditButton) cancelFaqEditButton.hidden = true;
 }
