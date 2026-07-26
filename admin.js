@@ -253,7 +253,7 @@ function isAuthenticated() {
 
 function getAdminPage() {
   const page = new URLSearchParams(window.location.search).get("page") || "demandes";
-  return ["demandes", "contacts", "google", "videos", "formules", "coordonnees", "faq", "users", "history"].includes(page) ? page : "demandes";
+  return ["demandes", "contacts", "google", "videos", "formules", "coordonnees", "faq", "users", "roles", "history"].includes(page) ? page : "demandes";
 }
 
 function applyAdminPage() {
