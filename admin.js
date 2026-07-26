@@ -54,6 +54,8 @@ const faqSearchInput = document.querySelector("#faq-search");
 const faqStatusFilter = document.querySelector("#faq-status-filter");
 const userForm = document.querySelector("#user-form");
 const userStatus = document.querySelector("#user-status");
+const userSubmitButton = document.querySelector("#user-submit-button");
+const cancelUserEditButton = document.querySelector("#cancel-user-edit");
 const usersBody = document.querySelector("#users-body");
 const usersEmptyState = document.querySelector("#users-empty-state");
 const usersPagination = document.querySelector("#users-pagination");
@@ -991,6 +993,7 @@ function renderUsers() {
       <td><span class="status-pill ${user.active ? "done" : ""}">${user.active ? "Actif" : "Desactive"}</span></td>
       <td>
         <div class="table-actions">
+          <button type="button" data-user-action="edit" data-id="${user.id}">Modifier</button>
           <button type="button" data-user-action="toggle" data-id="${user.id}">${user.active ? "Desactiver" : "Activer"}</button>
           <button type="button" data-user-action="delete" data-id="${user.id}">Supprimer</button>
         </div>
@@ -1162,9 +1165,29 @@ function exportContactsCsv() {
 
 function addUser(formData) {
   const username = String(formData.get("username") || "").trim();
+  const editingId = String(formData.get("editingId") || "").trim();
   const users = readUsers();
-  if (users.some((user) => user.username.toLowerCase() === username.toLowerCase())) {
+  if (users.some((user) => user.id !== editingId && user.username.toLowerCase() === username.toLowerCase())) {
     if (userStatus) userStatus.textContent = "Cet identifiant existe deja.";
+    return;
+  }
+  if (editingId) {
+    const existing = users.find((user) => user.id === editingId);
+    if (!existing) return;
+    const password = String(formData.get("password") || "");
+    const updated = users.map((user) => user.id === editingId ? {
+      ...user,
+      name: String(formData.get("name") || "").trim(),
+      username,
+      password: password || user.password,
+      role: String(formData.get("role") || "Gestionnaire"),
+      updatedAt: new Date().toISOString(),
+    } : user);
+    writeUsers(updated);
+    logActivity("Modification utilisateur", `Utilisateur ${existing.username} modifie`);
+    if (userStatus) userStatus.textContent = "Utilisateur modifie.";
+    resetUserEditor();
+    renderUsers();
     return;
   }
   users.unshift({
@@ -1179,8 +1202,34 @@ function addUser(formData) {
   writeUsers(users);
   logActivity("Ajout utilisateur", `Utilisateur ${username} ajoute`);
   if (userStatus) userStatus.textContent = "Utilisateur ajoute.";
-  userForm?.reset();
+  resetUserEditor();
   renderUsers();
+}
+
+function startUserEdit(id) {
+  const user = readUsers().find((item) => item.id === id);
+  if (!user || !userForm) return;
+  userForm.editingId.value = user.id;
+  userForm.name.value = user.name || "";
+  userForm.username.value = user.username || "";
+  userForm.password.value = "";
+  userForm.password.required = false;
+  userForm.password.placeholder = "Laisser vide pour garder l'actuel";
+  userForm.role.value = user.role || "Gestionnaire";
+  if (userSubmitButton) userSubmitButton.textContent = "Enregistrer les modifications";
+  if (cancelUserEditButton) cancelUserEditButton.hidden = false;
+  if (userStatus) userStatus.textContent = `Modification de ${user.username}`;
+  userForm.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function resetUserEditor() {
+  if (!userForm) return;
+  userForm.reset();
+  userForm.editingId.value = "";
+  userForm.password.required = true;
+  userForm.password.placeholder = "Minimum 6 caracteres";
+  if (userSubmitButton) userSubmitButton.textContent = "Ajouter l'utilisateur";
+  if (cancelUserEditButton) cancelUserEditButton.hidden = true;
 }
 
 function toggleUser(id) {
@@ -1641,8 +1690,13 @@ userForm?.addEventListener("submit", (event) => {
 usersBody?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-user-action]");
   if (!button) return;
+  if (button.dataset.userAction === "edit") startUserEdit(button.dataset.id);
   if (button.dataset.userAction === "toggle") toggleUser(button.dataset.id);
   if (button.dataset.userAction === "delete") deleteUser(button.dataset.id);
+});
+cancelUserEditButton?.addEventListener("click", () => {
+  resetUserEditor();
+  if (userStatus) userStatus.textContent = "Modification annulee.";
 });
 clearHistoryButton?.addEventListener("click", () => {
   const currentUser = getCurrentUser()?.username || "system";
