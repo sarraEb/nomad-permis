@@ -110,24 +110,51 @@ const defaultUsers = [
 ];
 
 const permissionOptions = [
+  { key: "dashboard.access", label: "Acceder au dashboard" },
   { key: "demandes.view", label: "Voir les demandes" },
-  { key: "demandes.manage", label: "Modifier les demandes" },
-  { key: "contacts.manage", label: "Gerer les contacts" },
+  { key: "demandes.manage", label: "Modifier le statut des demandes" },
+  { key: "demandes.reply", label: "Repondre aux demandes" },
+  { key: "demandes.delete", label: "Supprimer les demandes" },
+  { key: "demandes.export", label: "Exporter les demandes" },
+  { key: "contacts.view", label: "Voir les messages contact" },
+  { key: "contacts.manage", label: "Modifier le statut des contacts" },
+  { key: "contacts.reply", label: "Repondre aux contacts" },
+  { key: "contacts.delete", label: "Supprimer les contacts" },
+  { key: "contacts.export", label: "Exporter les contacts" },
   { key: "google.manage", label: "Configurer Google" },
-  { key: "videos.manage", label: "Gerer les videos" },
-  { key: "formules.manage", label: "Gerer les formules" },
-  { key: "site.manage", label: "Gerer les coordonnees" },
-  { key: "faq.manage", label: "Gerer la FAQ" },
-  { key: "users.manage", label: "Gerer les utilisateurs" },
+  { key: "videos.view", label: "Voir les videos" },
+  { key: "videos.add", label: "Ajouter / uploader une video" },
+  { key: "videos.preview", label: "Previsualiser une video" },
+  { key: "videos.validate", label: "Valider / publier une video" },
+  { key: "videos.delete", label: "Supprimer une video" },
+  { key: "formules.view", label: "Voir les formules" },
+  { key: "formules.add", label: "Ajouter une formule" },
+  { key: "formules.edit", label: "Modifier une formule" },
+  { key: "formules.delete", label: "Supprimer une formule" },
+  { key: "formules.recommend", label: "Choisir la formule recommandee" },
+  { key: "site.manage", label: "Modifier les coordonnees du site" },
+  { key: "faq.view", label: "Voir la FAQ" },
+  { key: "faq.add", label: "Ajouter une question FAQ" },
+  { key: "faq.edit", label: "Modifier une question FAQ" },
+  { key: "faq.toggle", label: "Activer / desactiver une FAQ" },
+  { key: "faq.delete", label: "Supprimer une question FAQ" },
+  { key: "users.view", label: "Voir les utilisateurs" },
+  { key: "users.add", label: "Ajouter un utilisateur" },
+  { key: "users.edit", label: "Modifier un utilisateur" },
+  { key: "users.toggle", label: "Activer / desactiver un utilisateur" },
+  { key: "users.delete", label: "Supprimer un utilisateur" },
+  { key: "roles.view", label: "Voir les roles" },
+  { key: "roles.manage", label: "Ajouter / modifier / supprimer les roles" },
   { key: "history.view", label: "Voir l'historique" },
+  { key: "history.clear", label: "Vider l'historique" },
 ];
 
 const allPermissionKeys = permissionOptions.map((permission) => permission.key);
 
 const defaultRoles = [
   { id: "ROLE-ADMIN", name: "Administrateur", permissions: [...allPermissionKeys], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
-  { id: "ROLE-MANAGER", name: "Gestionnaire", permissions: ["demandes.view", "demandes.manage", "contacts.manage", "videos.manage", "formules.manage", "faq.manage"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
-  { id: "ROLE-READONLY", name: "Lecture seule", permissions: ["demandes.view", "history.view"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
+  { id: "ROLE-MANAGER", name: "Gestionnaire", permissions: ["dashboard.access", "demandes.view", "demandes.manage", "demandes.reply", "contacts.view", "contacts.manage", "contacts.reply", "videos.view", "videos.add", "videos.preview", "videos.validate", "formules.view", "formules.add", "formules.edit", "faq.view", "faq.add", "faq.edit", "faq.toggle"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
+  { id: "ROLE-READONLY", name: "Lecture seule", permissions: ["dashboard.access", "demandes.view", "contacts.view", "videos.view", "formules.view", "faq.view", "history.view"], protected: true, createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString() },
 ];
 
 const defaultFormulas = [
@@ -520,13 +547,27 @@ function writeUsers(users) {
   localStorage.setItem(usersStorageKey, JSON.stringify(users));
 }
 
+function expandLegacyPermissions(permissions = []) {
+  const legacyMap = {
+    "demandes.manage": ["demandes.manage", "demandes.reply", "demandes.delete", "demandes.export"],
+    "contacts.manage": ["contacts.view", "contacts.manage", "contacts.reply", "contacts.delete", "contacts.export"],
+    "videos.manage": ["videos.view", "videos.add", "videos.preview", "videos.validate", "videos.delete"],
+    "formules.manage": ["formules.view", "formules.add", "formules.edit", "formules.delete", "formules.recommend"],
+    "faq.manage": ["faq.view", "faq.add", "faq.edit", "faq.toggle", "faq.delete"],
+    "users.manage": ["users.view", "users.add", "users.edit", "users.toggle", "users.delete", "roles.view", "roles.manage"],
+  };
+  return [...new Set(permissions.flatMap((permission) => legacyMap[permission] || permission))];
+}
+
 function readRoles() {
   try {
     const stored = JSON.parse(localStorage.getItem(rolesStorageKey)) || [];
     if (!stored.length) return defaultRoles.map((role) => ({ ...role, permissions: [...role.permissions] }));
     return stored.map((role) => ({
       ...role,
-      permissions: Array.isArray(role.permissions) ? role.permissions : [],
+      permissions: role.id === "ROLE-ADMIN"
+        ? [...allPermissionKeys]
+        : expandLegacyPermissions(Array.isArray(role.permissions) ? role.permissions : []),
     }));
   } catch {
     return defaultRoles.map((role) => ({ ...role, permissions: [...role.permissions] }));

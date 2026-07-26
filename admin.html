@@ -450,16 +450,43 @@
           <fieldset class="permissions-field">
             <legend>Actions autorisees</legend>
             <div class="permissions-grid" id="permissions-grid">
+              <label><input type="checkbox" name="permissions" value="dashboard.access"> Acceder au dashboard</label>
               <label><input type="checkbox" name="permissions" value="demandes.view"> Voir les demandes</label>
-              <label><input type="checkbox" name="permissions" value="demandes.manage"> Modifier les demandes</label>
-              <label><input type="checkbox" name="permissions" value="contacts.manage"> Gerer les contacts</label>
+              <label><input type="checkbox" name="permissions" value="demandes.manage"> Modifier le statut des demandes</label>
+              <label><input type="checkbox" name="permissions" value="demandes.reply"> Repondre aux demandes</label>
+              <label><input type="checkbox" name="permissions" value="demandes.delete"> Supprimer les demandes</label>
+              <label><input type="checkbox" name="permissions" value="demandes.export"> Exporter les demandes</label>
+              <label><input type="checkbox" name="permissions" value="contacts.view"> Voir les messages contact</label>
+              <label><input type="checkbox" name="permissions" value="contacts.manage"> Modifier le statut des contacts</label>
+              <label><input type="checkbox" name="permissions" value="contacts.reply"> Repondre aux contacts</label>
+              <label><input type="checkbox" name="permissions" value="contacts.delete"> Supprimer les contacts</label>
+              <label><input type="checkbox" name="permissions" value="contacts.export"> Exporter les contacts</label>
               <label><input type="checkbox" name="permissions" value="google.manage"> Configurer Google</label>
-              <label><input type="checkbox" name="permissions" value="videos.manage"> Gerer les videos</label>
-              <label><input type="checkbox" name="permissions" value="formules.manage"> Gerer les formules</label>
-              <label><input type="checkbox" name="permissions" value="site.manage"> Gerer les coordonnees</label>
-              <label><input type="checkbox" name="permissions" value="faq.manage"> Gerer la FAQ</label>
-              <label><input type="checkbox" name="permissions" value="users.manage"> Gerer les utilisateurs</label>
+              <label><input type="checkbox" name="permissions" value="videos.view"> Voir les videos</label>
+              <label><input type="checkbox" name="permissions" value="videos.add"> Ajouter / uploader une video</label>
+              <label><input type="checkbox" name="permissions" value="videos.preview"> Previsualiser une video</label>
+              <label><input type="checkbox" name="permissions" value="videos.validate"> Valider / publier une video</label>
+              <label><input type="checkbox" name="permissions" value="videos.delete"> Supprimer une video</label>
+              <label><input type="checkbox" name="permissions" value="formules.view"> Voir les formules</label>
+              <label><input type="checkbox" name="permissions" value="formules.add"> Ajouter une formule</label>
+              <label><input type="checkbox" name="permissions" value="formules.edit"> Modifier une formule</label>
+              <label><input type="checkbox" name="permissions" value="formules.delete"> Supprimer une formule</label>
+              <label><input type="checkbox" name="permissions" value="formules.recommend"> Choisir la formule recommandee</label>
+              <label><input type="checkbox" name="permissions" value="site.manage"> Modifier les coordonnees du site</label>
+              <label><input type="checkbox" name="permissions" value="faq.view"> Voir la FAQ</label>
+              <label><input type="checkbox" name="permissions" value="faq.add"> Ajouter une question FAQ</label>
+              <label><input type="checkbox" name="permissions" value="faq.edit"> Modifier une question FAQ</label>
+              <label><input type="checkbox" name="permissions" value="faq.toggle"> Activer / desactiver une FAQ</label>
+              <label><input type="checkbox" name="permissions" value="faq.delete"> Supprimer une question FAQ</label>
+              <label><input type="checkbox" name="permissions" value="users.view"> Voir les utilisateurs</label>
+              <label><input type="checkbox" name="permissions" value="users.add"> Ajouter un utilisateur</label>
+              <label><input type="checkbox" name="permissions" value="users.edit"> Modifier un utilisateur</label>
+              <label><input type="checkbox" name="permissions" value="users.toggle"> Activer / desactiver un utilisateur</label>
+              <label><input type="checkbox" name="permissions" value="users.delete"> Supprimer un utilisateur</label>
+              <label><input type="checkbox" name="permissions" value="roles.view"> Voir les roles</label>
+              <label><input type="checkbox" name="permissions" value="roles.manage"> Ajouter / modifier / supprimer les roles</label>
               <label><input type="checkbox" name="permissions" value="history.view"> Voir l'historique</label>
+              <label><input type="checkbox" name="permissions" value="history.clear"> Vider l'historique</label>
             </div>
           </fieldset>
           <input name="editingId" type="hidden">
