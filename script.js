@@ -33,7 +33,7 @@ document.addEventListener("click", (event) => {
 
 const siteSettingsKey = "nomad_site_settings";
 const siteSettingsVersionKey = "nomad_site_settings_version";
-const siteSettingsVersion = "2026-07-26-contact-separated";
+const siteSettingsVersion = "2026-08-09-phone-update";
 const formulasStorageKey = "nomad_formulas";
 const formulasVersionKey = "nomad_formulas_version";
 const formulasVersion = "2026-07-20-client-validated";
@@ -96,7 +96,7 @@ const defaultSiteSettings = {
   googleApiKey: "",
   googlePlaceId: "",
   googlePlaceQuery: "Auto-école de Témis",
-  phone: "+33 3 81 81 81 81",
+  phone: "07 70 66 82 75",
   email: "contact@nomad-votre-permis.fr",
   address: "Immeuble de l'Étang, Entrée C, Chemin de l'Étang, Châtillon-le-Duc",
   contactEyebrow: "Contact",
@@ -147,6 +147,9 @@ const defaultFaqs = [
 function readSiteSettings() {
   try {
     const stored = JSON.parse(localStorage.getItem(siteSettingsKey)) || {};
+    if (stored.phone === "+33 3 81 81 81 81") {
+      stored.phone = defaultSiteSettings.phone;
+    }
     if (localStorage.getItem(siteSettingsVersionKey) !== siteSettingsVersion) {
       const migrated = {
         ...defaultSiteSettings,
