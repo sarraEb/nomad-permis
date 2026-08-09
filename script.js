@@ -279,16 +279,28 @@ const defaultVideos = [
   },
 ];
 let publishedVideos = readPublishedVideos();
-let videos = publishedVideos.length ? publishedVideos : defaultVideos;
+let videos = publishedVideos;
 
 let activeVideo = 1;
+const videoSection = document.querySelector(".videos");
 const track = document.querySelector(".video-track");
 const dots = document.querySelector(".carousel-dots");
 
 applySiteSettings();
 
+function updateVideoSectionVisibility() {
+  if (!videoSection) return;
+  videoSection.hidden = videos.length === 0;
+}
+
 function renderCarousel() {
   if (!track || !dots) return;
+  updateVideoSectionVisibility();
+  if (!videos.length) {
+    track.innerHTML = "";
+    dots.innerHTML = "";
+    return;
+  }
 
   const ordered = [-1, 0, 1].map((offset) => {
     const index = (activeVideo + offset + videos.length) % videos.length;
