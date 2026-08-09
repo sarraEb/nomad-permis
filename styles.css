@@ -498,8 +498,8 @@ p { color: var(--muted); line-height: 1.65; }
 }
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
-  gap: clamp(42px, 5vw, 92px);
+  grid-template-columns: repeat(4, minmax(230px, 1fr));
+  gap: clamp(18px, 2.2vw, 34px);
   align-items: center;
   width: 100%;
   max-width: none;
@@ -507,6 +507,7 @@ p { color: var(--muted); line-height: 1.65; }
 }
 .pricing-grid[data-count="1"] { grid-template-columns: minmax(260px, 360px); justify-content: center; }
 .pricing-grid[data-count="2"] { grid-template-columns: repeat(2, minmax(250px, 340px)); justify-content: center; }
+.pricing-grid[data-count="3"] { grid-template-columns: repeat(3, minmax(250px, 360px)); justify-content: center; }
 .pricing-nav {
   width: 42px;
   aspect-ratio: 1;
@@ -538,7 +539,7 @@ p { color: var(--muted); line-height: 1.65; }
   background: var(--orange);
 }
 .price-card {
-  padding: 24px 34px 18px;
+  padding: 24px 24px 18px;
   text-align: center;
   position: relative;
   min-height: 0;
@@ -565,7 +566,7 @@ p { color: var(--muted); line-height: 1.65; }
   grid-column: auto;
   max-width: none;
   margin: 0;
-  padding: 24px 34px 18px;
+  padding: 24px 24px 18px;
   border-color: rgba(7,32,86,.08);
   background: rgba(255,255,255,.96);
 }

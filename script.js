@@ -419,14 +419,14 @@ function renderFaqs() {
 }
 
 function getPricingWindow(activeFormulas) {
-  if (activeFormulas.length <= 3) return activeFormulas;
-  return Array.from({ length: 3 }, (_, offset) => activeFormulas[(pricingSlideIndex + offset) % activeFormulas.length]);
+  if (activeFormulas.length <= 4) return activeFormulas;
+  return Array.from({ length: 4 }, (_, offset) => activeFormulas[(pricingSlideIndex + offset) % activeFormulas.length]);
 }
 
 function renderPricingDots(activeFormulas) {
   const dots = document.querySelector("#pricing-dots");
   if (!dots) return;
-  if (activeFormulas.length <= 3) {
+  if (activeFormulas.length <= 4) {
     dots.innerHTML = "";
     return;
   }
@@ -443,7 +443,7 @@ function renderPricingSlider(activeFormulas) {
   pricingGrid.innerHTML = visibleFormulas.map(renderFormulaCard).join("");
   pricingGrid.dataset.count = String(visibleFormulas.length);
   document.querySelectorAll("[data-pricing-action]").forEach((button) => {
-    button.hidden = activeFormulas.length <= 3;
+    button.hidden = activeFormulas.length <= 4;
   });
   renderPricingDots(activeFormulas);
 }
