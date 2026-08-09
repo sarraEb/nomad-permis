@@ -528,13 +528,16 @@ p { color: var(--muted); line-height: 1.65; }
   justify-content: center;
   gap: 8px;
 }
-.pricing-dots span {
+.pricing-dots button {
   width: 9px;
   height: 9px;
   border-radius: 999px;
+  border: 0;
   background: #b7c2da;
+  cursor: pointer;
+  padding: 0;
 }
-.pricing-dots span.is-active {
+.pricing-dots button.is-active {
   width: 28px;
   background: var(--orange);
 }

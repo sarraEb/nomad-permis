@@ -434,19 +434,27 @@ function renderFaqs() {
 }
 
 function getPricingWindow(activeFormulas) {
-  if (activeFormulas.length <= 4) return activeFormulas;
-  return Array.from({ length: 4 }, (_, offset) => activeFormulas[(pricingSlideIndex + offset) % activeFormulas.length]);
+  const visibleCount = getPricingVisibleCount();
+  if (activeFormulas.length <= visibleCount) return activeFormulas;
+  return Array.from({ length: visibleCount }, (_, offset) => activeFormulas[(pricingSlideIndex + offset) % activeFormulas.length]);
+}
+
+function getPricingVisibleCount() {
+  if (window.matchMedia("(max-width: 720px)").matches) return 1;
+  if (window.matchMedia("(max-width: 1020px)").matches) return 2;
+  return 4;
 }
 
 function renderPricingDots(activeFormulas) {
   const dots = document.querySelector("#pricing-dots");
   if (!dots) return;
-  if (activeFormulas.length <= 4) {
+  const visibleCount = getPricingVisibleCount();
+  if (activeFormulas.length <= visibleCount) {
     dots.innerHTML = "";
     return;
   }
   dots.innerHTML = activeFormulas.map((_, index) => `
-    <span class="${index === pricingSlideIndex ? "is-active" : ""}"></span>
+    <button type="button" class="${index === pricingSlideIndex ? "is-active" : ""}" aria-label="Afficher la formule ${index + 1}" data-pricing-dot="${index}"></button>
   `).join("");
 }
 
@@ -458,10 +466,35 @@ function renderPricingSlider(activeFormulas) {
   pricingGrid.innerHTML = visibleFormulas.map(renderFormulaCard).join("");
   pricingGrid.dataset.count = String(visibleFormulas.length);
   document.querySelectorAll("[data-pricing-action]").forEach((button) => {
-    button.hidden = activeFormulas.length <= 4;
+    button.hidden = activeFormulas.length <= getPricingVisibleCount();
   });
   renderPricingDots(activeFormulas);
 }
+
+let pricingTouchStartX = 0;
+let pricingTouchStartY = 0;
+
+document.querySelector("#pricing-grid")?.addEventListener("touchstart", (event) => {
+  const touch = event.touches[0];
+  pricingTouchStartX = touch.clientX;
+  pricingTouchStartY = touch.clientY;
+}, { passive: true });
+
+document.querySelector("#pricing-grid")?.addEventListener("touchend", (event) => {
+  const touch = event.changedTouches[0];
+  const deltaX = touch.clientX - pricingTouchStartX;
+  const deltaY = touch.clientY - pricingTouchStartY;
+  if (Math.abs(deltaX) < 45 || Math.abs(deltaY) > 60) return;
+  const activeFormulas = formulas.filter((formula) => formula.active !== false);
+  if (activeFormulas.length <= getPricingVisibleCount()) return;
+  const direction = deltaX < 0 ? 1 : -1;
+  pricingSlideIndex = (pricingSlideIndex + direction + activeFormulas.length) % activeFormulas.length;
+  renderPricingSlider(activeFormulas);
+}, { passive: true });
+
+window.addEventListener("resize", () => {
+  renderPricingSlider(formulas.filter((formula) => formula.active !== false));
+});
 
 function applySiteSettings() {
   const activeFormulas = formulas.filter((formula) => formula.active !== false);
@@ -822,11 +855,19 @@ document.addEventListener("click", (event) => {
   const pricingButton = event.target.closest("[data-pricing-action]");
   if (pricingButton) {
     const activeFormulas = formulas.filter((formula) => formula.active !== false);
-    if (activeFormulas.length > 3) {
+    if (activeFormulas.length > getPricingVisibleCount()) {
       const direction = pricingButton.dataset.pricingAction === "next" ? 1 : -1;
       pricingSlideIndex = (pricingSlideIndex + direction + activeFormulas.length) % activeFormulas.length;
       renderPricingSlider(activeFormulas);
     }
+    return;
+  }
+
+  const pricingDot = event.target.closest("[data-pricing-dot]");
+  if (pricingDot) {
+    const activeFormulas = formulas.filter((formula) => formula.active !== false);
+    pricingSlideIndex = Number(pricingDot.dataset.pricingDot) || 0;
+    renderPricingSlider(activeFormulas);
     return;
   }
 
