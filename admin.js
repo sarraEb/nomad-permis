@@ -5,11 +5,11 @@ const siteSettingsVersionKey = "nomad_site_settings_version";
 const siteSettingsVersion = "2026-08-09-phone-update";
 const formulasStorageKey = "nomad_formulas";
 const formulasVersionKey = "nomad_formulas_version";
-const formulasVersion = "2026-07-20-client-validated";
+const formulasVersion = "2026-09-16-responsable-content";
 const videosStorageKey = "nomad_videos";
 const faqsStorageKey = "nomad_faqs";
 const faqsVersionKey = "nomad_faqs_version";
-const faqsVersion = "2026-07-20-client-validated";
+const faqsVersion = "2026-09-16-responsable-content";
 const usersStorageKey = "nomad_users";
 const rolesStorageKey = "nomad_roles";
 const activityStorageKey = "nomad_activity_log";
@@ -161,50 +161,50 @@ const defaultFormulas = [
   {
     key: "journee",
     title: "La Journée NOMAD",
-    description: "Une journée pensée pour aller à l'essentiel.",
+    description: "Une journée pensée pour aller à l'essentiel. Pour les candidats ayant récemment échoué alors que leur niveau est déjà proche de celui attendu.",
     price: "799",
-    features: ["Gestion administrative de A à Z", "Train aller-retour", "1 heure de conduite incluse", "Présentation à l'examen", "Panier régional"],
+    features: ["Étude et gestion administrative du dossier", "Train aller-retour", "1 heure de conduite incluse", "Accompagnement à l'examen pratique", "Organisation complète de la journée NOMAD"],
     recommended: false,
     active: true,
     badge: "",
-    note: "",
+    note: "Offre soumise à éligibilité après étude du dossier et du dernier résultat d'examen.",
     ctaLabel: "Vérifier mon éligibilité",
   },
   {
     key: "access",
     title: "NOMAD ACCESS",
     description: "Le choix malin pour aller vite et bien.",
-    price: "1099",
-    features: ["Gestion administrative de A à Z", "Livret de formation personnalisé", "3 à 8 heures de conduite", "Présentation à l'examen", "Train aller-retour", "Hôtel 3 étoiles : 0 à 1 nuitée", "Petit déjeuner inclus dans la limite de 10 €", "Options : dîner 19 €/jour ; coaching permis 150 €"],
+    price: "949",
+    features: ["Gestion administrative de A à Z", "Organisation du transport aller-retour", "Organisation de l'hébergement si nécessaire", "Petit-déjeuner lorsque l'hébergement est nécessaire", "3 heures de conduite incluses", "Programme de formation personnalisé", "Accompagnement à l'examen pratique", "Coordination complète du séjour"],
     recommended: false,
     active: true,
     badge: "",
     note: "à partir de",
-    ctaLabel: "Étudier cette formule",
+    ctaLabel: "Étudier mon dossier",
   },
   {
     key: "confort",
     title: "NOMAD CONFORT",
-    description: "L'expérience NOMAD sans compromis.",
-    price: "1799",
-    features: ["Gestion administrative de A à Z", "Livret de formation personnalisé", "9 à 20 heures de conduite", "Présentation à l'examen", "Train aller-retour", "Hôtel 3 étoiles : 2 à 5 nuitées", "Petits déjeuners inclus dans la limite de 10 €/jour", "Panier régional", "Options : dîner 19 €/jour ; coaching permis 150 €"],
+    description: "L'expérience NOMAD avec un accompagnement renforcé.",
+    price: "1099",
+    features: ["Tout ce qui est compris dans NOMAD ACCESS", "2 heures de coaching permis incluses", "Suivi pédagogique renforcé", "Panier régional NOMAD", "Seulement 150 € de plus qu'ACCESS"],
     recommended: true,
     active: true,
-    badge: "Recommande",
+    badge: "Formule recommandée",
     note: "à partir de",
-    ctaLabel: "Étudier cette formule",
+    ctaLabel: "Choisir NOMAD CONFORT",
   },
   {
     key: "ultimate",
     title: "NOMAD ULTIMATE",
-    description: "L'expérience NOMAD dans sa forme la plus exclusive.",
-    price: "2499",
-    features: ["Gestion administrative de A à Z", "Évaluation préalable", "Livret de formation personnalisé", "21 à 35 heures de conduite", "Présentation à l'examen", "Train aller-retour", "Hôtel 3 étoiles : 5 à 8 nuitées", "Petits déjeuners inclus dans la limite de 10 €/jour", "Dîners inclus dans la limite de 25 €/jour", "2 heures de coaching permis", "Panier régional"],
+    description: "La sérénité maximale, du dossier jusqu'à l'examen.",
+    price: "1399",
+    features: ["Tout ce qui est compris dans NOMAD CONFORT", "Évaluation préalable incluse", "Examen blanc / préparation finale dédiée", "Accompagnement logistique prioritaire", "Transferts gare, hôtel et auto-école organisés", "1 dîner inclus par nuitée - limite 25 € par dîner", "Interlocuteur prioritaire pendant le séjour"],
     recommended: false,
     active: true,
     badge: "",
     note: "à partir de",
-    ctaLabel: "Étudier cette formule",
+    ctaLabel: "Choisir NOMAD ULTIMATE",
   },
 ];
 
@@ -225,50 +225,64 @@ const defaultSiteSettings = {
 const defaultFaqs = [
   {
     id: "FAQ-1",
-    question: "Puis-je venir de Paris ou d'une autre ville ?",
-    answer: "Oui. NOMAD accompagne les candidats venant de toute la France et organise leur déplacement selon la formule choisie.",
+    question: "Combien d'heures de conduite sont incluses ?",
+    answer: "Chaque formule comprend 3 heures de conduite. Après étude du dossier, un volume complémentaire peut être recommandé selon le niveau réel du candidat.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-2",
-    question: "En combien de temps mon séjour peut-il être organisé ?",
-    answer: "Après l'étude de votre dossier, notre équipe peut organiser votre séjour très rapidement selon vos disponibilités et le nombre d'heures prévu.",
+    question: "Puis-je choisir ULTIMATE si je n'ai besoin que de quelques heures ?",
+    answer: "Oui. ACCESS, CONFORT et ULTIMATE correspondent à des niveaux d'accompagnement différents, pas à des niveaux de conduite.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-3",
-    question: "Comment déterminez-vous mon nombre d'heures ?",
-    answer: "Nous analysons votre expérience, votre dernier CEPC, le temps écoulé depuis votre dernière conduite et, si nécessaire, votre évaluation préalable.",
+    question: "Et si j'ai besoin de davantage d'heures ?",
+    answer: "Le programme et la durée du séjour sont adaptés. Le nombre d'heures reste indépendant de la formule choisie.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-4",
-    question: "Que comprennent les formules NOMAD ?",
-    answer: "Toutes nos formules comprennent la gestion administrative, la conduite, la présentation à l'examen et le train aller-retour. L'hébergement, les repas et le coaching varient selon la formule choisie.",
+    question: "L'hôtel est-il toujours inclus ?",
+    answer: "Lorsque l'organisation du séjour nécessite une ou plusieurs nuitées, NOMAD organise l'hébergement en hôtel 3 étoiles.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-5",
-    question: "Mon code et mon numéro NEPH doivent-ils être valides ?",
-    answer: "Oui. Votre code de la route et votre numéro NEPH doivent être valides pour permettre votre présentation à l'examen.",
+    question: "Comment fonctionnent les dîners en ULTIMATE ?",
+    answer: "Un dîner est inclus par nuitée du séjour, dans la limite de 25 € par dîner.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-6",
-    question: "Puis-je payer en plusieurs fois ?",
-    answer: "Oui. Le paiement est possible par virement ou en quatre fois avec Alma.",
+    question: "Le train est-il compris ?",
+    answer: "Le transport aller-retour fait partie de l'organisation proposée par NOMAD. Le tarif définitif dépend des disponibilités et du prix du transport au moment de la réservation.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },
   {
     id: "FAQ-7",
-    question: "Que se passe-t-il après un échec ?",
-    answer: "Nous analysons votre CEPC et vous proposons une nouvelle organisation adaptée. Avec au moins 24 points sur 31, la Journée NOMAD peut notamment être envisagée.",
+    question: "Puis-je venir par mes propres moyens ?",
+    answer: "Oui. La proposition peut être adaptée si le candidat souhaite organiser lui-même son déplacement.",
+    active: true,
+    createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
+  },
+  {
+    id: "FAQ-8",
+    question: "NOMAD garantit-il la réussite au permis ?",
+    answer: "Non. L'objectif est de préparer et présenter le candidat lorsqu'il possède un niveau suffisant pour conduire seul, en sécurité et avec de réelles chances de réussite.",
+    active: true,
+    createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
+  },
+  {
+    id: "FAQ-9",
+    question: "Je viens d'échouer au permis. Puis-je choisir La Journée NOMAD ?",
+    answer: "Cela dépend du résultat obtenu, du motif de l'échec et du niveau observé. L'offre est proposée uniquement après étude du dossier.",
     active: true,
     createdAt: new Date("2026-01-01T00:00:00.000Z").toISOString(),
   },

@@ -192,77 +192,56 @@
     <section class="pricing section-decor" id="formules">
       <div class="container">
         <h2>Nos formules</h2>
+        <div class="pricing-intro">
+          <p class="pricing-intro__lead">Votre niveau détermine le nombre d'heures. Vous choisissez votre niveau d'accompagnement.</p>
+          <p>Nous étudions votre dossier, déterminons le volume de conduite adapté puis construisons votre séjour selon la formule NOMAD que vous choisissez.</p>
+        </div>
+        <div class="day-offer" id="day-offer"></div>
         <div class="pricing-carousel" aria-label="Carrousel des formules">
           <button class="pricing-nav pricing-nav--prev" type="button" data-pricing-action="prev" aria-label="Formules précédentes">
             <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
           </button>
           <div class="pricing-grid" id="pricing-grid">
-          <article class="price-card price-card--day" data-formula-key="journee">
-            <h3>La Journée NOMAD</h3>
-            <p>Une journée pensée pour aller à l'essentiel.</p>
-            <ul class="check-list check-list--plain">
-              <li>Gestion administrative de A à Z</li>
-              <li>Train aller-retour</li>
-              <li>1 heure de conduite incluse</li>
-              <li>Présentation à l'examen</li>
-              <li>Panier régional</li>
-            </ul>
-            <strong class="price">799 €</strong>
-            <a class="btn btn--primary js-plan-select" href="#inscription" data-plan="La Journée NOMAD" data-price="799">Vérifier mon éligibilité</a>
-          </article>
           <article class="price-card" data-formula-key="access">
             <h3>NOMAD ACCESS</h3>
             <p>Le choix malin pour aller vite et bien.</p>
             <ul class="check-list check-list--plain">
               <li>Gestion administrative de A à Z</li>
-              <li>Livret de formation personnalisé</li>
-              <li>3 à 8 heures de conduite</li>
-              <li>Présentation à l'examen</li>
-              <li>Train aller-retour</li>
-              <li>Hôtel 3 étoiles : 0 à 1 nuitée</li>
-              <li>Petit déjeuner inclus dans la limite de 10 €</li>
-              <li>Options : dîner 19 €/jour ; coaching permis 150 €</li>
+              <li>Organisation du transport aller-retour</li>
+              <li>Organisation de l'hébergement si nécessaire</li>
+              <li>3 heures de conduite incluses</li>
+              <li>Programme de formation personnalisé</li>
             </ul>
-            <strong class="price">à partir de 1 099 €</strong>
-            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ACCESS" data-price="1099">Étudier cette formule</a>
+            <strong class="price">à partir de 949 €</strong>
+            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ACCESS" data-price="949">Étudier mon dossier</a>
           </article>
           <article class="price-card price-card--featured" data-formula-key="confort">
-            <div class="recommended">Recommandé</div>
+            <div class="recommended">Formule recommandée</div>
             <div class="star" aria-hidden="true"><i class="fa-solid fa-star"></i></div>
             <h3>NOMAD CONFORT</h3>
-            <p>L'expérience NOMAD sans compromis.</p>
+            <p>L'expérience NOMAD avec un accompagnement renforcé.</p>
             <ul class="check-list check-list--plain">
-              <li>Gestion administrative de A à Z</li>
-              <li>Livret de formation personnalisé</li>
-              <li>9 à 20 heures de conduite</li>
-              <li>Présentation à l'examen</li>
-              <li>Train aller-retour</li>
-              <li>Hôtel 3 étoiles : 2 à 5 nuitées</li>
-              <li>Petits déjeuners inclus dans la limite de 10 €/jour</li>
-              <li>Panier régional</li>
-              <li>Options : dîner 19 €/jour ; coaching permis 150 €</li>
+              <li>Tout ce qui est compris dans NOMAD ACCESS</li>
+              <li>2 heures de coaching permis incluses</li>
+              <li>Suivi pédagogique renforcé</li>
+              <li>Panier régional NOMAD</li>
+              <li>Seulement 150 € de plus qu'ACCESS</li>
             </ul>
-            <strong class="price">à partir de 1 799 €</strong>
-            <a class="btn btn--primary js-plan-select" href="#inscription" data-plan="NOMAD CONFORT" data-price="1799">Étudier cette formule</a>
+            <strong class="price">à partir de 1 099 €</strong>
+            <a class="btn btn--primary js-plan-select" href="#inscription" data-plan="NOMAD CONFORT" data-price="1099">Choisir NOMAD CONFORT</a>
           </article>
           <article class="price-card" data-formula-key="ultimate">
             <h3>NOMAD ULTIMATE</h3>
-            <p>L'expérience NOMAD dans sa forme la plus exclusive.</p>
+            <p>La sérénité maximale, du dossier jusqu'à l'examen.</p>
             <ul class="check-list check-list--plain">
-              <li>Gestion administrative de A à Z</li>
-              <li>Évaluation préalable</li>
-              <li>Livret de formation personnalisé</li>
-              <li>21 à 35 heures de conduite</li>
-              <li>Présentation à l'examen</li>
-              <li>Train aller-retour</li>
-              <li>Hôtel 3 étoiles : 5 à 8 nuitées</li>
-              <li>Petits déjeuners inclus dans la limite de 10 €/jour</li>
-              <li>Dîners inclus dans la limite de 25 €/jour</li>
-              <li>2 heures de coaching permis</li>
-              <li>Panier régional</li>
+              <li>Tout ce qui est compris dans NOMAD CONFORT</li>
+              <li>Évaluation préalable incluse</li>
+              <li>Examen blanc / préparation finale dédiée</li>
+              <li>Accompagnement logistique prioritaire</li>
+              <li>1 dîner inclus par nuitée - limite 25 € par dîner</li>
             </ul>
-            <strong class="price">à partir de 2 499 €</strong>
-            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ULTIMATE" data-price="2499">Étudier cette formule</a>
+            <strong class="price">à partir de 1 399 €</strong>
+            <a class="btn btn--outline js-plan-select" href="#inscription" data-plan="NOMAD ULTIMATE" data-price="1399">Choisir NOMAD ULTIMATE</a>
           </article>
           </div>
           <button class="pricing-nav pricing-nav--next" type="button" data-pricing-action="next" aria-label="Formules suivantes">
@@ -270,7 +249,49 @@
           </button>
         </div>
         <div class="pricing-dots" id="pricing-dots" aria-hidden="true"></div>
-        <p class="pricing-note">Tarifs TTC à partir de, établis selon le volume d'heures, la durée du séjour et les prestations choisies. Évaluation préalable : 50 €, incluse dans la formule NOMAD ULTIMATE. Paiement par virement ou en 4 fois avec Alma.</p>
+        <div class="formula-comparator" aria-label="Comparateur des formules NOMAD">
+          <h3>Comparer les formules</h3>
+          <div class="formula-comparator__table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Prestation</th>
+                  <th>ACCESS</th>
+                  <th>CONFORT</th>
+                  <th>ULTIMATE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>À partir de</td><td>949 €</td><td>1 099 €</td><td>1 399 €</td></tr>
+                <tr><td>Gestion administrative</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Transport / séjour organisé</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>3 h de conduite incluses</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Hôtel 3 étoiles</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Petit-déjeuner</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Accompagnement à l'examen</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Programme personnalisé</td><td>Oui</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Coaching permis 2 h</td><td>Option</td><td>Inclus</td><td>Inclus</td></tr>
+                <tr><td>Suivi pédagogique renforcé</td><td>-</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Panier régional NOMAD</td><td>-</td><td>Oui</td><td>Oui</td></tr>
+                <tr><td>Évaluation préalable</td><td>Option</td><td>Option</td><td>Incluse</td></tr>
+                <tr><td>Examen blanc / préparation finale dédiée</td><td>-</td><td>-</td><td>Oui</td></tr>
+                <tr><td>Accompagnement logistique prioritaire</td><td>-</td><td>-</td><td>Oui</td></tr>
+                <tr><td>Transferts gare / hôtel / auto-école</td><td>-</td><td>-</td><td>Oui</td></tr>
+                <tr><td>Interlocuteur prioritaire pendant le séjour</td><td>-</td><td>-</td><td>Oui</td></tr>
+                <tr><td>Dîner</td><td>Option</td><td>Option</td><td>1 par nuitée inclus</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="pricing-note">Tarifs TTC à partir de, établis selon le volume de formation, la durée du séjour et les conditions de transport disponibles au moment de la réservation. Un devis complet est présenté avant toute réservation.</p>
+        <div class="pricing-reassurance">
+          <h3>Votre permis mérite un plan clair.</h3>
+          <p>Vous avez déjà beaucoup conduit ? Vous venez d'échouer à l'examen ? Vous voulez accélérer votre parcours ? Vous ne savez pas combien d'heures il vous reste réellement ? Envoyez-nous votre dossier. Notre équipe l'étudie et vous propose une organisation adaptée à votre situation.</p>
+          <div class="pricing-reassurance__actions">
+            <a class="btn btn--primary" href="#inscription">Faire étudier mon dossier</a>
+            <a class="btn btn--outline" href="#contact">Être rappelé</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -430,9 +451,9 @@
           <label>Formule choisie
             <select name="plan" id="selected-plan" required>
               <option value="La Journée NOMAD" data-price="799">La Journée NOMAD - 799 EUR</option>
-              <option value="NOMAD ACCESS" data-price="1099">NOMAD ACCESS - à partir de 1 099 EUR</option>
-              <option value="NOMAD CONFORT" data-price="1799">NOMAD CONFORT - à partir de 1 799 EUR</option>
-              <option value="NOMAD ULTIMATE" data-price="2499">NOMAD ULTIMATE - à partir de 2 499 EUR</option>
+              <option value="NOMAD ACCESS" data-price="949">NOMAD ACCESS - à partir de 949 EUR</option>
+              <option value="NOMAD CONFORT" data-price="1099">NOMAD CONFORT - à partir de 1 099 EUR</option>
+              <option value="NOMAD ULTIMATE" data-price="1399">NOMAD ULTIMATE - à partir de 1 399 EUR</option>
             </select>
           </label>
           <label>Prix
