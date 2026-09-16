@@ -538,6 +538,9 @@ p { color: var(--muted); line-height: 1.65; }
   box-shadow: 0 10px 24px rgba(6,27,58,.08);
   cursor: pointer;
 }
+.pricing-nav[hidden] {
+  display: none !important;
+}
 .pricing-nav:hover { color: var(--orange); border-color: rgba(245,130,0,.45); }
 .pricing-dots {
   min-height: 18px;
