@@ -22,6 +22,12 @@ const leadsPagination = document.querySelector("#leads-pagination");
 const searchInput = document.querySelector("#lead-search");
 const statusFilter = document.querySelector("#status-filter");
 const exportButton = document.querySelector("#export-leads");
+const dossiersBody = document.querySelector("#dossiers-body");
+const dossiersEmptyState = document.querySelector("#dossiers-empty-state");
+const dossiersPagination = document.querySelector("#dossiers-pagination");
+const dossierSearchInput = document.querySelector("#dossier-search");
+const dossierStatusFilter = document.querySelector("#dossier-status-filter");
+const exportDossiersButton = document.querySelector("#export-dossiers");
 const contactsBody = document.querySelector("#contacts-body");
 const contactsEmptyState = document.querySelector("#contacts-empty-state");
 const contactsPagination = document.querySelector("#contacts-pagination");
@@ -90,6 +96,7 @@ const adminPages = document.querySelectorAll("[data-admin-page]");
 const pageSize = 6;
 const paginationState = {
   leads: 1,
+  dossiers: 1,
   contacts: 1,
   videos: 1,
   faqs: 1,
@@ -294,7 +301,7 @@ function isAuthenticated() {
 
 function getAdminPage() {
   const page = new URLSearchParams(window.location.search).get("page") || "demandes";
-  return ["demandes", "contacts", "google", "videos", "formules", "coordonnees", "faq", "users", "roles", "history"].includes(page) ? page : "demandes";
+  return ["demandes", "dossiers", "contacts", "google", "videos", "formules", "coordonnees", "faq", "users", "roles", "history"].includes(page) ? page : "demandes";
 }
 
 function applyAdminPage() {
@@ -320,6 +327,7 @@ function setAuthenticated(value) {
     sessionStorage.setItem(authKey, "true");
     document.body.classList.add("is-authenticated");
     renderLeads();
+    renderDossiers();
     renderContacts();
     renderVideos();
     renderFaqs();
@@ -713,10 +721,12 @@ function openReplyComposer(type, id) {
   const isContact = type === "contact";
   const subject = isContact
     ? "Votre message NOMAD"
-    : `Votre demande NOMAD - ${item.plan || "Formule"}`;
+    : item.type === "dossier" ? "Étude de votre dossier NOMAD" : `Votre demande NOMAD - ${item.plan || "Formule"}`;
   const context = isContact
     ? `Message initial : ${item.message || "-"}`
-    : `Formule : ${item.plan || "-"}\nPrix : ${formatPrice(item.price)}\nMessage initial : ${item.message || "-"}`;
+    : item.type === "dossier"
+      ? `Boîte : ${item.gearbox || "-"}\nHeures réalisées : ${item.hours || "0"}\nDisponibilités : ${item.availability || "-"}\nMessage initial : ${item.message || "-"}`
+      : `Formule : ${item.plan || "-"}\nPrix : ${formatPrice(item.price)}\nMessage initial : ${item.message || "-"}`;
   const body = [
     `Bonjour ${item.name || ""},`,
     "",
@@ -773,7 +783,7 @@ function getFilteredLeads() {
   const status = statusFilter.value;
 
   return readLeads().filter((lead) => {
-    if (String(lead.plan || "").toLowerCase() === "contact") return false;
+    if (lead.type === "dossier" || String(lead.plan || "").toLowerCase() === "contact") return false;
     const matchesStatus = status === "all" || lead.status === status;
     const haystack = [
       lead.name,
@@ -787,6 +797,16 @@ function getFilteredLeads() {
       lead.message,
     ].join(" ").toLowerCase();
     return matchesStatus && (!query || haystack.includes(query));
+  });
+}
+
+function getFilteredDossiers() {
+  const query = (dossierSearchInput?.value || "").trim().toLowerCase();
+  const status = dossierStatusFilter?.value || "all";
+  return readLeads().filter((lead) => {
+    if (lead.type !== "dossier") return false;
+    const haystack = [lead.name, lead.email, lead.phone, lead.city, lead.gearbox, lead.hours, lead.availability, lead.message].join(" ").toLowerCase();
+    return (status === "all" || lead.status === status) && (!query || haystack.includes(query));
   });
 }
 
@@ -891,8 +911,8 @@ function renderLeadDetails(lead) {
     <div><span>Boite</span><strong>${escapeHtml(lead.gearbox || "Non precisee")}</strong></div>
     <div><span>Heures deja realisees</span><strong>${escapeHtml(lead.hours || "Non precisees")}</strong></div>
     <div><span>Dernier examen</span><strong>${escapeHtml(lead.lastExam || "Non precise")}</strong></div>
-    <div><span>Formule choisie</span><strong>${escapeHtml(lead.plan)}</strong></div>
-    <div><span>Prix</span><strong>${formatPrice(lead.price)}</strong></div>
+    ${lead.type === "dossier" ? `<div><span>Disponibilités</span><strong>${escapeHtml(lead.availability || "Non précisées")}</strong></div>` : ""}
+    ${lead.type === "dossier" ? "" : `<div><span>Formule choisie</span><strong>${escapeHtml(lead.plan)}</strong></div><div><span>Prix</span><strong>${formatPrice(lead.price)}</strong></div>`}
     <div class="admin-detail-card__full"><span>Message complet</span><p>${escapeHtml(lead.message || "-")}</p></div>
   `;
 }
@@ -914,7 +934,7 @@ function openLeadDetails(id) {
   const lead = readLeads().find((item) => item.id === id);
   if (!lead || !leadDetailModal || !leadDetailContent) return;
   leadDetailModal.querySelector("#lead-detail-title").textContent = "Details de la demande";
-  leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = "Demande NOMAD";
+  leadDetailModal.querySelector(".admin-detail-modal__header span").textContent = lead.type === "dossier" ? "Étude de dossier" : "Demande NOMAD";
   leadDetailContent.innerHTML = renderLeadDetails(lead);
   leadDetailModal.classList.add("is-open");
   leadDetailModal.setAttribute("aria-hidden", "false");
@@ -996,7 +1016,7 @@ function paginateItems(items, key, paginationElement) {
 }
 
 function renderLeads() {
-  const allLeads = readLeads().filter((lead) => String(lead.plan || "").toLowerCase() !== "contact");
+  const allLeads = readLeads().filter((lead) => lead.type !== "dossier" && String(lead.plan || "").toLowerCase() !== "contact");
   const leads = getFilteredLeads();
   renderStats(allLeads);
 
@@ -1032,6 +1052,34 @@ function renderLeads() {
           <button type="button" data-action="delete" data-id="${lead.id}">Supprimer</button>
         </div>
       </td>
+    </tr>
+  `).join("");
+}
+
+function renderDossiers() {
+  const allDossiers = readLeads().filter((lead) => lead.type === "dossier");
+  const dossiers = getFilteredDossiers();
+  document.querySelector("#dossier-stat-total").textContent = allDossiers.length;
+  document.querySelector("#dossier-stat-new").textContent = allDossiers.filter((item) => item.status === "Nouveau").length;
+  document.querySelector("#dossier-stat-progress").textContent = allDossiers.filter((item) => item.status === "En cours").length;
+  document.querySelector("#dossier-stat-done").textContent = allDossiers.filter((item) => item.status === "Traite").length;
+  if (!dossiersBody || !dossiersEmptyState) return;
+  dossiersEmptyState.style.display = dossiers.length ? "none" : "block";
+  dossiersBody.innerHTML = paginateItems(dossiers, "dossiers", dossiersPagination).map((item) => `
+    <tr>
+      <td class="date-cell">${formatDate(item.createdAt)}</td>
+      <td class="client-cell"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.city || "-")}</small></td>
+      <td class="contact-cell"><a href="tel:${escapeHtml(item.phone)}">${escapeHtml(item.phone)}</a><a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a></td>
+      <td class="plan-cell"><strong>${escapeHtml(item.gearbox || "-")}</strong><small>${escapeHtml(item.hours || "0")} h réalisées</small><small>${escapeHtml(item.availability || "-")}</small></td>
+      <td class="message-cell"><span>${escapeHtml(previewText(item.message))}</span></td>
+      <td class="status-cell"><span class="status-pill ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td>
+      <td><div class="table-actions">
+        <button type="button" data-action="progress" data-id="${item.id}">En cours</button>
+        <button type="button" data-action="done" data-id="${item.id}">Traité</button>
+        <button type="button" data-action="details" data-id="${item.id}">Détails</button>
+        <button type="button" data-action="reply" data-id="${item.id}">Répondre</button>
+        <button type="button" data-action="delete" data-id="${item.id}">Supprimer</button>
+      </div></td>
     </tr>
   `).join("");
 }
@@ -1268,6 +1316,7 @@ function updateLeadStatus(id, status) {
   writeLeads(leads);
   logActivity("Statut demande", `Demande ${id} passee en ${status}`);
   renderLeads();
+  renderDossiers();
 }
 
 function deleteLead(id) {
@@ -1275,6 +1324,7 @@ function deleteLead(id) {
   writeLeads(leads);
   logActivity("Suppression demande", `Demande ${id} supprimee`);
   renderLeads();
+  renderDossiers();
 }
 
 function updateContactStatus(id, status) {
@@ -1292,7 +1342,7 @@ function deleteContact(id) {
 }
 
 function exportCsv() {
-  const leads = readLeads();
+  const leads = readLeads().filter((lead) => lead.type !== "dossier" && String(lead.plan || "").toLowerCase() !== "contact");
   const header = ["Date", "Nom", "Telephone", "Email", "Ville", "Boite", "Heures", "Dernier examen", "Formule", "Prix", "Statut", "Message"];
   const rows = leads.map((lead) => [
     formatDate(lead.createdAt),
@@ -1320,6 +1370,20 @@ function exportCsv() {
   link.click();
   URL.revokeObjectURL(url);
   logActivity("Export CSV", `${leads.length} demande(s) exportee(s)`);
+}
+
+function exportDossiersCsv() {
+  const dossiers = readLeads().filter((lead) => lead.type === "dossier");
+  const header = ["Date", "Nom", "Téléphone", "Email", "Ville", "Boîte", "Heures", "Dernier examen", "Disponibilités", "Statut", "Message"];
+  const rows = dossiers.map((item) => [formatDate(item.createdAt), item.name, item.phone, item.email, item.city, item.gearbox, item.hours, item.lastExam, item.availability, item.status, item.message]);
+  const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(";")).join("\n");
+  const url = URL.createObjectURL(new Blob(["\ufeff", csv], { type: "text/csv;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "nomad-etudes-dossier.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+  logActivity("Export dossiers", `${dossiers.length} dossier(s) exporté(s)`);
 }
 
 function exportContactsCsv() {
@@ -1678,6 +1742,7 @@ function deleteFaq(id) {
 
 function renderPaginatedList(key) {
   if (key === "leads") renderLeads();
+  if (key === "dossiers") renderDossiers();
   if (key === "contacts") renderContacts();
   if (key === "videos") renderVideos();
   if (key === "faqs") renderFaqs();
@@ -1693,7 +1758,7 @@ function handlePaginationClick(event) {
   renderPaginatedList(key);
 }
 
-leadsBody?.addEventListener("click", (event) => {
+function handleLeadAction(event) {
   const button = event.target.closest("button[data-action]");
   if (!button) return;
   const { action, id } = button.dataset;
@@ -1708,7 +1773,9 @@ leadsBody?.addEventListener("click", (event) => {
   if (action === "progress") updateLeadStatus(id, "En cours");
   if (action === "done") updateLeadStatus(id, "Traite");
   if (action === "delete") deleteLead(id);
-});
+}
+leadsBody?.addEventListener("click", handleLeadAction);
+dossiersBody?.addEventListener("click", handleLeadAction);
 
 contactsBody?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-contact-action]");
@@ -1961,8 +2028,10 @@ statusFilter?.addEventListener("change", () => {
   renderLeads();
 });
 exportButton?.addEventListener("click", exportCsv);
+exportDossiersButton?.addEventListener("click", exportDossiersCsv);
 exportContactsButton?.addEventListener("click", exportContactsCsv);
 leadsPagination?.addEventListener("click", handlePaginationClick);
+dossiersPagination?.addEventListener("click", handlePaginationClick);
 contactsPagination?.addEventListener("click", handlePaginationClick);
 videosPagination?.addEventListener("click", handlePaginationClick);
 faqsPagination?.addEventListener("click", handlePaginationClick);
@@ -1987,6 +2056,10 @@ historyPagination?.addEventListener("click", handlePaginationClick);
     paginationState.contacts = 1;
     renderContacts();
   });
+});
+[dossierSearchInput, dossierStatusFilter].forEach((control) => {
+  control?.addEventListener("input", () => { paginationState.dossiers = 1; renderDossiers(); });
+  control?.addEventListener("change", () => { paginationState.dossiers = 1; renderDossiers(); });
 });
 [userSearchInput, userRoleFilter, userStatusFilter].forEach((control) => {
   control?.addEventListener("input", () => {

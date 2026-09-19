@@ -51,7 +51,7 @@
           <h1>Votre permis plus vite, sans tout organiser vous-même.</h1>
           <p class="hero__lead">Vous attendez depuis des mois une place d'examen ? NOMAD étudie votre situation, votre niveau et vos disponibilités, puis organise avec vous un parcours clair, rapide et encadré en province.</p>
           <div class="hero__actions">
-            <a class="btn btn--primary js-eligibility" href="#inscription">Faire étudier mon dossier <span aria-hidden="true">→</span></a>
+            <a class="btn btn--primary js-dossier" href="#etude-dossier">Faire étudier mon dossier <span aria-hidden="true">→</span></a>
             <a class="btn btn--outline" href="#formules">Comparer les formules</a>
           </div>
         </div>
@@ -288,7 +288,7 @@
           <h3>Votre permis mérite un plan clair.</h3>
           <p>Vous avez déjà beaucoup conduit ? Vous venez d'échouer à l'examen ? Vous voulez accélérer votre parcours ? Vous ne savez pas combien d'heures il vous reste réellement ? Envoyez-nous votre dossier. Notre équipe l'étudie et vous propose une organisation adaptée à votre situation.</p>
           <div class="pricing-reassurance__actions">
-            <a class="btn btn--primary js-eligibility" href="#inscription">Faire étudier mon dossier</a>
+            <a class="btn btn--primary js-dossier" href="#etude-dossier">Faire étudier mon dossier</a>
             <a class="btn btn--outline" href="#contact">Être rappelé</a>
           </div>
         </div>
@@ -436,6 +436,41 @@
     </div>
     <p class="copyright">© 2026 NOMAD — Votre permis en province. Tous droits réservés.</p>
   </footer>
+
+  <div class="modal" id="etude-dossier" aria-hidden="true">
+    <div class="modal__overlay" data-dossier-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="dossier-title">
+      <button class="modal__close" type="button" data-dossier-close aria-label="Fermer le formulaire">×</button>
+      <div class="modal__intro">
+        <span>Étude personnalisée</span>
+        <h2 id="dossier-title">Faire étudier mon dossier</h2>
+        <p>Décrivez votre parcours et vos disponibilités. L'équipe NOMAD étudiera votre situation avant de vous proposer une formule.</p>
+      </div>
+      <form class="lead-form" id="dossier-form">
+        <div class="form-grid">
+          <label>Nom et prénom<input name="name" type="text" autocomplete="name" required></label>
+          <label>Téléphone<input name="phone" type="tel" autocomplete="tel" required></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required></label>
+          <label>Ville de départ<input name="city" type="text" autocomplete="address-level2" required></label>
+          <label>Boîte de vitesses
+            <select name="gearbox" required><option value="">Choisir</option><option value="Manuelle">Manuelle</option><option value="Automatique">Automatique</option></select>
+          </label>
+          <label>Heures de conduite déjà réalisées<input name="hours" type="number" min="0" max="999" step="1" required></label>
+          <label>Dernier passage à l'examen<input name="lastExam" type="date"></label>
+          <label>Disponibilités<input name="availability" type="text" placeholder="Dates ou période souhaitée" required></label>
+          <label class="form-grid__full">Votre situation
+            <textarea name="message" rows="4" placeholder="Votre parcours, les difficultés rencontrées et vos questions..." required></textarea>
+          </label>
+          <label class="privacy-check form-grid__full"><input name="privacy" type="checkbox" required><span>J'accepte la politique de confidentialité.</span></label>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--outline" type="button" data-dossier-close>Annuler</button>
+          <button class="btn btn--primary" type="submit">Envoyer mon dossier</button>
+        </div>
+        <p class="form-status" id="dossier-status" role="status"></p>
+      </form>
+    </div>
+  </div>
 
   <div class="modal" id="inscription" aria-hidden="true">
     <div class="modal__overlay" data-modal-close></div>

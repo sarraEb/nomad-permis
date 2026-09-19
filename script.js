@@ -800,6 +800,9 @@ renderPublicReviews();
 
 const storageKey = "nomad_leads";
 const modal = document.querySelector("#inscription");
+const dossierModal = document.querySelector("#etude-dossier");
+const dossierForm = document.querySelector("#dossier-form");
+const dossierStatus = document.querySelector("#dossier-status");
 const leadForm = document.querySelector("#lead-form");
 const contactForm = document.querySelector("#contact-form");
 const planSelect = document.querySelector("#selected-plan");
@@ -847,6 +850,69 @@ function closeLeadModal() {
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
 }
+
+function closeDossierModal() {
+  dossierModal?.classList.remove("is-open");
+  dossierModal?.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll(".js-dossier").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (dossierStatus) dossierStatus.textContent = "";
+    dossierModal?.classList.add("is-open");
+    dossierModal?.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    dossierForm?.querySelector("input[name='name']")?.focus();
+  });
+});
+
+document.querySelectorAll("[data-dossier-close]").forEach((button) => {
+  button.addEventListener("click", closeDossierModal);
+});
+
+dossierForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const formData = new FormData(dossierForm);
+  const dossier = {
+    id: `DOSSIER-${Date.now()}`,
+    type: "dossier",
+    createdAt: new Date().toISOString(),
+    status: "Nouveau",
+    name: String(formData.get("name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    email: String(formData.get("email") || "").trim(),
+    city: String(formData.get("city") || "").trim(),
+    gearbox: formData.get("gearbox"),
+    hours: formData.get("hours"),
+    lastExam: formData.get("lastExam"),
+    availability: String(formData.get("availability") || "").trim(),
+    message: String(formData.get("message") || "").trim(),
+    plan: "",
+    price: "",
+  };
+  saveLead(dossier);
+  if (dossierStatus) dossierStatus.textContent = "Dossier enregistré. Envoi du mail en cours...";
+  try {
+    await sendSubmissionEmail(dossier);
+    if (dossierStatus) dossierStatus.textContent = "Dossier envoyé et disponible dans l'administration.";
+  } catch {
+    if (dossierStatus && window.location.hostname.endsWith("github.io")) {
+      const subject = encodeURIComponent("Étude de mon dossier NOMAD");
+      const body = encodeURIComponent(`Nom : ${dossier.name}\nTéléphone : ${dossier.phone}\nEmail : ${dossier.email}\nVille : ${dossier.city}\nBoîte : ${dossier.gearbox}\nHeures réalisées : ${dossier.hours}\nDernier examen : ${dossier.lastExam || "Non précisé"}\nDisponibilités : ${dossier.availability}\n\n${dossier.message}`);
+      dossierStatus.textContent = "L'envoi automatique n'est pas disponible ici. ";
+      const link = document.createElement("a");
+      link.href = `mailto:contact@nomad-votre-permis.fr?subject=${subject}&body=${body}`;
+      link.textContent = "Envoyer le dossier par e-mail";
+      dossierStatus.append(link);
+      return;
+    }
+    if (dossierStatus) dossierStatus.textContent = "Dossier enregistré localement. L'envoi du mail a échoué.";
+  }
+  dossierForm.reset();
+  setTimeout(closeDossierModal, 2200);
+});
 
 function readLeads() {
   try {
@@ -933,6 +999,7 @@ document.querySelectorAll("[data-modal-close]").forEach((button) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && dossierModal?.classList.contains("is-open")) closeDossierModal();
   if (event.key === "Escape" && modal?.classList.contains("is-open")) {
     closeLeadModal();
   }

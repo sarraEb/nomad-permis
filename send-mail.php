@@ -29,6 +29,10 @@ $city = clean_text($_POST['city'] ?? '');
 $message = clean_message($_POST['message'] ?? '');
 $plan = clean_text($_POST['plan'] ?? '');
 $price = clean_text($_POST['price'] ?? '');
+$gearbox = clean_text($_POST['gearbox'] ?? '');
+$hours = clean_text($_POST['hours'] ?? '');
+$lastExam = clean_text($_POST['lastExam'] ?? '');
+$availability = clean_text($_POST['availability'] ?? '');
 
 if (!$name || !$phone || !$email) {
     http_response_code(422);
@@ -37,7 +41,8 @@ if (!$name || !$phone || !$email) {
 }
 
 $isFormula = $type === 'formula';
-$subject = $isFormula ? 'Nouvelle demande de formule NOMAD' : 'Nouveau message contact NOMAD';
+$isDossier = $type === 'dossier';
+$subject = $isDossier ? 'Nouveau dossier a etudier NOMAD' : ($isFormula ? 'Nouvelle demande de formule NOMAD' : 'Nouveau message contact NOMAD');
 
 $lines = [
     $subject,
@@ -51,6 +56,12 @@ $lines = [
 if ($isFormula) {
     $lines[] = 'Formule choisie : ' . ($plan ?: 'Non precisee');
     $lines[] = 'Prix : ' . ($price ?: 'Non precise');
+}
+if ($isDossier) {
+    $lines[] = 'Boite de vitesses : ' . ($gearbox ?: 'Non precisee');
+    $lines[] = 'Heures deja realisees : ' . ($hours ?: 'Non precisees');
+    $lines[] = 'Dernier examen : ' . ($lastExam ?: 'Non precise');
+    $lines[] = 'Disponibilites : ' . ($availability ?: 'Non precisees');
 }
 
 $lines[] = '';

@@ -60,6 +60,7 @@
       <nav class="admin-side-nav admin-nav" aria-label="Navigation admin">
         <a href="index.html#accueil">Site public</a>
         <a class="active" href="admin.html?page=demandes" data-admin-link="demandes">Demandes</a>
+        <a href="admin.html?page=dossiers" data-admin-link="dossiers">Études de dossier</a>
         <a href="admin.html?page=contacts" data-admin-link="contacts">Contacts</a>
         <a href="admin.html?page=google" data-admin-link="google">Google</a>
         <a href="admin.html?page=videos" data-admin-link="videos">Videos</a>
@@ -119,6 +120,33 @@
         </div>
         <div class="empty-state" id="empty-state">Aucune demande pour le moment.</div>
         <div class="admin-pagination" id="leads-pagination" aria-label="Pagination des demandes"></div>
+      </section>
+      </div>
+
+      <div class="admin-page" data-admin-page="dossiers">
+      <section class="admin-hero">
+        <div><h1>Études de dossier</h1><p>Suivez séparément les demandes envoyées depuis « Faire étudier mon dossier ».</p></div>
+        <button class="btn btn--primary" type="button" id="export-dossiers">Exporter CSV</button>
+      </section>
+      <section class="admin-stats" aria-label="Statistiques des dossiers">
+        <article class="admin-stat"><span>Total</span><strong id="dossier-stat-total">0</strong></article>
+        <article class="admin-stat"><span>Nouveaux</span><strong id="dossier-stat-new">0</strong></article>
+        <article class="admin-stat"><span>En cours</span><strong id="dossier-stat-progress">0</strong></article>
+        <article class="admin-stat"><span>Traités</span><strong id="dossier-stat-done">0</strong></article>
+      </section>
+      <section class="admin-panel">
+        <div class="admin-toolbar">
+          <input id="dossier-search" type="search" placeholder="Rechercher un nom, une ville, un message...">
+          <select id="dossier-status-filter" aria-label="Filtrer les dossiers par statut">
+            <option value="all">Tous les statuts</option><option value="Nouveau">Nouveau</option><option value="En cours">En cours</option><option value="Traite">Traité</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>Date</th><th>Client</th><th>Contact</th><th>Parcours</th><th>Message</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="dossiers-body"></tbody>
+        </table></div>
+        <div class="empty-state" id="dossiers-empty-state">Aucun dossier pour le moment.</div>
+        <div class="admin-pagination" id="dossiers-pagination" aria-label="Pagination des dossiers"></div>
       </section>
       </div>
 

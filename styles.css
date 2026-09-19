@@ -1533,6 +1533,7 @@ p { color: var(--muted); line-height: 1.65; }
   min-width: 860px;
 }
 .admin-page[data-admin-page="demandes"] .admin-table,
+.admin-page[data-admin-page="dossiers"] .admin-table,
 .admin-page[data-admin-page="contacts"] .admin-table {
   min-width: 0;
   table-layout: fixed;

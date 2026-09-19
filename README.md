@@ -17,6 +17,8 @@ Identifiants admin de demo :
 ## Notes
 
 - Les donnees du dashboard sont synchronisees avec MySQL sur WAMP quand la base est installee.
+- Les demandes « Faire étudier mon dossier » disposent d'un formulaire et d'un onglet admin dédiés. Elles sont enregistrées avec les autres demandes dans la table `leads`, avec le type `dossier` dans le contenu JSON.
+- GitHub Pages sert uniquement les fichiers statiques : l'envoi d'email PHP et la synchronisation MySQL nécessitent un hébergement PHP accessible aux visiteurs.
 - Le navigateur garde aussi une copie locale en `localStorage` pour que l'interface reste utilisable si MySQL est indisponible.
 - L'envoi email utilise `send-mail.php` et depend de la configuration mail du serveur.
 - L'integration Google Places doit etre configuree depuis le dashboard admin.
