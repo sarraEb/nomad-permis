@@ -515,6 +515,7 @@ p { color: var(--muted); line-height: 1.65; }
   gap: 18px;
 }
 .pricing-grid {
+  grid-column: 2;
   display: grid;
   grid-template-columns: repeat(3, minmax(250px, 1fr));
   gap: clamp(18px, 2.2vw, 34px);
@@ -2286,6 +2287,7 @@ p { color: var(--muted); line-height: 1.65; }
   .trust-badge { top: 10px; right: 10px; transform: none; width: 138px; min-height: 0; font-size: .62rem; border-radius: 50%; }
   .benefits__strip, .compare-grid, .card-grid--four, .pricing-grid, .testimonial-grid, .video-track, .footer__grid { grid-template-columns: 1fr; }
   .pricing-carousel { grid-template-columns: 1fr; }
+  .pricing-grid { grid-column: 1; }
   .pricing-nav { display: none; }
   .pricing-intro { margin-bottom: 18px; text-align: left; }
   .pricing-intro__lead { font-size: 1rem; }
