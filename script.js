@@ -774,6 +774,10 @@ function loadGooglePlaces(apiKey) {
 
 async function renderPublicReviews() {
   if (!reviewsGrid) return;
+  if (!window.nomadCookieConsent?.allows("external")) {
+    renderGoogleReviewsState("Les avis Google sont désactivés. Vous pouvez les autoriser dans la gestion des cookies.");
+    return;
+  }
   if (!googleReviewsConfig.apiKey) {
     renderGoogleReviewsState("Avis Google à connecter depuis le dashboard admin.");
     return;
@@ -797,6 +801,9 @@ async function renderPublicReviews() {
 }
 
 renderPublicReviews();
+window.addEventListener("nomad:cookie-choice", (event) => {
+  if (event.detail.external) renderPublicReviews();
+});
 
 const storageKey = "nomad_leads";
 const modal = document.querySelector("#inscription");
